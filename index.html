@@ -1,243 +1,335 @@
 <!DOCTYPE html>
-<html>
+<html lang="de">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>BTC Monitor</title>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <style>
-body {
-    font-family: Arial, sans-serif;
-    background: #111;
-    color: #eee;
-    margin: 0;
-    padding: 40px;
-}
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: #111;
+        color: #eee;
+        margin: 0;
+        padding: 20px;
+        box-sizing: border-box;
+    }
 
-.header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-}
+    .container {
+        max-width: 1000px;
+        margin: 0 auto;
+    }
 
-.time-box {
-    font-size: 18px;
-    color: #ccc;
-}
+    /* HEADER: Beide Boxen sind nun identisch (info-card) */
+    .header {
+        display: flex;
+        justify-content: space-between;
+        gap: 20px;
+        margin-bottom: 40px;
+    }
 
-.price-box {
-    background: #1f1f1f;
-    padding: 40px;
-    border-radius: 12px;
-    text-align: center;
-    min-width: 350px;
-}
+    .info-card {
+        background: #1f1f1f;
+        padding: 30px;
+        border-radius: 12px;
+        text-align: center;
+        flex: 1; /* Beide Boxen nehmen gleich viel Platz ein */
+        box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
 
-.price-title {
-    font-size: 22px;
-    color: #aaa;
-}
+    .card-title {
+        font-size: 18px;
+        color: #aaa;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 10px;
+    }
 
-.price-value {
-    font-size: 54px;
-    margin-top: 15px;
-    font-weight: bold;
-}
+    .card-value {
+        font-size: 42px; /* Gleiche Schriftgröße für Preis und Zeit */
+        font-weight: bold;
+        color: #fff;
+    }
 
-.main-title {
-    text-align: center;
-    font-size: 48px;
-    margin-top: 40px;
-    font-weight: bold;
-}
+    .card-sub {
+        font-size: 16px;
+        color: #666;
+        margin-top: 5px;
+    }
 
-.center-box {
-    text-align: center;
-    margin-top: 60px;
-}
+    /* Main Title */
+    .main-title {
+        text-align: center;
+        font-size: 38px;
+        margin-bottom: 30px;
+        font-weight: bold;
+        color: #f2a900;
+    }
 
-.balance {
-    font-size: 42px;
-    margin-top: 15px;
-}
+    /* Center Box (Adresse & Balance) */
+    .center-box {
+        text-align: center;
+        background: #191919;
+        padding: 30px;
+        border-radius: 12px;
+        margin-bottom: 40px;
+    }
 
-.subinfo {
-    margin-top: 15px;
-    font-size: 20px;
-    color: #aaa;
-}
+    .address {
+        font-size: 14px; 
+        color: #666; 
+        word-break: break-all;
+        font-family: monospace;
+        background: #000;
+        padding: 10px;
+        border-radius: 4px;
+        display: inline-block;
+        margin-bottom: 20px;
+    }
 
-.block-info {
-    margin-top: 60px;
-    text-align: center;
-    font-size: 18px;
-    color: #ccc;
-}
+    .balance {
+        font-size: 36px;
+        font-weight: bold;
+    }
 
-.reload-btn {
-    margin-top: 40px;
-    text-align: center;
-}
+    .usd-value {
+        margin-top: 10px;
+        font-size: 20px;
+        color: #4caf50;
+    }
 
-button {
-    padding: 12px 25px;
-    font-size: 16px;
-    cursor: pointer;
-    border-radius: 6px;
-    border: none;
-    background: #333;
-    color: white;
-}
+    /* Reload Button */
+    .reload-btn {
+        text-align: center;
+        margin-bottom: 40px;
+    }
 
-button:hover {
-    background: #555;
-}
+    button {
+        padding: 12px 30px;
+        font-size: 16px;
+        cursor: pointer;
+        border-radius: 6px;
+        border: 1px solid #444;
+        background: #222;
+        color: #ccc;
+        transition: all 0.3s;
+    }
 
-.chart-container {
-    margin-top: 60px;
-    max-width: 900px;
-    margin-left: auto;
-    margin-right: auto;
-}
+    button:hover {
+        background: #333;
+        color: white;
+        border-color: #666;
+    }
+
+    /* Neuer Bereich: Netzwerk Status */
+    .network-status {
+        background: #151515;
+        border: 1px solid #333;
+        border-radius: 12px;
+        padding: 25px;
+        margin-bottom: 40px;
+        text-align: center;
+    }
+
+    .hash-string {
+        font-family: monospace;
+        font-size: 12px;
+        color: #f2a900;
+        word-break: break-all; /* Bricht den langen Hash um */
+        background: #000;
+        padding: 10px;
+        border-radius: 4px;
+        margin-top: 10px;
+    }
+
+    .status-row {
+        margin: 10px 0;
+        font-size: 18px;
+        color: #ccc;
+    }
+
+    /* Chart */
+    .chart-container {
+        position: relative;
+        height: 350px;
+        width: 100%;
+    }
+
+    /* Responsive */
+    @media (max-width: 700px) {
+        .header { flex-direction: column; }
+        .card-value { font-size: 32px; }
+    }
 </style>
 </head>
 
 <body>
 
-<div class="header">
-    <div class="time-box">
-        <div id="currentDate">Lade...</div>
-        <div id="currentTime">Lade...</div>
+<div class="container">
+
+    <div class="header">
+        <div class="info-card">
+            <div class="card-title">Uhrzeit</div>
+            <div id="currentTime" class="card-value">--:--:--</div>
+            <div id="currentDate" class="card-sub">--.--.----</div>
+        </div>
+
+        <div class="info-card">
+            <div class="card-title">Bitcoin Preis (USD)</div>
+            <div id="btcPrice" class="card-value">Lade...</div>
+            <div class="card-sub">Aktueller Marktpreis</div>
+        </div>
     </div>
 
-    <div class="price-box">
-        <div class="price-title">Bitcoin Preis (USD)</div>
-        <div id="btcPrice" class="price-value">Lade...</div>
-    </div>
-</div>
-
-<div class="main-title">
-    Bitcoin Lottery Mining
-</div>
-
-<div class="center-box">
-    <div style="font-size:16px; color:#888;">
-        bc1qpmvg0xqvqy38hfkr0c7pmxtxzxz9vlvp27f7rw
+    <div class="main-title">
+        Bitcoin Lottery Mining
     </div>
 
-    <div id="balance" class="balance">Lade...</div>
-    <div id="usdValue" class="subinfo"></div>
-</div>
+    <div class="center-box">
+        <div style="color:#888; margin-bottom:5px;">Monitor Adresse:</div>
+        <div class="address">
+            bc1qpmvg0xqvqy38hfkr0c7pmxtxzxz9vlvp27f7rw
+        </div>
 
-<div class="block-info">
-    <div id="blockHeight">Aktueller Block: Lade...</div>
-    <div id="blockTime">Blockzeit: Lade...</div>
-</div>
+        <div id="balance" class="balance">Lade...</div>
+        <div id="usdValue" class="usd-value"></div>
+    </div>
 
-<div class="reload-btn">
-    <button onclick="manualReload()">Seite händisch neu laden</button>
-</div>
+    <div class="reload-btn">
+        <button onclick="manualReload()">Seite neu laden</button>
+    </div>
 
-<div class="chart-container">
-    <canvas id="hashrateChart"></canvas>
+    <div class="network-status">
+        <div class="card-title" style="margin-bottom: 20px;">Netzwerk Status</div>
+        
+        <div class="status-row">
+            Aktuelle Hashrate: <strong id="txtHashrate" style="color:#fff;">Lade...</strong>
+        </div>
+        
+        <div class="status-row">
+            Letzter Block (<span id="txtBlockHeight">...</span>):
+        </div>
+        
+        <div id="txtBlockHash" class="hash-string">Lade Hash...</div>
+        
+        <div id="txtBlockTime" style="margin-top:10px; font-size:14px; color:#666;"></div>
+    </div>
+
+    <div class="chart-container">
+        <canvas id="hashrateChart"></canvas>
+    </div>
 </div>
 
 <script>
 const address = "bc1qpmvg0xqvqy38hfkr0c7pmxtxzxz9vlvp27f7rw";
+let myChart = null;
 
 function updateClock() {
     const now = new Date();
-    document.getElementById("currentDate").innerHTML =
-        now.toLocaleDateString();
-    document.getElementById("currentTime").innerHTML =
-        now.toLocaleTimeString();
+    document.getElementById("currentDate").innerText = now.toLocaleDateString();
+    document.getElementById("currentTime").innerText = now.toLocaleTimeString();
 }
 setInterval(updateClock, 1000);
 updateClock();
 
 async function loadData() {
     try {
+        console.log("Hole Daten...");
 
-        // Adresse
+        // 1. Balance holen
         const addressRes = await fetch("https://blockstream.info/api/address/" + address);
         const addressJson = await addressRes.json();
-        const funded = addressJson.chain_stats.funded_txo_sum / 100000000;
-        const spent = addressJson.chain_stats.spent_txo_sum / 100000000;
-        const balance = funded - spent;
-        document.getElementById("balance").innerHTML =
-            balance.toFixed(8) + " BTC";
+        const balance = (addressJson.chain_stats.funded_txo_sum - addressJson.chain_stats.spent_txo_sum) / 100000000;
+        document.getElementById("balance").innerText = balance.toFixed(8) + " BTC";
 
-        // Preis
+        // 2. Preis holen
         const priceRes = await fetch("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd");
         const priceJson = await priceRes.json();
         const price = priceJson.bitcoin.usd;
+        
+        document.getElementById("btcPrice").innerText = "$ " + price.toLocaleString("en-US");
+        document.title = "BTC $" + price.toLocaleString("en-US");
+        
+        document.getElementById("usdValue").innerText = 
+            "≈ $" + (balance * price).toLocaleString("en-US", {maximumFractionDigits: 2});
 
-        document.getElementById("btcPrice").innerHTML =
-            "$ " + price.toLocaleString();
+        // 3. Block Info & Hash holen
+        const heightRes = await fetch("https://blockstream.info/api/blocks/tip/height");
+        const height = await heightRes.text();
+        document.getElementById("txtBlockHeight").innerText = height;
 
-        document.title = "BTC $" + price.toLocaleString();
+        const hashResApi = await fetch("https://blockstream.info/api/block-height/" + height);
+        const blockHash = await hashResApi.text();
+        
+        // HIER wird der volle Hash angezeigt
+        document.getElementById("txtBlockHash").innerText = blockHash;
 
-        document.getElementById("usdValue").innerHTML =
-            "Wert: $" + (balance * price).toLocaleString(undefined, {maximumFractionDigits:2});
+        const blockDetailRes = await fetch("https://blockstream.info/api/block/" + blockHash);
+        const blockJson = await blockDetailRes.json();
+        const blockTime = new Date(blockJson.timestamp * 1000);
+        document.getElementById("txtBlockTime").innerText = "Gefunden am: " + blockTime.toLocaleString();
 
-        // Block
-        const blockHeightRes = await fetch("https://blockstream.info/api/blocks/tip/height");
-        const blockHeight = await blockHeightRes.text();
-        document.getElementById("blockHeight").innerHTML =
-            "Aktueller Block: " + blockHeight;
+        // 4. Hashrate Chart & Wert
+        const proxy = "https://api.allorigins.win/raw?url=";
+        const url = encodeURIComponent("https://api.blockchain.info/charts/hash-rate?timespan=60days&format=json");
+        
+        const chartRes = await fetch(proxy + url);
+        const chartJson = await chartRes.json();
 
-        const blockHashRes = await fetch("https://blockstream.info/api/block-height/" + blockHeight);
-        const blockHash = await blockHashRes.text();
+        const labels = chartJson.values.map(v => new Date(v.x * 1000).toLocaleDateString());
+        const data = chartJson.values.map(v => v.y);
 
-        const blockRes = await fetch("https://blockstream.info/api/block/" + blockHash);
-        const blockJson = await blockRes.json();
-        const blockDate = new Date(blockJson.timestamp * 1000);
+        // Aktuellster Wert für die Textanzeige (letzter Eintrag im Array)
+        const currentHash = data[data.length - 1]; 
+        // Formatierung (TH/s mit Tausendertrennzeichen)
+        document.getElementById("txtHashrate").innerText = currentHash.toLocaleString("en-US") + " TH/s";
 
-        document.getElementById("blockTime").innerHTML =
-            "Blockzeit: " + blockDate.toLocaleString();
+        const ctx = document.getElementById('hashrateChart').getContext('2d');
+        if (myChart) myChart.destroy();
 
-        // Hashrate (Blockchain.info API)
-        const hashRes = await fetch("https://api.blockchain.info/charts/hash-rate?timespan=30days&format=json");
-        const hashJson = await hashRes.json();
-
-        const labels = hashJson.values.map(v =>
-            new Date(v.x * 1000).toLocaleDateString());
-        const data = hashJson.values.map(v => v.y);
-
-        new Chart(document.getElementById('hashrateChart'), {
+        myChart = new Chart(ctx, {
             type: 'line',
             data: {
                 labels: labels,
                 datasets: [{
-                    label: 'Bitcoin Hashrate (TH/s)',
+                    label: 'Hashrate (TH/s)',
                     data: data,
-                    borderWidth: 2
+                    borderColor: '#f2a900',
+                    backgroundColor: 'rgba(242, 169, 0, 0.1)',
+                    borderWidth: 2,
+                    pointRadius: 0,
+                    fill: true,
+                    tension: 0.3
                 }]
             },
             options: {
                 responsive: true,
-                plugins: {
-                    legend: { labels: { color: "#eee" } }
-                },
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
                 scales: {
-                    x: { ticks: { color: "#aaa" } },
-                    y: { ticks: { color: "#aaa" } }
+                    x: { ticks: { color: "#666", maxTicksLimit: 6 }, grid: { display: false } },
+                    y: { ticks: { color: "#666" }, grid: { color: "#333" } }
                 }
             }
         });
 
-    } catch (error) {
-        console.log(error);
+    } catch (e) {
+        console.error(e);
     }
 }
 
 function manualReload() {
-    location.reload();
+    loadData();
 }
 
 loadData();
-setInterval(loadData, 600000);
+setInterval(loadData, 300000); // Auto-Refresh alle 5 min
 </script>
 
 </body>
