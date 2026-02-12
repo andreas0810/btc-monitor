@@ -3,77 +3,136 @@
 <head>
 <meta charset="UTF-8">
 <title>Bitcoin Address Monitor</title>
+
 <style>
 body {
     font-family: Arial, sans-serif;
     background: #111;
     color: #eee;
-    text-align: center;
+    margin: 0;
     padding: 40px;
 }
-.container {
-    max-width: 600px;
-    margin: auto;
-    background: #1c1c1c;
-    padding: 30px;
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.usd-box {
+    background: #1f1f1f;
+    padding: 20px;
     border-radius: 8px;
+    text-align: center;
+    min-width: 180px;
 }
-input {
-    width: 90%;
-    padding: 10px;
-    margin-bottom: 15px;
+
+.center-box {
+    text-align: center;
+    margin-top: 80px;
 }
-button {
-    padding: 10px 20px;
-    cursor: pointer;
+
+.balance {
+    font-size: 36px;
+    margin-top: 10px;
 }
-.stat {
+
+.subinfo {
     margin-top: 20px;
     font-size: 18px;
+    color: #aaa;
 }
-.green { color: #4caf50; }
-.red { color: #f44336; }
+
+.block-info {
+    margin-top: 60px;
+    text-align: center;
+    font-size: 16px;
+    color: #ccc;
+}
 </style>
 </head>
+
 <body>
 
-<div class="container">
-    <h2>Bitcoin Public Key Monitor</h2>
-    <input type="text" id="address" placeholder="Bitcoin Adresse eingeben">
-    <br>
-    <button onclick="checkAddress()">Prüfen</button>
+<div class="header">
+    <div></div>
+    <div class="usd-box">
+        <div>Bitcoin Preis</div>
+        <div id="btcPrice" style="font-size:22px; margin-top:10px;">Lade...</div>
+    </div>
+</div>
 
-    <div class="stat" id="balance"></div>
-    <div class="stat" id="txcount"></div>
-    <div class="stat" id="movement"></div>
+<div class="center-box">
+    <div>Public Key</div>
+    <div style="font-size:14px; color:#888;">
+        bc1qpmvg0xqvqy38hfkr0c7pmxtxzxz9vlvp27f7rw
+    </div>
+
+    <div class="balance" id="balance">Lade...</div>
+    <div class="subinfo" id="usdValue"></div>
+</div>
+
+<div class="block-info">
+    <div id="blockHeight">Block: Lade...</div>
+    <div id="blockTime">Blockzeit: Lade...</div>
 </div>
 
 <script>
-async function checkAddress() {
-    const address = document.getElementById("address").value;
-    const url = "https://blockstream.info/api/address/" + address;
+const address = "bc1qpmvg0xqvqy38hfkr0c7pmxtxzxz9vlvp27f7rw";
 
-    const response = await fetch(url);
-    const data = await response.json();
+async function loadData() {
 
-    const funded = data.chain_stats.funded_txo_sum / 100000000;
-    const spent = data.chain_stats.spent_txo_sum / 100000000;
+    // Adresse abrufen
+    const addressData = await fetch("https://blockstream.info/api/address/" + address);
+    const addressJson = await addressData.json();
+
+    const funded = addressJson.chain_stats.funded_txo_sum / 100000000;
+    const spent = addressJson.chain_stats.spent_txo_sum / 100000000;
     const balance = funded - spent;
 
     document.getElementById("balance").innerHTML =
-        "Aktueller Bestand: <strong>" + balance.toFixed(8) + " BTC</strong>";
+        balance.toFixed(8) + " BTC";
 
-    document.getElementById("txcount").innerHTML =
-        "Transaktionen gesamt: " + data.chain_stats.tx_count;
+    // BTC Preis abrufen
+    const priceData = await fetch("https://api.coindesk.com/v1/bpi/currentprice/USD.json");
+    const priceJson = await priceData.json();
+    const price = parseFloat(priceJson.bpi.USD.rate.replace(",", ""));
 
-    if (data.chain_stats.tx_count > 0) {
-        document.getElementById("movement").innerHTML =
-            "<span class='green'>Adresse aktiv</span>";
-    } else {
-        document.getElementById("movement").innerHTML =
-            "<span class='red'>Keine Transaktionen</span>";
-    }
+    document.getElementById("btcPrice").innerHTML =
+        "$ " + price.toLocaleString();
+
+    const usdValue = balance * price;
+
+    document.getElementById("usdValue").innerHTML =
+        "Wert: $" + usdValue.toLocaleString(undefined, {maximumFractionDigits: 2});
+
+    // Aktuellen Block abrufen
+    const blockHeightData = await fetch("https://blockstream.info/api/blocks/tip/height");
+    const blockHeight = await blockHeightData.text();
+
+    document.getElementById("blockHeight").innerHTML =
+        "Aktueller Block: " + blockHeight;
+
+    // Blockzeit abrufen
+    const blockData = await fetch("https://blockstream.info/api/block-height/" + blockHeight);
+    const blockHash = await blockData.text();
+
+    const blockDetails = await fetch("https://blockstream.info/api/block/" + blockHash);
+    const blockJson = await blockDetails.json();
+
+    const blockDate = new Date(blockJson.timestamp * 1000);
+
+    document.getElementById("blockTime").innerHTML =
+        "Blockzeit: " + blockDate.toLocaleString();
+
 }
+
+// Beim Laden ausführen
+loadData();
+
+// Auto-Refresh alle 10 Minuten
+setInterval(loadData, 600000);
+
 </script>
 
 </body>
