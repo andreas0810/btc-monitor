@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BTC Monitor</title>
+<title>Solo Mining Monitor</title>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
@@ -22,7 +22,6 @@
         margin: 0 auto;
     }
 
-    /* HEADER: Beide Boxen sind nun identisch (info-card) */
     .header {
         display: flex;
         justify-content: space-between;
@@ -35,7 +34,7 @@
         padding: 30px;
         border-radius: 12px;
         text-align: center;
-        flex: 1; /* Beide Boxen nehmen gleich viel Platz ein */
+        flex: 1;
         box-shadow: 0 4px 15px rgba(0,0,0,0.5);
         display: flex;
         flex-direction: column;
@@ -44,7 +43,7 @@
     }
 
     .card-title {
-        font-size: 18px;
+        font-size: 14px;
         color: #aaa;
         text-transform: uppercase;
         letter-spacing: 1px;
@@ -52,37 +51,35 @@
     }
 
     .card-value {
-        font-size: 42px; /* Gleiche Schriftgröße für Preis und Zeit */
+        font-size: 36px;
         font-weight: bold;
         color: #fff;
     }
 
     .card-sub {
-        font-size: 16px;
+        font-size: 14px;
         color: #666;
         margin-top: 5px;
     }
 
-    /* Main Title */
     .main-title {
         text-align: center;
-        font-size: 38px;
+        font-size: 32px;
         margin-bottom: 30px;
         font-weight: bold;
         color: #f2a900;
     }
 
-    /* Center Box (Adresse & Balance) */
     .center-box {
         text-align: center;
         background: #191919;
         padding: 30px;
         border-radius: 12px;
-        margin-bottom: 40px;
+        margin-bottom: 30px;
     }
 
     .address {
-        font-size: 14px; 
+        font-size: 13px; 
         color: #666; 
         word-break: break-all;
         font-family: monospace;
@@ -104,7 +101,25 @@
         color: #4caf50;
     }
 
-    /* Reload Button */
+    /* Solo Mining Stats Bereich */
+    .mining-stats {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 15px;
+        margin-bottom: 30px;
+    }
+
+    .stat-box {
+        background: #151515;
+        border: 1px solid #333;
+        padding: 20px;
+        border-radius: 10px;
+        text-align: center;
+    }
+
+    .stat-box .label { color: #888; font-size: 12px; text-transform: uppercase; margin-bottom: 10px; }
+    .stat-box .value { font-size: 24px; font-weight: bold; color: #f2a900; }
+
     .reload-btn {
         text-align: center;
         margin-bottom: 40px;
@@ -112,59 +127,19 @@
 
     button {
         padding: 12px 30px;
-        font-size: 16px;
+        font-size: 14px;
         cursor: pointer;
         border-radius: 6px;
         border: 1px solid #444;
         background: #222;
         color: #ccc;
-        transition: all 0.3s;
+        transition: 0.3s;
     }
 
-    button:hover {
-        background: #333;
-        color: white;
-        border-color: #666;
-    }
+    button:hover { background: #333; color: white; }
 
-    /* Neuer Bereich: Netzwerk Status */
-    .network-status {
-        background: #151515;
-        border: 1px solid #333;
-        border-radius: 12px;
-        padding: 25px;
-        margin-bottom: 40px;
-        text-align: center;
-    }
-
-    .hash-string {
-        font-family: monospace;
-        font-size: 12px;
-        color: #f2a900;
-        word-break: break-all; /* Bricht den langen Hash um */
-        background: #000;
-        padding: 10px;
-        border-radius: 4px;
-        margin-top: 10px;
-    }
-
-    .status-row {
-        margin: 10px 0;
-        font-size: 18px;
-        color: #ccc;
-    }
-
-    /* Chart */
-    .chart-container {
-        position: relative;
-        height: 350px;
-        width: 100%;
-    }
-
-    /* Responsive */
     @media (max-width: 700px) {
         .header { flex-direction: column; }
-        .card-value { font-size: 32px; }
     }
 </style>
 </head>
@@ -175,162 +150,15 @@
 
     <div class="header">
         <div class="info-card">
-            <div class="card-title">Uhrzeit</div>
-            <div id="currentTime" class="card-value">--:--:--</div>
+            <div class="card-title">Zeit</div>
+            <div id="currentTime" class="card-value">--:--</div>
             <div id="currentDate" class="card-sub">--.--.----</div>
         </div>
-
         <div class="info-card">
-            <div class="card-title">Bitcoin Preis (USD)</div>
+            <div class="card-title">BTC Preis</div>
             <div id="btcPrice" class="card-value">Lade...</div>
-            <div class="card-sub">Aktueller Marktpreis</div>
+            <div class="card-sub">USD pro Bitcoin</div>
         </div>
     </div>
 
-    <div class="main-title">
-        Bitcoin Lottery Mining
-    </div>
-
-    <div class="center-box">
-        <div style="color:#888; margin-bottom:5px;">Monitor Adresse:</div>
-        <div class="address">
-            bc1qpmvg0xqvqy38hfkr0c7pmxtxzxz9vlvp27f7rw
-        </div>
-
-        <div id="balance" class="balance">Lade...</div>
-        <div id="usdValue" class="usd-value"></div>
-    </div>
-
-    <div class="reload-btn">
-        <button onclick="manualReload()">Seite neu laden</button>
-    </div>
-
-    <div class="network-status">
-        <div class="card-title" style="margin-bottom: 20px;">Netzwerk Status</div>
-        
-        <div class="status-row">
-            Aktuelle Hashrate: <strong id="txtHashrate" style="color:#fff;">Lade...</strong>
-        </div>
-        
-        <div class="status-row">
-            Letzter Block (<span id="txtBlockHeight">...</span>):
-        </div>
-        
-        <div id="txtBlockHash" class="hash-string">Lade Hash...</div>
-        
-        <div id="txtBlockTime" style="margin-top:10px; font-size:14px; color:#666;"></div>
-    </div>
-
-    <div class="chart-container">
-        <canvas id="hashrateChart"></canvas>
-    </div>
-</div>
-
-<script>
-const address = "bc1qpmvg0xqvqy38hfkr0c7pmxtxzxz9vlvp27f7rw";
-let myChart = null;
-
-function updateClock() {
-    const now = new Date();
-    document.getElementById("currentDate").innerText = now.toLocaleDateString();
-    document.getElementById("currentTime").innerText = now.toLocaleTimeString();
-}
-setInterval(updateClock, 1000);
-updateClock();
-
-async function loadData() {
-    try {
-        console.log("Hole Daten...");
-
-        // 1. Balance holen
-        const addressRes = await fetch("https://blockstream.info/api/address/" + address);
-        const addressJson = await addressRes.json();
-        const balance = (addressJson.chain_stats.funded_txo_sum - addressJson.chain_stats.spent_txo_sum) / 100000000;
-        document.getElementById("balance").innerText = balance.toFixed(8) + " BTC";
-
-        // 2. Preis holen
-        const priceRes = await fetch("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd");
-        const priceJson = await priceRes.json();
-        const price = priceJson.bitcoin.usd;
-        
-        document.getElementById("btcPrice").innerText = "$ " + price.toLocaleString("en-US");
-        document.title = "BTC $" + price.toLocaleString("en-US");
-        
-        document.getElementById("usdValue").innerText = 
-            "≈ $" + (balance * price).toLocaleString("en-US", {maximumFractionDigits: 2});
-
-        // 3. Block Info & Hash holen
-        const heightRes = await fetch("https://blockstream.info/api/blocks/tip/height");
-        const height = await heightRes.text();
-        document.getElementById("txtBlockHeight").innerText = height;
-
-        const hashResApi = await fetch("https://blockstream.info/api/block-height/" + height);
-        const blockHash = await hashResApi.text();
-        
-        // HIER wird der volle Hash angezeigt
-        document.getElementById("txtBlockHash").innerText = blockHash;
-
-        const blockDetailRes = await fetch("https://blockstream.info/api/block/" + blockHash);
-        const blockJson = await blockDetailRes.json();
-        const blockTime = new Date(blockJson.timestamp * 1000);
-        document.getElementById("txtBlockTime").innerText = "Gefunden am: " + blockTime.toLocaleString();
-
-        // 4. Hashrate Chart & Wert
-        const proxy = "https://api.allorigins.win/raw?url=";
-        const url = encodeURIComponent("https://api.blockchain.info/charts/hash-rate?timespan=60days&format=json");
-        
-        const chartRes = await fetch(proxy + url);
-        const chartJson = await chartRes.json();
-
-        const labels = chartJson.values.map(v => new Date(v.x * 1000).toLocaleDateString());
-        const data = chartJson.values.map(v => v.y);
-
-        // Aktuellster Wert für die Textanzeige (letzter Eintrag im Array)
-        const currentHash = data[data.length - 1]; 
-        // Formatierung (TH/s mit Tausendertrennzeichen)
-        document.getElementById("txtHashrate").innerText = currentHash.toLocaleString("en-US") + " TH/s";
-
-        const ctx = document.getElementById('hashrateChart').getContext('2d');
-        if (myChart) myChart.destroy();
-
-        myChart = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: labels,
-                datasets: [{
-                    label: 'Hashrate (TH/s)',
-                    data: data,
-                    borderColor: '#f2a900',
-                    backgroundColor: 'rgba(242, 169, 0, 0.1)',
-                    borderWidth: 2,
-                    pointRadius: 0,
-                    fill: true,
-                    tension: 0.3
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: { legend: { display: false } },
-                scales: {
-                    x: { ticks: { color: "#666", maxTicksLimit: 6 }, grid: { display: false } },
-                    y: { ticks: { color: "#666" }, grid: { color: "#333" } }
-                }
-            }
-        });
-
-    } catch (e) {
-        console.error(e);
-    }
-}
-
-function manualReload() {
-    loadData();
-}
-
-loadData();
-setInterval(loadData, 300000); // Auto-Refresh alle 5 min
-</script>
-
-</body>
-</html>
+    <div class="main-title">Solo Mining
