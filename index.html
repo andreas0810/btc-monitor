@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Bitcoin Address Monitor</title>
+<title>BTC Monitor</title>
 
 <style>
 body {
@@ -19,12 +19,23 @@ body {
     align-items: flex-start;
 }
 
-.usd-box {
+.price-box {
     background: #1f1f1f;
-    padding: 20px;
-    border-radius: 8px;
+    padding: 40px;
+    border-radius: 12px;
     text-align: center;
-    min-width: 180px;
+    min-width: 350px;
+}
+
+.price-title {
+    font-size: 22px;
+    color: #aaa;
+}
+
+.price-value {
+    font-size: 54px;
+    margin-top: 15px;
+    font-weight: bold;
 }
 
 .center-box {
@@ -33,21 +44,40 @@ body {
 }
 
 .balance {
-    font-size: 36px;
-    margin-top: 10px;
+    font-size: 42px;
+    margin-top: 15px;
 }
 
 .subinfo {
-    margin-top: 20px;
-    font-size: 18px;
+    margin-top: 15px;
+    font-size: 20px;
     color: #aaa;
 }
 
 .block-info {
     margin-top: 60px;
     text-align: center;
-    font-size: 16px;
+    font-size: 18px;
     color: #ccc;
+}
+
+.reload-btn {
+    margin-top: 60px;
+    text-align: center;
+}
+
+button {
+    padding: 12px 25px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 6px;
+    border: none;
+    background: #333;
+    color: white;
+}
+
+button:hover {
+    background: #555;
 }
 </style>
 </head>
@@ -56,81 +86,96 @@ body {
 
 <div class="header">
     <div></div>
-    <div class="usd-box">
-        <div>Bitcoin Preis</div>
-        <div id="btcPrice" style="font-size:22px; margin-top:10px;">Lade...</div>
+    <div class="price-box">
+        <div class="price-title">Bitcoin Preis (USD)</div>
+        <div id="btcPrice" class="price-value">Lade...</div>
     </div>
 </div>
 
 <div class="center-box">
-    <div>Public Key</div>
-    <div style="font-size:14px; color:#888;">
+    <div style="font-size:16px; color:#888;">
         bc1qpmvg0xqvqy38hfkr0c7pmxtxzxz9vlvp27f7rw
     </div>
 
-    <div class="balance" id="balance">Lade...</div>
-    <div class="subinfo" id="usdValue"></div>
+    <div id="balance" class="balance">Lade...</div>
+    <div id="usdValue" class="subinfo"></div>
 </div>
 
 <div class="block-info">
-    <div id="blockHeight">Block: Lade...</div>
+    <div id="blockHeight">Aktueller Block: Lade...</div>
     <div id="blockTime">Blockzeit: Lade...</div>
+</div>
+
+<div class="reload-btn">
+    <button onclick="manualReload()">Seite händisch neu laden</button>
 </div>
 
 <script>
 const address = "bc1qpmvg0xqvqy38hfkr0c7pmxtxzxz9vlvp27f7rw";
 
 async function loadData() {
+    try {
 
-    // Adresse abrufen
-    const addressData = await fetch("https://blockstream.info/api/address/" + address);
-    const addressJson = await addressData.json();
+        // Adresse abrufen
+        const addressRes = await fetch("https://blockstream.info/api/address/" + address);
+        const addressJson = await addressRes.json();
 
-    const funded = addressJson.chain_stats.funded_txo_sum / 100000000;
-    const spent = addressJson.chain_stats.spent_txo_sum / 100000000;
-    const balance = funded - spent;
+        const funded = addressJson.chain_stats.funded_txo_sum / 100000000;
+        const spent = addressJson.chain_stats.spent_txo_sum / 100000000;
+        const balance = funded - spent;
 
-    document.getElementById("balance").innerHTML =
-        balance.toFixed(8) + " BTC";
+        document.getElementById("balance").innerHTML =
+            balance.toFixed(8) + " BTC";
 
-    // BTC Preis abrufen
-    const priceData = await fetch("https://api.coindesk.com/v1/bpi/currentprice/USD.json");
-    const priceJson = await priceData.json();
-    const price = parseFloat(priceJson.bpi.USD.rate.replace(",", ""));
+        // BTC Preis (CoinGecko API)
+        const priceRes = await fetch("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd");
+        const priceJson = await priceRes.json();
+        const price = priceJson.bitcoin.usd;
 
-    document.getElementById("btcPrice").innerHTML =
-        "$ " + price.toLocaleString();
+        document.getElementById("btcPrice").innerHTML =
+            "$ " + price.toLocaleString();
 
-    const usdValue = balance * price;
+        const usdValue = balance * price;
 
-    document.getElementById("usdValue").innerHTML =
-        "Wert: $" + usdValue.toLocaleString(undefined, {maximumFractionDigits: 2});
+        document.getElementById("usdValue").innerHTML =
+            "Wert: $" + usdValue.toLocaleString(undefined, {maximumFractionDigits: 2});
 
-    // Aktuellen Block abrufen
-    const blockHeightData = await fetch("https://blockstream.info/api/blocks/tip/height");
-    const blockHeight = await blockHeightData.text();
+        // Browser Tab Titel aktualisieren
+        document.title = "BTC $" + price.toLocaleString();
 
-    document.getElementById("blockHeight").innerHTML =
-        "Aktueller Block: " + blockHeight;
+        // Blockhöhe
+        const blockHeightRes = await fetch("https://blockstream.info/api/blocks/tip/height");
+        const blockHeight = await blockHeightRes.text();
 
-    // Blockzeit abrufen
-    const blockData = await fetch("https://blockstream.info/api/block-height/" + blockHeight);
-    const blockHash = await blockData.text();
+        document.getElementById("blockHeight").innerHTML =
+            "Aktueller Block: " + blockHeight;
 
-    const blockDetails = await fetch("https://blockstream.info/api/block/" + blockHash);
-    const blockJson = await blockDetails.json();
+        // Block Hash
+        const blockHashRes = await fetch("https://blockstream.info/api/block-height/" + blockHeight);
+        const blockHash = await blockHashRes.text();
 
-    const blockDate = new Date(blockJson.timestamp * 1000);
+        // Block Details
+        const blockRes = await fetch("https://blockstream.info/api/block/" + blockHash);
+        const blockJson = await blockRes.json();
 
-    document.getElementById("blockTime").innerHTML =
-        "Blockzeit: " + blockDate.toLocaleString();
+        const blockDate = new Date(blockJson.timestamp * 1000);
 
+        document.getElementById("blockTime").innerHTML =
+            "Blockzeit: " + blockDate.toLocaleString();
+
+    } catch (error) {
+        console.log("Fehler beim Laden:", error);
+    }
 }
 
-// Beim Laden ausführen
+function manualReload() {
+    location.reload();
+}
+
+// Initial laden
 loadData();
 
-// Auto-Refresh alle 10 Minuten
+// Auto Refresh alle 10 Minuten
 setInterval(loadData, 600000);
 
 </script>
