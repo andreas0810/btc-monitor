@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <title>BTC Monitor</title>
 
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 <style>
 body {
     font-family: Arial, sans-serif;
@@ -17,6 +19,11 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
+}
+
+.time-box {
+    font-size: 18px;
+    color: #ccc;
 }
 
 .price-box {
@@ -38,9 +45,16 @@ body {
     font-weight: bold;
 }
 
+.main-title {
+    text-align: center;
+    font-size: 48px;
+    margin-top: 40px;
+    font-weight: bold;
+}
+
 .center-box {
     text-align: center;
-    margin-top: 80px;
+    margin-top: 60px;
 }
 
 .balance {
@@ -62,7 +76,7 @@ body {
 }
 
 .reload-btn {
-    margin-top: 60px;
+    margin-top: 40px;
     text-align: center;
 }
 
@@ -79,17 +93,32 @@ button {
 button:hover {
     background: #555;
 }
+
+.chart-container {
+    margin-top: 60px;
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+}
 </style>
 </head>
 
 <body>
 
 <div class="header">
-    <div></div>
+    <div class="time-box">
+        <div id="currentDate">Lade...</div>
+        <div id="currentTime">Lade...</div>
+    </div>
+
     <div class="price-box">
         <div class="price-title">Bitcoin Preis (USD)</div>
         <div id="btcPrice" class="price-value">Lade...</div>
     </div>
+</div>
+
+<div class="main-title">
+    Bitcoin Lottery Mining
 </div>
 
 <div class="center-box">
@@ -110,24 +139,36 @@ button:hover {
     <button onclick="manualReload()">Seite händisch neu laden</button>
 </div>
 
+<div class="chart-container">
+    <canvas id="hashrateChart"></canvas>
+</div>
+
 <script>
 const address = "bc1qpmvg0xqvqy38hfkr0c7pmxtxzxz9vlvp27f7rw";
+
+function updateClock() {
+    const now = new Date();
+    document.getElementById("currentDate").innerHTML =
+        now.toLocaleDateString();
+    document.getElementById("currentTime").innerHTML =
+        now.toLocaleTimeString();
+}
+setInterval(updateClock, 1000);
+updateClock();
 
 async function loadData() {
     try {
 
-        // Adresse abrufen
+        // Adresse
         const addressRes = await fetch("https://blockstream.info/api/address/" + address);
         const addressJson = await addressRes.json();
-
         const funded = addressJson.chain_stats.funded_txo_sum / 100000000;
         const spent = addressJson.chain_stats.spent_txo_sum / 100000000;
         const balance = funded - spent;
-
         document.getElementById("balance").innerHTML =
             balance.toFixed(8) + " BTC";
 
-        // BTC Preis (CoinGecko API)
+        // Preis
         const priceRes = await fetch("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd");
         const priceJson = await priceRes.json();
         const price = priceJson.bitcoin.usd;
@@ -135,36 +176,59 @@ async function loadData() {
         document.getElementById("btcPrice").innerHTML =
             "$ " + price.toLocaleString();
 
-        const usdValue = balance * price;
-
-        document.getElementById("usdValue").innerHTML =
-            "Wert: $" + usdValue.toLocaleString(undefined, {maximumFractionDigits: 2});
-
-        // Browser Tab Titel aktualisieren
         document.title = "BTC $" + price.toLocaleString();
 
-        // Blockhöhe
+        document.getElementById("usdValue").innerHTML =
+            "Wert: $" + (balance * price).toLocaleString(undefined, {maximumFractionDigits:2});
+
+        // Block
         const blockHeightRes = await fetch("https://blockstream.info/api/blocks/tip/height");
         const blockHeight = await blockHeightRes.text();
-
         document.getElementById("blockHeight").innerHTML =
             "Aktueller Block: " + blockHeight;
 
-        // Block Hash
         const blockHashRes = await fetch("https://blockstream.info/api/block-height/" + blockHeight);
         const blockHash = await blockHashRes.text();
 
-        // Block Details
         const blockRes = await fetch("https://blockstream.info/api/block/" + blockHash);
         const blockJson = await blockRes.json();
-
         const blockDate = new Date(blockJson.timestamp * 1000);
 
         document.getElementById("blockTime").innerHTML =
             "Blockzeit: " + blockDate.toLocaleString();
 
+        // Hashrate (Blockchain.info API)
+        const hashRes = await fetch("https://api.blockchain.info/charts/hash-rate?timespan=30days&format=json");
+        const hashJson = await hashRes.json();
+
+        const labels = hashJson.values.map(v =>
+            new Date(v.x * 1000).toLocaleDateString());
+        const data = hashJson.values.map(v => v.y);
+
+        new Chart(document.getElementById('hashrateChart'), {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Bitcoin Hashrate (TH/s)',
+                    data: data,
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { labels: { color: "#eee" } }
+                },
+                scales: {
+                    x: { ticks: { color: "#aaa" } },
+                    y: { ticks: { color: "#aaa" } }
+                }
+            }
+        });
+
     } catch (error) {
-        console.log("Fehler beim Laden:", error);
+        console.log(error);
     }
 }
 
@@ -172,12 +236,8 @@ function manualReload() {
     location.reload();
 }
 
-// Initial laden
 loadData();
-
-// Auto Refresh alle 10 Minuten
 setInterval(loadData, 600000);
-
 </script>
 
 </body>
