@@ -269,11 +269,11 @@
     <div class="login-tagline">Bitcoin Solo Mining Dashboard</div>
     <div class="field-wrap">
       <label class="field-label">Benutzername</label>
-      <input type="text" id="username" placeholder="admin">
+      <input type="text" id="username" placeholder="admin" value="admin">
     </div>
     <div class="field-wrap">
       <label class="field-label">Passwort</label>
-      <input type="password" id="password" placeholder="••••••••">
+      <input type="password" id="password" placeholder="••••••••" value="admin">
     </div>
     <button class="btn-login" id="btn-login">Anmelden</button>
     <div class="demo-hint">Demo-Login: admin / admin</div>
@@ -400,7 +400,7 @@
         </address>
         <h2>Kontakt</h2>
         <p>
-          E-Mail: <a href="mailto:kontakt@10minmininglotto.de">kontakt@10minmininglotto.de</a><br>
+          E-Mail: <a href="/cdn-cgi/l/email-protection#e58e8a8b91848e91a5d4d5888c8b888c8b8c8b82898a91918acb8180"><span class="__cf_email__" data-cfemail="a8c3c7c6dcc9c3dce89998c5c1c6c5c1c6c1c6cfc4c7dcdcc786cccd">[email&#160;protected]</span></a><br>
           Webseite: <a href="#">10minMiningLotto.de</a>
         </p>
       </div>
@@ -428,7 +428,7 @@
   Dadurch sind alle Elemente bereits im DOM vorhanden, wenn das Script läuft.
   Kein DOMContentLoaded nötig. Das funktioniert zuverlässig auf GitHub Pages.
 -->
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 // ── BENUTZER ──
 var USERS = {
   admin: { pass: 'admin', label: 'Admin' },
@@ -590,16 +590,4 @@ function initChart() {
   ctx.fill(); ctx.shadowBlur = 0;
 }
 
-// ── START ──
-function startDashboard() {
-  updateClock();
-  setInterval(updateClock, 1000);
-  fetchBTCPrice();
-  setInterval(fetchBTCPrice, 60000);
-  simulatePoolData();
-  setInterval(simulatePoolData, 30000);
-  setTimeout(initChart, 80);
-}
-</script>
-</body>
-</html>
+// ── START 
