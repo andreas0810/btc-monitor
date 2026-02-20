@@ -208,6 +208,136 @@
   .loading { color: var(--text-muted); font-size: 20px; animation: blink 1.2s infinite; }
   @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
 
+  /* ── LOTTERIE / SPIELGEMEINSCHAFT ── */
+  .lotterie-content { max-width: 960px; margin: 0 auto; padding: 36px 28px 48px; }
+
+  .lotterie-hero {
+    text-align: center; padding: 48px 20px 40px;
+    border-bottom: 1px solid var(--border); margin-bottom: 48px;
+  }
+  .lotterie-hero-icon { font-size: 56px; margin-bottom: 16px; }
+  .lotterie-hero h1 {
+    font-family: 'Orbitron', sans-serif; font-size: 34px; font-weight: 900;
+    color: var(--orange); text-shadow: 0 0 20px var(--orange-glow);
+    margin-bottom: 10px;
+  }
+  .lotterie-hero-sub { font-size: 20px; color: var(--text-dim); letter-spacing: 1px; }
+
+  .lotterie-section { margin-bottom: 48px; }
+
+  .lotterie-section-header {
+    display: flex; align-items: center; gap: 18px;
+    margin-bottom: 28px; padding-bottom: 16px; border-bottom: 1px solid var(--border);
+  }
+  .section-num {
+    font-family: 'Orbitron', sans-serif; font-size: 36px; font-weight: 900;
+    color: var(--orange); opacity: 0.4; line-height: 1; flex-shrink: 0;
+  }
+  .lotterie-section-header h2 {
+    font-family: 'Orbitron', sans-serif; font-size: 22px; font-weight: 700; color: var(--text);
+  }
+  .section-sub { font-family: 'Inter', sans-serif; font-size: 16px; font-weight: 400; color: var(--text-dim); }
+
+  .lotterie-body p { font-size: 20px; color: var(--text-dim); line-height: 1.8; margin-bottom: 20px; }
+  .lotterie-body strong { color: var(--text); }
+
+  .info-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 24px 0;
+  }
+  .info-item {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 6px;
+    padding: 16px 20px; display: flex; align-items: flex-start; gap: 14px;
+    font-size: 18px; color: var(--text-dim); line-height: 1.6;
+  }
+  .info-icon { font-size: 22px; flex-shrink: 0; margin-top: 2px; }
+
+  .lotterie-notice {
+    border-radius: 6px; padding: 18px 22px; font-size: 18px;
+    line-height: 1.8; margin: 20px 0;
+  }
+  .lotterie-notice.warning {
+    background: rgba(240,82,82,0.07); border: 1px solid rgba(240,82,82,0.25); color: var(--text-dim);
+  }
+  .lotterie-notice ul { margin: 10px 0 0 20px; }
+  .lotterie-notice li { margin-bottom: 6px; }
+
+  .lotterie-highlight-box {
+    background: var(--green-dim, rgba(34,216,122,0.07)); border: 1px solid rgba(34,216,122,0.25);
+    border-radius: 6px; padding: 20px 24px; margin: 20px 0;
+    display: flex; gap: 16px; align-items: flex-start;
+    font-size: 19px; color: var(--text-dim); line-height: 1.8;
+  }
+  .lotterie-highlight-box.orange {
+    background: var(--orange-dim); border-color: rgba(247,147,26,0.3);
+  }
+  .highlight-icon { font-size: 26px; flex-shrink: 0; }
+
+  .transparent-list {
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 6px; padding: 20px 24px; margin-top: 20px;
+  }
+  .transparent-title { font-size: 18px; font-weight: 600; color: var(--text); margin-bottom: 14px; }
+  .transparent-item {
+    display: flex; align-items: center; gap: 12px;
+    font-size: 19px; color: var(--text-dim); padding: 7px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .transparent-item:last-child { border-bottom: none; }
+  .t-dot {
+    width: 8px; height: 8px; border-radius: 50%; background: var(--green);
+    box-shadow: 0 0 6px var(--green); flex-shrink: 0;
+  }
+
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 24px 0 0; }
+  .col-box {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 6px; padding: 20px 24px;
+  }
+  .col-box-title { font-size: 19px; font-weight: 700; color: var(--text); margin-bottom: 16px; }
+  .col-item {
+    display: flex; align-items: flex-start; gap: 12px;
+    font-size: 18px; color: var(--text-dim); padding: 7px 0;
+    border-bottom: 1px solid var(--border); line-height: 1.6;
+  }
+  .col-item:last-child { border-bottom: none; }
+  .col-icon { font-size: 16px; font-weight: 700; flex-shrink: 0; margin-top: 3px; }
+  .col-icon.green { color: var(--green); }
+  .col-icon.orange-c { color: var(--orange); }
+
+  .scale-box {
+    background: var(--surface2); border: 1px solid var(--border);
+    border-left: 3px solid var(--orange); border-radius: 6px;
+    padding: 20px 24px; margin-top: 20px;
+  }
+  .scale-title { font-size: 19px; font-weight: 700; color: var(--text); margin-bottom: 14px; }
+  .scale-row {
+    display: flex; gap: 12px; font-size: 19px; color: var(--text-dim);
+    padding: 7px 0; border-bottom: 1px solid var(--border);
+  }
+  .scale-row:last-child { border-bottom: none; }
+  .scale-arrow { color: var(--orange); font-weight: 700; flex-shrink: 0; }
+
+  .summary-box {
+    background: var(--surface); border: 1px solid var(--border);
+    border-top: 3px solid var(--orange); border-radius: 6px;
+    padding: 28px 28px; margin-top: 20px;
+  }
+  .summary-title { font-size: 20px; font-weight: 700; color: var(--orange); margin-bottom: 20px; }
+  .summary-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .summary-item {
+    display: flex; align-items: center; gap: 14px;
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 4px; padding: 14px 18px;
+    font-size: 18px; color: var(--text-dim);
+  }
+  .summary-item span:first-child { font-size: 22px; }
+
+  @media (max-width: 700px) {
+    .info-grid { grid-template-columns: 1fr; }
+    .two-col { grid-template-columns: 1fr; }
+    .summary-grid { grid-template-columns: 1fr; }
+  }
+
   /* ── IMPRESSUM ── */
   .impressum-content { max-width: 720px; margin: 0 auto; padding: 36px 28px; }
   .impressum-content h1 {
@@ -301,6 +431,7 @@
 
   <div class="nav-tabs">
     <div class="nav-tab active" data-tab="dashboard-page">⚡ Dashboard</div>
+    <div class="nav-tab" data-tab="lotterie-page">🎰 Bitcoin Lotterie Mining – Spielgemeinschaft</div>
     <div class="nav-tab" data-tab="impressum-page">📋 Impressum</div>
   </div>
 
@@ -414,6 +545,167 @@
       <div class="impressum-notice">
         ⚠️ <strong>Platzhalter:</strong> Bitte ersetze die oben stehenden Angaben durch deine echten Kontaktdaten, bevor du diese Seite öffentlich erreichbar machst. Ein Impressum ist in Deutschland gesetzlich vorgeschrieben (§ 5 TMG).
       </div>
+    </div>
+  </div>
+
+  <!-- Lotterie / Spielgemeinschaft Page -->
+  <div id="lotterie-page" class="page">
+    <div class="lotterie-content">
+
+      <div class="lotterie-hero">
+        <div class="lotterie-hero-icon">🎰</div>
+        <h1>Bitcoin Lotterie Mining</h1>
+        <p class="lotterie-hero-sub">Spielgemeinschaft – Gemeinsam mehr Chancen</p>
+      </div>
+
+      <!-- Abschnitt 1 -->
+      <div class="lotterie-section">
+        <div class="lotterie-section-header">
+          <span class="section-num">01</span>
+          <h2>Was ist Bitcoin Mining? <span class="section-sub">einfach erklärt</span></h2>
+        </div>
+        <div class="lotterie-body">
+          <p>Bitcoin ist ein digitales, dezentrales Zahlungssystem. Alle Transaktionen werden in sogenannten „Blöcken" gespeichert. Etwa alle 10 Minuten wird ein neuer Block zur Blockchain hinzugefügt.</p>
+          <p>Damit ein neuer Block entsteht, lösen Computer weltweit ein kryptografisches Rechenrätsel. Dieser Prozess heißt <strong>Mining</strong>.</p>
+
+          <div class="info-grid">
+            <div class="info-item">
+              <span class="info-icon">🖥</span>
+              <span>Tausende Geräte rechnen gleichzeitig</span>
+            </div>
+            <div class="info-item">
+              <span class="info-icon">🏆</span>
+              <span>Wer das Rätsel zuerst korrekt löst, darf den nächsten Block schreiben</span>
+            </div>
+            <div class="info-item">
+              <span class="info-icon">₿</span>
+              <span>Als Belohnung erhält dieser Miner aktuell rund <strong>3,125 Bitcoin</strong> plus Transaktionsgebühren</span>
+            </div>
+            <div class="info-item">
+              <span class="info-icon">💰</span>
+              <span>Der Gesamtwert eines Blocks liegt – je nach Kurs – häufig im Bereich von <strong>mehreren hunderttausend Euro</strong></span>
+            </div>
+          </div>
+
+          <div class="lotterie-notice warning">
+            <strong>⚠️ Wichtig:</strong>
+            <ul>
+              <li>Die Wahrscheinlichkeit zu gewinnen ist extrem gering</li>
+              <li>Es gibt keine Garantie auf Erfolg</li>
+              <li>Es ist ein reines Wahrscheinlichkeitsprinzip</li>
+            </ul>
+          </div>
+
+          <div class="lotterie-highlight-box">
+            <span class="highlight-icon">🎯</span>
+            <p>Das Prinzip ist vergleichbar mit <strong>Lotto oder Eurojackpot</strong>: Viele nehmen teil – nur einer gewinnt. Der Unterschied: Beim Bitcoin Mining gibt es <strong>alle 10 Minuten</strong> eine neue „Ziehung".</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Abschnitt 2 -->
+      <div class="lotterie-section">
+        <div class="lotterie-section-header">
+          <span class="section-num">02</span>
+          <h2>Unsere Miner &amp; die Gewinnchance</h2>
+        </div>
+        <div class="lotterie-body">
+          <p>Für das Projekt werden aktuell <strong>zwei eigene Miner</strong> mit insgesamt <strong>10 TH/s Hashrate</strong> betrieben.</p>
+          <p>Hashrate bedeutet: Wie viele Rechenversuche pro Sekunde durchgeführt werden. Das weltweite Bitcoin-Netzwerk arbeitet mit einer extrem hohen Gesamt-Hashrate. Unsere 10 TH/s stellen davon nur einen sehr kleinen Anteil dar.</p>
+
+          <div class="info-grid">
+            <div class="info-item">
+              <span class="info-icon">🎲</span>
+              <span>Die Gewinnchance ist ähnlich gering wie bei einer Lottoziehung</span>
+            </div>
+            <div class="info-item">
+              <span class="info-icon">⏱</span>
+              <span>Alle 10 Minuten besteht theoretisch die Möglichkeit, einen vollständigen Block zu finden</span>
+            </div>
+            <div class="info-item">
+              <span class="info-icon">🚫</span>
+              <span>Es gibt keine Zwischengewinne</span>
+            </div>
+            <div class="info-item">
+              <span class="info-icon">👑</span>
+              <span><strong>The winner takes it all</strong></span>
+            </div>
+          </div>
+
+          <div class="lotterie-highlight-box orange">
+            <span class="highlight-icon">⛏</span>
+            <p>Das Projekt versteht sich daher als: <strong>Bitcoin Mining nach dem Lotterie-Prinzip</strong><br><br>
+            Mit steigender Teilnehmerzahl werden weitere Miner zugeschaltet – dadurch erhöht sich die gesamte Hashrate und somit die Gewinnwahrscheinlichkeit.</p>
+          </div>
+
+          <div class="transparent-list">
+            <div class="transparent-title">📊 Auf der Webseite jederzeit transparent einsehbar:</div>
+            <div class="transparent-item"><span class="t-dot"></span>Aktuelle Gesamt-Hashrate</div>
+            <div class="transparent-item"><span class="t-dot"></span>Anzahl aktiver Teilnehmer</div>
+            <div class="transparent-item"><span class="t-dot"></span>Theoretische Gewinnwahrscheinlichkeit</div>
+            <div class="transparent-item"><span class="t-dot"></span>Live-Status alle 10 Minuten</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Abschnitt 3 -->
+      <div class="lotterie-section">
+        <div class="lotterie-section-header">
+          <span class="section-num">03</span>
+          <h2>Teilnahme &amp; Gewinnausschüttung</h2>
+        </div>
+        <div class="lotterie-body">
+          <p>Das Modell basiert auf einer <strong>Spielgemeinschaft</strong>.</p>
+
+          <div class="two-col">
+            <div class="col-box">
+              <div class="col-box-title">🎟 Teilnahme</div>
+              <div class="col-item"><span class="col-icon green">✓</span><strong>10 € pro Monat</strong></div>
+              <div class="col-item"><span class="col-icon green">✓</span>Monatlich kündbar</div>
+              <div class="col-item"><span class="col-icon green">✓</span>Keine Mindestlaufzeit</div>
+              <div class="col-item"><span class="col-icon orange-c">ℹ</span>Gewinnspiel-Service ohne garantierten Gewinn</div>
+            </div>
+            <div class="col-box">
+              <div class="col-box-title">👤 Dein persönlicher Zugang</div>
+              <div class="col-item"><span class="col-icon green">✓</span>Live-Übersicht der Blockversuche</div>
+              <div class="col-item"><span class="col-icon green">✓</span>Verteilung im Gewinnfall</div>
+              <div class="col-item"><span class="col-icon green">✓</span>Teilnehmeranzahl</div>
+              <div class="col-item"><span class="col-icon green">✓</span>Hashrate-Entwicklung</div>
+            </div>
+          </div>
+
+          <div class="col-box" style="margin-top:20px">
+            <div class="col-box-title">💎 Gewinnausschüttung – falls ein Block gefunden wird</div>
+            <div class="col-item"><span class="col-icon green">✓</span>Der komplette Block-Reward wird auf alle aktiven Teilnehmer aufgeteilt</div>
+            <div class="col-item"><span class="col-icon green">✓</span>Verteilung nach klar definiertem Schlüssel</div>
+            <div class="col-item"><span class="col-icon green">✓</span>Auszahlung dokumentiert und nachvollziehbar</div>
+            <div class="col-item"><span class="col-icon orange-c">ℹ</span>Keine kleinen Zwischengewinne – ein einmaliges Ereignis pro Fund</div>
+          </div>
+
+          <div class="scale-box">
+            <div class="scale-title">📈 Skalierungsprinzip</div>
+            <div class="scale-row"><span class="scale-arrow">→</span>Je mehr Teilnehmer, desto mehr Miner werden aktiviert</div>
+            <div class="scale-row"><span class="scale-arrow">→</span>Ziel: faire Verteilung von Investitions- und Betriebskosten</div>
+            <div class="scale-row"><span class="scale-arrow">→</span>Transparente Darstellung aller Kennzahlen auf der Homepage</div>
+          </div>
+
+          <div class="summary-box">
+            <div class="summary-title">✨ Zusammenfassung – Dieses Projekt verbindet:</div>
+            <div class="summary-grid">
+              <div class="summary-item"><span>⛏</span><span>Bitcoin Mining</span></div>
+              <div class="summary-item"><span>👥</span><span>Ein Spielgemeinschafts-Modell</span></div>
+              <div class="summary-item"><span>⏱</span><span>Eine alle 10 Minuten wiederkehrende Gewinnchance</span></div>
+              <div class="summary-item"><span>📊</span><span>Transparenz über Hashrate und Teilnehmer</span></div>
+              <div class="summary-item"><span>💶</span><span>Flexible Teilnahme für 10 € monatlich</span></div>
+            </div>
+            <div class="lotterie-notice warning" style="margin-top:24px">
+              Es handelt sich <strong>nicht</strong> um eine Geldanlage und <strong>nicht</strong> um eine garantierte Einnahmequelle, sondern um einen gemeinschaftlich organisierten Mining-Service mit <strong>Lotterie-Charakter</strong>.
+            </div>
+          </div>
+
+        </div>
+      </div>
+
     </div>
   </div>
 
