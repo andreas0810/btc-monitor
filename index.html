@@ -3,401 +3,242 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BitMine Dashboard</title>
-<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+<title>10minMiningLotto – Bitcoin Solo Mining Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Orbitron:wght@700;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #0a0c0f;
-    --surface: #0f1318;
-    --surface2: #151b24;
-    --border: #1e2d3d;
+    --bg: #080b0f;
+    --surface: #0e1318;
+    --surface2: #141a22;
+    --border: #1d2c3a;
     --orange: #f7931a;
-    --orange-dim: rgba(247,147,26,0.15);
-    --orange-glow: rgba(247,147,26,0.4);
-    --green: #00ff9d;
-    --green-dim: rgba(0,255,157,0.1);
-    --text: #c8d8e8;
+    --orange-dim: rgba(247,147,26,0.12);
+    --orange-glow: rgba(247,147,26,0.35);
+    --green: #22d87a;
+    --text: #d4e4f4;
     --text-dim: #5a7a96;
-    --red: #ff4d4d;
+    --text-muted: #38526a;
+    --red: #f05252;
   }
-
   * { box-sizing: border-box; margin: 0; padding: 0; }
-
   body {
     background: var(--bg);
     color: var(--text);
-    font-family: 'Share Tech Mono', monospace;
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
     min-height: 100vh;
     overflow-x: hidden;
   }
 
-  /* Scanline overlay */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background: repeating-linear-gradient(
-      0deg,
-      transparent,
-      transparent 2px,
-      rgba(0,0,0,0.03) 2px,
-      rgba(0,0,0,0.03) 4px
-    );
-    pointer-events: none;
-    z-index: 9999;
-  }
-
-  /* Login Screen */
+  /* ── LOGIN ── */
   #login-screen {
-    position: fixed;
-    inset: 0;
-    background: var(--bg);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 100;
+    position: fixed; inset: 0; background: var(--bg);
+    display: flex; align-items: center; justify-content: center; z-index: 200;
   }
-
   .login-box {
-    border: 1px solid var(--orange);
-    box-shadow: 0 0 40px var(--orange-glow), inset 0 0 40px rgba(247,147,26,0.03);
-    padding: 48px;
-    width: 380px;
-    background: var(--surface);
-    position: relative;
+    width: 400px; background: var(--surface);
+    border: 1px solid var(--border); border-top: 3px solid var(--orange);
+    padding: 48px 40px 40px;
+    box-shadow: 0 24px 60px rgba(0,0,0,0.6), 0 0 40px rgba(247,147,26,0.06);
   }
-
-  .login-box::before {
-    content: '';
-    position: absolute;
-    top: -1px; left: 20px; right: 20px; height: 2px;
-    background: var(--orange);
+  .login-logo-wrap {
+    display: flex; align-items: center; justify-content: center; gap: 14px; margin-bottom: 6px;
   }
-
-  .login-logo {
-    font-family: 'Orbitron', monospace;
-    font-size: 28px;
-    font-weight: 900;
-    color: var(--orange);
-    text-align: center;
-    margin-bottom: 8px;
-    letter-spacing: 4px;
-    text-shadow: 0 0 20px var(--orange-glow);
+  .site-logo-svg { width: 46px; height: 46px; flex-shrink: 0; }
+  .login-sitename { font-family: 'Orbitron', sans-serif; font-size: 20px; font-weight: 900; line-height: 1.2; }
+  .login-sitename .ten   { color: var(--orange); }
+  .login-sitename .min   { color: var(--text); }
+  .login-sitename .lotto { color: var(--green); }
+  .login-tagline {
+    text-align: center; font-size: 11px; color: var(--text-dim);
+    letter-spacing: 2px; text-transform: uppercase; margin-bottom: 36px; margin-top: 6px;
   }
-
-  .login-sub {
-    text-align: center;
-    color: var(--text-dim);
-    font-size: 11px;
-    letter-spacing: 3px;
-    margin-bottom: 36px;
-  }
-
   .field-label {
-    font-size: 10px;
-    color: var(--orange);
-    letter-spacing: 2px;
-    margin-bottom: 6px;
+    display: block; font-size: 12px; font-weight: 600; color: var(--text-dim);
+    letter-spacing: 1px; text-transform: uppercase; margin-bottom: 6px;
   }
-
-  .field-wrap { margin-bottom: 20px; }
-
+  .field-wrap { margin-bottom: 18px; }
   input[type="text"], input[type="password"] {
-    width: 100%;
-    background: var(--bg);
-    border: 1px solid var(--border);
-    color: var(--text);
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 14px;
-    padding: 10px 14px;
-    outline: none;
-    transition: border-color 0.2s;
+    width: 100%; background: var(--bg); border: 1px solid var(--border);
+    color: var(--text); font-family: 'JetBrains Mono', monospace; font-size: 14px;
+    padding: 10px 14px; outline: none; border-radius: 4px;
+    transition: border-color 0.2s, box-shadow 0.2s;
   }
-
-  input:focus { border-color: var(--orange); box-shadow: 0 0 10px var(--orange-glow); }
-
+  input:focus { border-color: var(--orange); box-shadow: 0 0 0 3px rgba(247,147,26,0.12); }
   .btn-login {
-    width: 100%;
-    background: var(--orange);
-    color: #000;
-    border: none;
-    font-family: 'Orbitron', monospace;
-    font-weight: 700;
-    font-size: 13px;
-    letter-spacing: 3px;
-    padding: 14px;
-    cursor: pointer;
-    transition: all 0.2s;
-    margin-top: 8px;
+    width: 100%; background: var(--orange); color: #000;
+    border: none; border-radius: 4px; font-family: 'Inter', sans-serif;
+    font-weight: 700; font-size: 14px; padding: 12px; cursor: pointer;
+    transition: background 0.2s, box-shadow 0.2s; margin-top: 6px;
   }
+  .btn-login:hover { background: #ffa733; box-shadow: 0 0 20px var(--orange-glow); }
+  .demo-hint { text-align: center; color: var(--text-muted); font-size: 12px; margin-top: 14px; }
 
-  .btn-login:hover { background: #ffaa33; box-shadow: 0 0 20px var(--orange-glow); }
-
-  .demo-hint { text-align: center; color: var(--text-dim); font-size: 10px; margin-top: 16px; }
-
-  /* Dashboard */
-  #dashboard { display: none; min-height: 100vh; }
-
+  /* ── TOPBAR ── */
+  #dashboard { display: none; flex-direction: column; min-height: 100vh; }
   .topbar {
-    background: var(--surface);
-    border-bottom: 1px solid var(--border);
-    padding: 0 24px;
-    height: 56px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    position: sticky;
-    top: 0;
-    z-index: 50;
+    background: var(--surface); border-bottom: 1px solid var(--border);
+    padding: 0 28px; height: 58px;
+    display: flex; align-items: center; justify-content: space-between;
+    position: sticky; top: 0; z-index: 50;
   }
-
-  .logo {
-    font-family: 'Orbitron', monospace;
-    font-size: 18px;
-    font-weight: 900;
-    color: var(--orange);
-    letter-spacing: 3px;
-    text-shadow: 0 0 15px var(--orange-glow);
+  .logo-wrap { display: flex; align-items: center; gap: 12px; }
+  .topbar-logo-svg { width: 34px; height: 34px; }
+  .topbar-sitename {
+    font-family: 'Orbitron', sans-serif; font-size: 15px; font-weight: 900; line-height: 1;
   }
-
-  .logo span { color: var(--text-dim); font-weight: 400; }
-
-  .topbar-right {
-    display: flex;
-    align-items: center;
-    gap: 24px;
-  }
-
+  .topbar-sitename .ten   { color: var(--orange); }
+  .topbar-sitename .min   { color: var(--text); }
+  .topbar-sitename .lotto { color: var(--green); }
+  .topbar-right { display: flex; align-items: center; gap: 20px; }
   #clock {
-    font-size: 18px;
-    color: var(--green);
-    letter-spacing: 2px;
+    font-family: 'JetBrains Mono', monospace; font-size: 19px;
+    font-weight: 600; color: var(--green); letter-spacing: 1px;
   }
-
   .user-badge {
-    background: var(--orange-dim);
-    border: 1px solid var(--orange);
-    padding: 4px 12px;
-    font-size: 11px;
-    color: var(--orange);
-    letter-spacing: 1px;
-    cursor: pointer;
+    background: var(--orange-dim); border: 1px solid var(--orange);
+    padding: 4px 14px; border-radius: 3px; font-size: 13px; font-weight: 600; color: var(--orange);
   }
-
   .btn-logout {
-    background: transparent;
-    border: 1px solid var(--border);
-    color: var(--text-dim);
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 11px;
-    padding: 4px 12px;
-    cursor: pointer;
-    letter-spacing: 1px;
-    transition: all 0.2s;
+    background: transparent; border: 1px solid var(--border); color: var(--text-dim);
+    font-size: 13px; font-weight: 500; padding: 5px 14px; border-radius: 4px;
+    cursor: pointer; transition: all 0.2s; font-family: 'Inter', sans-serif;
   }
   .btn-logout:hover { border-color: var(--red); color: var(--red); }
 
-  .main-content {
-    padding: 24px;
-    max-width: 1400px;
-    margin: 0 auto;
+  /* ── NAV TABS ── */
+  .nav-tabs {
+    background: var(--surface); border-bottom: 1px solid var(--border);
+    padding: 0 28px; display: flex;
   }
+  .nav-tab {
+    padding: 10px 20px; cursor: pointer; font-size: 14px; font-weight: 500;
+    color: var(--text-dim); border-bottom: 2px solid transparent;
+    transition: color 0.2s, border-color 0.2s; user-select: none; letter-spacing: 0.3px;
+  }
+  .nav-tab:hover { color: var(--text); }
+  .nav-tab.active { color: var(--orange); border-bottom-color: var(--orange); }
 
-  /* Grid */
-  .grid-top {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 16px;
-    margin-bottom: 16px;
-  }
+  /* ── PAGES ── */
+  .page { display: none; }
+  .page.active { display: block; }
 
-  .grid-mid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
-    margin-bottom: 16px;
-  }
-
-  .grid-bottom {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 16px;
-  }
+  /* ── MAIN CONTENT ── */
+  .main-content { padding: 24px 28px; max-width: 1400px; margin: 0 auto; }
+  .grid-top { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+  .grid-mid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+  .grid-bottom { margin-bottom: 16px; }
 
   /* Cards */
   .card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    padding: 20px;
-    position: relative;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 6px; padding: 20px 22px; position: relative;
   }
-
   .card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0; height: 2px;
+    content: ''; position: absolute; top: 0; left: 20px; right: 20px; height: 2px;
     background: linear-gradient(90deg, transparent, var(--orange), transparent);
-    opacity: 0.5;
+    border-radius: 0 0 2px 2px; opacity: 0.5;
   }
-
   .card-label {
-    font-size: 9px;
-    letter-spacing: 3px;
-    color: var(--text-dim);
-    margin-bottom: 12px;
-    text-transform: uppercase;
+    font-size: 12px; font-weight: 600; letter-spacing: 1.5px; color: var(--text-dim);
+    margin-bottom: 10px; text-transform: uppercase;
   }
-
   .card-value {
-    font-family: 'Orbitron', monospace;
-    font-size: 28px;
-    font-weight: 700;
-    color: var(--orange);
-    text-shadow: 0 0 15px var(--orange-glow);
-    line-height: 1;
+    font-family: 'Orbitron', sans-serif; font-size: 30px; font-weight: 700;
+    color: var(--orange); text-shadow: 0 0 12px var(--orange-glow); line-height: 1.1;
   }
+  .card-value.green { color: var(--green); text-shadow: 0 0 12px rgba(34,216,122,0.4); }
+  .card-value.sm { font-size: 15px; margin-bottom: 4px; }
+  .card-sub { font-size: 14px; color: var(--text-dim); margin-top: 7px; }
 
-  .card-value.green { color: var(--green); text-shadow: 0 0 15px rgba(0,255,157,0.4); }
-  .card-value.small { font-size: 16px; }
-
-  .card-sub { font-size: 11px; color: var(--text-dim); margin-top: 6px; }
-
-  /* Bitcoin price */
   #btc-change {
-    font-size: 12px;
-    padding: 2px 8px;
-    margin-top: 8px;
-    display: inline-block;
+    display: inline-block; font-size: 14px; font-weight: 600;
+    padding: 2px 9px; border-radius: 3px; margin-top: 8px;
   }
-  .positive { color: var(--green); border: 1px solid var(--green); }
-  .negative { color: var(--red); border: 1px solid var(--red); }
+  .positive { color: var(--green); background: rgba(34,216,122,0.1); border: 1px solid rgba(34,216,122,0.3); }
+  .negative { color: var(--red); background: rgba(240,82,82,0.1); border: 1px solid rgba(240,82,82,0.3); }
 
-  /* Pool Stats Card */
+  /* Pool card */
   .pool-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    padding: 20px;
-    position: relative;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 6px; padding: 20px 22px; position: relative;
   }
-
   .pool-card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0; height: 2px;
+    content: ''; position: absolute; top: 0; left: 20px; right: 20px; height: 2px;
     background: linear-gradient(90deg, transparent, var(--green), transparent);
-    opacity: 0.5;
+    border-radius: 0 0 2px 2px; opacity: 0.5;
   }
-
   .pool-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 0;
-    border-bottom: 1px solid var(--border);
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 11px 0; border-bottom: 1px solid var(--border);
   }
-
   .pool-row:last-child { border-bottom: none; }
-
-  .pool-key {
-    font-size: 10px;
-    color: var(--text-dim);
-    letter-spacing: 2px;
-  }
-
-  .pool-val {
-    font-size: 13px;
-    color: var(--text);
-  }
-
+  .pool-key { font-size: 13px; font-weight: 500; color: var(--text-dim); }
+  .pool-val { font-size: 16px; font-weight: 600; color: var(--text); font-family: 'JetBrains Mono', monospace; }
   .pool-val.highlight {
-    color: var(--green);
-    font-size: 16px;
-    font-family: 'Orbitron', monospace;
-    font-weight: 700;
+    color: var(--green); font-size: 20px;
+    font-family: 'Orbitron', sans-serif; font-weight: 700;
   }
+  .pool-val.addr { font-size: 11px; color: var(--text-muted); word-break: break-all; max-width: 220px; text-align: right; }
 
-  /* Status indicator */
   .status-dot {
-    display: inline-block;
-    width: 8px; height: 8px;
-    border-radius: 50%;
-    background: var(--green);
-    margin-right: 8px;
-    box-shadow: 0 0 6px var(--green);
-    animation: pulse 2s infinite;
+    display: inline-block; width: 8px; height: 8px; border-radius: 50%;
+    background: var(--green); margin-right: 6px; box-shadow: 0 0 6px var(--green);
+    animation: pulse-dot 2s infinite;
   }
+  @keyframes pulse-dot { 0%,100%{opacity:1} 50%{opacity:0.25} }
 
-  @keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.3; }
-  }
+  .miner-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 14px; }
+  .miner-unit { background: var(--surface2); border: 1px solid var(--border); border-radius: 4px; padding: 14px; }
+  .miner-name { font-size: 12px; font-weight: 700; color: var(--orange); letter-spacing: 1px; margin-bottom: 10px; }
+  .miner-stat { font-size: 14px; color: var(--text-dim); margin-bottom: 5px; }
+  .miner-stat span { color: var(--text); font-weight: 500; }
 
-  /* Chart */
   .chart-container {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    padding: 20px;
-    position: relative;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 6px; padding: 20px 22px; position: relative;
   }
-
   .chart-container::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0; height: 2px;
+    content: ''; position: absolute; top: 0; left: 20px; right: 20px; height: 2px;
     background: linear-gradient(90deg, transparent, var(--orange), transparent);
-    opacity: 0.5;
+    border-radius: 0 0 2px 2px; opacity: 0.5;
   }
-
   canvas { width: 100% !important; display: block; }
 
-  /* Miner Hardware */
-  .miner-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-    margin-top: 12px;
+  .loading { color: var(--text-muted); font-size: 15px; animation: blink 1.2s infinite; }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
+
+  /* ── IMPRESSUM ── */
+  .impressum-content { max-width: 720px; margin: 0 auto; padding: 32px 28px; }
+  .impressum-content h1 {
+    font-family: 'Orbitron', sans-serif; font-size: 22px; color: var(--orange);
+    margin-bottom: 28px; padding-bottom: 14px; border-bottom: 1px solid var(--border);
+  }
+  .impressum-content h2 {
+    font-size: 16px; font-weight: 700; color: var(--text); margin: 22px 0 8px; letter-spacing: 0.3px;
+  }
+  .impressum-content p, .impressum-content address {
+    font-size: 15px; color: var(--text-dim); line-height: 1.8; font-style: normal;
+  }
+  .impressum-content a { color: var(--orange); text-decoration: none; }
+  .impressum-content a:hover { text-decoration: underline; }
+  .impressum-box {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 6px; padding: 24px 28px; margin-bottom: 16px;
+  }
+  .impressum-notice {
+    background: rgba(247,147,26,0.07); border: 1px solid rgba(247,147,26,0.25);
+    border-radius: 4px; padding: 14px 18px; margin-top: 4px;
+    font-size: 12px; color: var(--text-dim); line-height: 1.7;
   }
 
-  .miner-unit {
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    padding: 14px;
-  }
-
-  .miner-name {
-    font-size: 10px;
-    color: var(--orange);
-    letter-spacing: 2px;
-    margin-bottom: 8px;
-  }
-
-  .miner-stat { font-size: 11px; color: var(--text-dim); margin-bottom: 4px; }
-  .miner-stat span { color: var(--text); }
-
-  /* Footer */
+  /* ── FOOTER ── */
   .footer {
-    text-align: center;
-    padding: 24px;
-    color: var(--text-dim);
-    font-size: 10px;
-    letter-spacing: 2px;
-    border-top: 1px solid var(--border);
-    margin-top: 24px;
+    text-align: center; padding: 20px 28px; color: var(--text-muted);
+    font-size: 13px; border-top: 1px solid var(--border); margin-top: 8px;
   }
 
-  .wallet-addr {
-    font-size: 9px;
-    color: var(--text-dim);
-    word-break: break-all;
-    margin-top: 4px;
-    opacity: 0.5;
-  }
-
-  /* Loading state */
-  .loading { color: var(--text-dim); font-size: 12px; animation: blink 1s infinite; }
-  @keyframes blink { 0%,100% { opacity:1 } 50% { opacity:0.2 } }
-
-  /* Responsive */
   @media (max-width: 900px) {
     .grid-top { grid-template-columns: 1fr 1fr; }
     .grid-mid { grid-template-columns: 1fr; }
@@ -405,151 +246,224 @@
   }
   @media (max-width: 600px) {
     .grid-top { grid-template-columns: 1fr; }
+    .topbar { padding: 0 16px; }
   }
 </style>
 </head>
 <body>
 
-<!-- LOGIN SCREEN -->
+<!-- ── LOGIN ── -->
 <div id="login-screen">
   <div class="login-box">
-    <div class="login-logo">⛏ BITMINE</div>
-    <div class="login-sub">SOLO MINING DASHBOARD</div>
+    <div class="login-logo-wrap">
+      <svg class="site-logo-svg" viewBox="0 0 46 46" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- outer ring -->
+        <circle cx="23" cy="23" r="21.5" fill="#0e1318" stroke="#f7931a" stroke-width="1.8"/>
+        <!-- Bitcoin symbol -->
+        <text x="8" y="33" font-family="Arial Black, sans-serif" font-size="24" font-weight="900" fill="#f7931a">₿</text>
+        <!-- lightning bolt (green accent) -->
+        <polygon points="29,7 24.5,20.5 30,20.5 25.5,39 35,21 29.5,21" fill="#22d87a"/>
+      </svg>
+      <div class="login-sitename">
+        <div><span class="ten">10min</span></div>
+        <div><span class="min">Mining</span><span class="lotto">Lotto</span></div>
+      </div>
+    </div>
+    <div class="login-tagline">Bitcoin Solo Mining Dashboard</div>
+
     <div class="field-wrap">
-      <div class="field-label">BENUTZER</div>
+      <label class="field-label">Benutzername</label>
       <input type="text" id="username" placeholder="admin" value="admin">
     </div>
     <div class="field-wrap">
-      <div class="field-label">PASSWORT</div>
+      <label class="field-label">Passwort</label>
       <input type="password" id="password" placeholder="••••••••" value="admin">
     </div>
-    <button class="btn-login" onclick="login()">ANMELDEN</button>
-    <div class="demo-hint">Demo: admin / admin</div>
+    <button class="btn-login" id="btn-login">Anmelden</button>
+    <div class="demo-hint">Demo-Login: admin / admin</div>
   </div>
 </div>
 
-<!-- DASHBOARD -->
+<!-- ── DASHBOARD ── -->
 <div id="dashboard">
+
   <div class="topbar">
-    <div class="logo">⛏ BIT<span>MINE</span></div>
+    <div class="logo-wrap">
+      <svg class="topbar-logo-svg" viewBox="0 0 46 46" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="23" cy="23" r="21.5" fill="#0e1318" stroke="#f7931a" stroke-width="1.8"/>
+        <text x="8" y="33" font-family="Arial Black, sans-serif" font-size="24" font-weight="900" fill="#f7931a">₿</text>
+        <polygon points="29,7 24.5,20.5 30,20.5 25.5,39 35,21 29.5,21" fill="#22d87a"/>
+      </svg>
+      <div class="topbar-sitename">
+        <span class="ten">10min</span><span class="min">Mining</span><span class="lotto">Lotto</span>
+      </div>
+    </div>
     <div class="topbar-right">
       <div id="clock">--:--:--</div>
-      <div class="user-badge" id="user-label">ADMIN</div>
-      <button class="btn-logout" onclick="logout()">ABMELDEN</button>
+      <div class="user-badge" id="user-label">Admin</div>
+      <button class="btn-logout" id="btn-logout">Abmelden</button>
     </div>
   </div>
 
-  <div class="main-content">
+  <div class="nav-tabs">
+    <div class="nav-tab active" data-tab="dashboard-page">⚡ Dashboard</div>
+    <div class="nav-tab" data-tab="impressum-page">📋 Impressum</div>
+  </div>
 
-    <!-- TOP ROW: KPI Cards -->
-    <div class="grid-top">
-      <!-- Bitcoin Preis -->
-      <div class="card">
-        <div class="card-label">₿ Bitcoin Kurs</div>
-        <div class="card-value" id="btc-price"><span class="loading">LADEN...</span></div>
-        <div id="btc-change" class="positive">-- %</div>
-        <div class="card-sub">Aktueller BTC/EUR Preis</div>
-      </div>
+  <!-- Dashboard Page -->
+  <div id="dashboard-page" class="page active">
+    <div class="main-content">
 
-      <!-- Hashrate -->
-      <div class="card">
-        <div class="card-label">⚡ Aktuelle Hashrate</div>
-        <div class="card-value green" id="hashrate"><span class="loading">LADEN...</span></div>
-        <div class="card-sub"><span class="status-dot"></span>Pool: solo.ckpool.org</div>
-      </div>
-
-      <!-- Uhrzeit / Datum -->
-      <div class="card">
-        <div class="card-label">⏱ System Zeit</div>
-        <div class="card-value small green" id="date-display">--.--.----</div>
-        <div class="card-value" id="time-large" style="font-size:32px">--:--:--</div>
-      </div>
-    </div>
-
-    <!-- MID ROW -->
-    <div class="grid-mid">
-
-      <!-- Pool Statistiken -->
-      <div class="pool-card">
-        <div class="card-label" style="color: var(--text-dim)">🎯 CK POOL STATISTIKEN</div>
-        <div class="pool-row">
-          <div class="pool-key">HASHRATE (LIVE)</div>
-          <div class="pool-val highlight" id="pool-hashrate"><span class="loading">LADEN...</span></div>
+      <div class="grid-top">
+        <div class="card">
+          <div class="card-label">₿ Bitcoin Kurs</div>
+          <div class="card-value" id="btc-price"><span class="loading">Laden…</span></div>
+          <div id="btc-change" class="positive">– %</div>
+          <div class="card-sub">Aktueller BTC / EUR Preis</div>
         </div>
-        <div class="pool-row">
-          <div class="pool-key">LETZTER BLOCK</div>
-          <div class="pool-val" id="pool-lastblock">–</div>
+        <div class="card">
+          <div class="card-label">⚡ Aktuelle Hashrate</div>
+          <div class="card-value green" id="hashrate"><span class="loading">Laden…</span></div>
+          <div class="card-sub"><span class="status-dot"></span>Pool: solo.ckpool.org</div>
         </div>
-        <div class="pool-row">
-          <div class="pool-key">BLOCK GEFUNDEN AM</div>
-          <div class="pool-val" id="pool-lastblock-time">–</div>
-        </div>
-        <div class="pool-row">
-          <div class="pool-key">BEST SHARE</div>
-          <div class="pool-val" id="pool-bestshare">–</div>
-        </div>
-        <div class="pool-row">
-          <div class="pool-key">WALLET ADRESSE</div>
-          <div class="pool-val" style="font-size:9px; word-break:break-all; color:var(--text-dim)">bc1qpmvg0xqvqy38hfkr0c7pmxtxzxz9vlvp27f7rw</div>
+        <div class="card">
+          <div class="card-label">⏱ Systemzeit</div>
+          <div class="card-value sm green" id="date-display">--.--.----</div>
+          <div class="card-value" id="time-large" style="font-size:30px">--:--:--</div>
         </div>
       </div>
 
-      <!-- Hardware -->
-      <div class="card">
-        <div class="card-label">🖥 MINER HARDWARE</div>
-        <div class="miner-grid">
-          <div class="miner-unit">
-            <div class="miner-name">MINER #1</div>
-            <div class="miner-stat">Modell: <span>Antminer S9</span></div>
-            <div class="miner-stat">Hashrate: <span style="color:var(--green)">~5 TH/s</span></div>
-            <div class="miner-stat">Status: <span><span class="status-dot"></span>ONLINE</span></div>
-            <div class="miner-stat">Verbrauch: <span>~1.3 kW</span></div>
+      <div class="grid-mid">
+        <div class="pool-card">
+          <div class="card-label">🎯 CK Pool Statistiken</div>
+          <div class="pool-row">
+            <div class="pool-key">Hashrate (Live)</div>
+            <div class="pool-val highlight" id="pool-hashrate"><span class="loading">Laden…</span></div>
           </div>
-          <div class="miner-unit">
-            <div class="miner-name">MINER #2</div>
-            <div class="miner-stat">Modell: <span>Antminer S9</span></div>
-            <div class="miner-stat">Hashrate: <span style="color:var(--green)">~5 TH/s</span></div>
-            <div class="miner-stat">Status: <span><span class="status-dot"></span>ONLINE</span></div>
-            <div class="miner-stat">Verbrauch: <span>~1.3 kW</span></div>
+          <div class="pool-row">
+            <div class="pool-key">Letzter Block</div>
+            <div class="pool-val" id="pool-lastblock">–</div>
+          </div>
+          <div class="pool-row">
+            <div class="pool-key">Block gefunden am</div>
+            <div class="pool-val" id="pool-lastblock-time">–</div>
+          </div>
+          <div class="pool-row">
+            <div class="pool-key">Best Share</div>
+            <div class="pool-val" id="pool-bestshare">–</div>
+          </div>
+          <div class="pool-row">
+            <div class="pool-key">Wallet-Adresse</div>
+            <div class="pool-val addr">bc1qpmvg0xqvqy38hfkr0c7pmxtxzxz9vlvp27f7rw</div>
           </div>
         </div>
-        <div style="margin-top:16px; padding-top:16px; border-top:1px solid var(--border)">
-          <div style="font-size:10px; color:var(--text-dim); margin-bottom:4px">GESAMT HASHRATE</div>
-          <div style="font-family: Orbitron; font-size:24px; color:var(--orange); text-shadow: 0 0 15px var(--orange-glow)">~10 TH/s</div>
+
+        <div class="card">
+          <div class="card-label">🖥 Miner Hardware</div>
+          <div class="miner-grid">
+            <div class="miner-unit">
+              <div class="miner-name">MINER #1</div>
+              <div class="miner-stat">Modell: <span>Antminer S9</span></div>
+              <div class="miner-stat">Hashrate: <span style="color:var(--green)">~5 TH/s</span></div>
+              <div class="miner-stat">Status: <span><span class="status-dot"></span>Online</span></div>
+              <div class="miner-stat">Verbrauch: <span>~1.3 kW</span></div>
+            </div>
+            <div class="miner-unit">
+              <div class="miner-name">MINER #2</div>
+              <div class="miner-stat">Modell: <span>Antminer S9</span></div>
+              <div class="miner-stat">Hashrate: <span style="color:var(--green)">~5 TH/s</span></div>
+              <div class="miner-stat">Status: <span><span class="status-dot"></span>Online</span></div>
+              <div class="miner-stat">Verbrauch: <span>~1.3 kW</span></div>
+            </div>
+          </div>
+          <div style="margin-top:16px; padding-top:16px; border-top:1px solid var(--border);">
+            <div style="font-size:11px; font-weight:600; color:var(--text-dim); margin-bottom:4px; text-transform:uppercase; letter-spacing:1px">Gesamt Hashrate</div>
+            <div style="font-family:Orbitron; font-size:22px; color:var(--orange); text-shadow:0 0 12px var(--orange-glow)">~10 TH/s</div>
+          </div>
         </div>
       </div>
-    </div>
 
-    <!-- CHART -->
-    <div class="grid-bottom">
-      <div class="chart-container">
-        <div class="card-label">📊 HASHRATE VERLAUF (24H SIMULATION)</div>
-        <canvas id="hashrateChart" height="200"></canvas>
+      <div class="grid-bottom">
+        <div class="chart-container">
+          <div class="card-label">📊 Hashrate Verlauf – 24 Stunden</div>
+          <canvas id="hashrateChart" height="200"></canvas>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Impressum Page -->
+  <div id="impressum-page" class="page">
+    <div class="impressum-content">
+      <h1>Impressum</h1>
+
+      <div class="impressum-box">
+        <h2>Angaben gemäß § 5 TMG</h2>
+        <address>
+          Max Mustermann<br>
+          Musterstraße 1<br>
+          12345 Musterstadt<br>
+          Deutschland
+        </address>
+
+        <h2>Kontakt</h2>
+        <p>
+          E-Mail: <a href="/cdn-cgi/l/email-protection#a8c3c7c6dcc9c3dce89998c5c1c6c5c1c6c1c6cfc4c7dcdcc786cccd"><span class="__cf_email__" data-cfemail="eb8084859f8a809fabdadb86828586828582858c87849f9f84c58f8e">[email&#160;protected]</span></a><br>
+          Webseite: <a href="#">10minMiningLotto.de</a>
+        </p>
+      </div>
+
+      <div class="impressum-box">
+        <h2>Hinweis zum Service</h2>
+        <p>
+          Dieses Dashboard dient der Übersicht des privaten Bitcoin Solo-Minings über den Pool <strong style="color:var(--text)">solo.ckpool.org</strong>.
+          Es handelt sich um ein privates, nicht-kommerzielles Informationsangebot.<br><br>
+          Die angezeigten Hashrate-Daten werden über die öffentliche Pool-API abgerufen.
+          Für die Richtigkeit der Bitcoin-Kursdaten wird keine Gewähr übernommen.
+        </p>
+
+        <h2>Haftungsausschluss</h2>
+        <p>
+          Trotz sorgfältiger inhaltlicher Kontrolle übernehmen wir keine Haftung für die Inhalte externer Links.
+          Für den Inhalt der verlinkten Seiten sind ausschließlich deren Betreiber verantwortlich.
+        </p>
+
+        <h2>Urheberrecht</h2>
+        <p>
+          Die durch den Seitenbetreiber erstellten Inhalte und Werke auf diesen Seiten unterliegen dem deutschen Urheberrecht.
+        </p>
+      </div>
+
+      <div class="impressum-notice">
+        ⚠️ <strong>Platzhalter:</strong> Bitte ersetze die oben stehenden Angaben durch deine echten Kontaktdaten,
+        bevor du diese Seite öffentlich erreichbar machst. Ein Impressum ist in Deutschland gesetzlich
+        vorgeschrieben (§ 5 TMG).
       </div>
     </div>
-
   </div>
 
   <div class="footer">
-    BITMINE DASHBOARD v1.0 — SOLO MINING NODE
-    <div class="wallet-addr">bc1qpmvg0xqvqy38hfkr0c7pmxtxzxz9vlvp27f7rw</div>
+    © 2025 10minMiningLotto &nbsp;·&nbsp; bc1qpmvg0xqvqy38hfkr0c7pmxtxzxz9vlvp27f7rw &nbsp;·&nbsp; solo.ckpool.org
   </div>
 </div>
 
-<script>
-// === AUTH ===
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+// ── AUTH ──
 const USERS = {
-  admin: { pass: 'admin', label: 'ADMIN' },
-  user1: { pass: 'pass1', label: 'NUTZER 1' },
-  user2: { pass: 'pass2', label: 'NUTZER 2' },
+  admin: { pass: 'admin', label: 'Admin' },
+  user1: { pass: 'pass1', label: 'Nutzer 1' },
+  user2: { pass: 'pass2', label: 'Nutzer 2' },
 };
 
 function login() {
-  const u = document.getElementById('username').value;
+  const u = document.getElementById('username').value.trim();
   const p = document.getElementById('password').value;
   if (USERS[u] && USERS[u].pass === p) {
     document.getElementById('login-screen').style.display = 'none';
-    document.getElementById('dashboard').style.display = 'block';
+    const dash = document.getElementById('dashboard');
+    dash.style.display = 'flex';
+    dash.style.flexDirection = 'column';
     document.getElementById('user-label').textContent = USERS[u].label;
     startDashboard();
   } else {
@@ -562,157 +476,126 @@ function logout() {
   document.getElementById('dashboard').style.display = 'none';
 }
 
-document.getElementById('password').addEventListener('keydown', e => {
-  if (e.key === 'Enter') login();
-});
-
-// === CLOCK ===
-function updateClock() {
-  const now = new Date();
-  const pad = n => String(n).padStart(2, '0');
-  const timeStr = `${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
-  const dateStr = `${pad(now.getDate())}.${pad(now.getMonth()+1)}.${now.getFullYear()}`;
-  document.getElementById('clock').textContent = timeStr;
-  document.getElementById('time-large').textContent = timeStr;
-  document.getElementById('date-display').textContent = dateStr;
+// ── TABS ──
+function showTab(pageId, tabEl) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(pageId).classList.add('active');
+  tabEl.classList.add('active');
 }
 
-// === BITCOIN PRICE ===
+// ── WIRE UP EVENTS ──
+document.addEventListener('DOMContentLoaded', function() {
+  document.getElementById('btn-login').addEventListener('click', login);
+  document.getElementById('btn-logout').addEventListener('click', logout);
+  document.getElementById('password').addEventListener('keydown', e => {
+    if (e.key === 'Enter') login();
+  });
+  document.querySelectorAll('.nav-tab').forEach(tab => {
+    tab.addEventListener('click', function() {
+      showTab(this.dataset.tab, this);
+    });
+  });
+});
+
+// ── CLOCK ──
+function updateClock() {
+  const now = new Date();
+  const pad = n => String(n).padStart(2,'0');
+  const t = `${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
+  const d = `${pad(now.getDate())}.${pad(now.getMonth()+1)}.${now.getFullYear()}`;
+  document.getElementById('clock').textContent = t;
+  document.getElementById('time-large').textContent = t;
+  document.getElementById('date-display').textContent = d;
+}
+
+// ── BITCOIN PRICE ──
 async function fetchBTCPrice() {
   try {
     const res = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=eur&include_24hr_change=true');
     const data = await res.json();
     const price = data.bitcoin.eur;
     const change = data.bitcoin.eur_24h_change;
-    document.getElementById('btc-price').textContent = '€' + price.toLocaleString('de-DE');
-    const changeEl = document.getElementById('btc-change');
-    changeEl.textContent = (change >= 0 ? '+' : '') + change.toFixed(2) + '% (24h)';
-    changeEl.className = change >= 0 ? 'positive' : 'negative';
+    document.getElementById('btc-price').textContent = '€\u202f' + price.toLocaleString('de-DE');
+    const el = document.getElementById('btc-change');
+    el.textContent = (change >= 0 ? '+' : '') + change.toFixed(2) + '% (24 h)';
+    el.className = change >= 0 ? 'positive' : 'negative';
   } catch(e) {
-    document.getElementById('btc-price').textContent = 'API FEHLER';
+    document.getElementById('btc-price').textContent = 'API-Fehler';
   }
 }
 
-// === CKPOOL API ===
-// NOTE: Real API requires CORS proxy or backend. This simulates realistic data.
-// To use real data: fetch from https://solo.ckpool.org/users/bc1qpmvg0xqvqy38hfkr0c7pmxtxzxz9vlvp27f7rw
-// via a backend proxy.
-
+// ── POOL DATA (simuliert) ──
 function simulatePoolData() {
-  // Realistic simulation for 10 TH/s miner
-  const hashrates = ['9.8 TH/s', '10.1 TH/s', '9.6 TH/s', '10.3 TH/s', '9.9 TH/s'];
-  const hr = hashrates[Math.floor(Math.random() * hashrates.length)];
-  
+  const hrs = ['9.8 TH/s','10.1 TH/s','9.6 TH/s','10.3 TH/s','9.9 TH/s'];
+  const hr = hrs[Math.floor(Math.random() * hrs.length)];
   document.getElementById('hashrate').textContent = hr;
   document.getElementById('pool-hashrate').textContent = hr;
-  document.getElementById('pool-lastblock').textContent = 'Block #881,234';
+  document.getElementById('pool-lastblock').textContent = 'Block #881 234';
   document.getElementById('pool-lastblock-time').textContent = 'Noch nicht gefunden';
   document.getElementById('pool-bestshare').textContent = '1.2 T';
 }
 
-// === CHART ===
+// ── CHART ──
 function initChart() {
   const canvas = document.getElementById('hashrateChart');
   const ctx = canvas.getContext('2d');
+  const W = canvas.offsetWidth || 900;
+  const H = 200;
+  canvas.width = W; canvas.height = H;
 
-  // Generate 24h of simulated data
-  const labels = [];
-  const data = [];
-  const now = new Date();
+  const data = [], labels = [], now = new Date();
   for (let i = 23; i >= 0; i--) {
     const h = new Date(now - i * 3600000);
     labels.push(`${String(h.getHours()).padStart(2,'0')}:00`);
-    // Simulate hashrate with noise around 10 TH/s
-    data.push((9 + Math.random() * 2).toFixed(2));
+    data.push(+(9 + Math.random() * 2).toFixed(2));
   }
 
-  const gradient = ctx.createLinearGradient(0, 0, 0, 200);
-  gradient.addColorStop(0, 'rgba(247,147,26,0.4)');
-  gradient.addColorStop(1, 'rgba(247,147,26,0.01)');
-
-  // Manual chart drawing
-  const W = canvas.offsetWidth || 800;
-  const H = 200;
-  canvas.width = W;
-  canvas.height = H;
-
-  const pad = { top: 20, right: 20, bottom: 30, left: 50 };
+  const pad = { top: 20, right: 20, bottom: 32, left: 52 };
   const cw = W - pad.left - pad.right;
   const ch = H - pad.top - pad.bottom;
   const maxVal = 12, minVal = 8;
 
   ctx.clearRect(0, 0, W, H);
 
-  // Grid lines
-  ctx.strokeStyle = '#1e2d3d';
-  ctx.lineWidth = 1;
   for (let g = 0; g <= 4; g++) {
     const y = pad.top + (g / 4) * ch;
-    ctx.beginPath();
-    ctx.moveTo(pad.left, y);
-    ctx.lineTo(W - pad.right, y);
-    ctx.stroke();
-    ctx.fillStyle = '#5a7a96';
-    ctx.font = '10px Share Tech Mono';
-    ctx.fillText((maxVal - g * (maxVal - minVal) / 4).toFixed(0) + 'TH', 0, y + 4);
+    ctx.strokeStyle = '#1d2c3a'; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(pad.left, y); ctx.lineTo(W - pad.right, y); ctx.stroke();
+    ctx.fillStyle = '#5a7a96'; ctx.font = '11px Inter, sans-serif';
+    ctx.fillText((maxVal - g * (maxVal - minVal) / 4).toFixed(0) + ' TH', 2, y + 4);
   }
 
-  // X labels
-  ctx.fillStyle = '#5a7a96';
-  ctx.font = '9px Share Tech Mono';
+  ctx.fillStyle = '#5a7a96'; ctx.font = '10px Inter, sans-serif';
   for (let i = 0; i < labels.length; i += 4) {
     const x = pad.left + (i / (data.length - 1)) * cw;
-    ctx.fillText(labels[i], x - 15, H - 6);
+    ctx.fillText(labels[i], x - 16, H - 8);
   }
 
-  // Fill
   const pts = data.map((v, i) => ({
     x: pad.left + (i / (data.length - 1)) * cw,
     y: pad.top + (1 - (v - minVal) / (maxVal - minVal)) * ch
   }));
 
+  const grad = ctx.createLinearGradient(0, 0, 0, H);
+  grad.addColorStop(0, 'rgba(247,147,26,0.35)');
+  grad.addColorStop(1, 'rgba(247,147,26,0.01)');
+
   ctx.beginPath();
-  ctx.moveTo(pts[0].x, H - pad.bottom);
-  ctx.lineTo(pts[0].x, pts[0].y);
-  for (let i = 1; i < pts.length; i++) {
-    ctx.lineTo(pts[i].x, pts[i].y);
-  }
+  ctx.moveTo(pts[0].x, H - pad.bottom); ctx.lineTo(pts[0].x, pts[0].y);
+  for (let i = 1; i < pts.length; i++) ctx.lineTo(pts[i].x, pts[i].y);
   ctx.lineTo(pts[pts.length-1].x, H - pad.bottom);
-  ctx.closePath();
-  ctx.fillStyle = gradient;
-  ctx.fill();
+  ctx.closePath(); ctx.fillStyle = grad; ctx.fill();
 
-  // Line
-  ctx.beginPath();
-  ctx.moveTo(pts[0].x, pts[0].y);
-  for (let i = 1; i < pts.length; i++) {
-    ctx.lineTo(pts[i].x, pts[i].y);
-  }
-  ctx.strokeStyle = '#f7931a';
-  ctx.lineWidth = 2;
-  ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(pts[0].x, pts[0].y);
+  for (let i = 1; i < pts.length; i++) ctx.lineTo(pts[i].x, pts[i].y);
+  ctx.strokeStyle = '#f7931a'; ctx.lineWidth = 2.5; ctx.stroke();
 
-  // Glow dots at current point
   const last = pts[pts.length - 1];
-  ctx.beginPath();
-  ctx.arc(last.x, last.y, 5, 0, Math.PI * 2);
+  ctx.beginPath(); ctx.arc(last.x, last.y, 5, 0, Math.PI * 2);
   ctx.fillStyle = '#f7931a';
-  ctx.shadowColor = '#f7931a';
-  ctx.shadowBlur = 15;
-  ctx.fill();
-  ctx.shadowBlur = 0;
+  ctx.shadowColor = '#f7931a'; ctx.shadowBlur = 14;
+  ctx.fill(); ctx.shadowBlur = 0;
 }
 
-// === INIT ===
-function startDashboard() {
-  updateClock();
-  setInterval(updateClock, 1000);
-  fetchBTCPrice();
-  setInterval(fetchBTCPrice, 60000);
-  simulatePoolData();
-  setInterval(simulatePoolData, 30000);
-  setTimeout(initChart, 100);
-}
-</script>
-</body>
-</html>
+// ── ST
