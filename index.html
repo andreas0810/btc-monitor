@@ -25,7 +25,7 @@
     background: var(--bg);
     color: var(--text);
     font-family: 'Inter', sans-serif;
-    font-size: 16px;
+    font-size: 17px;
     line-height: 1.6;
     min-height: 100vh;
     overflow-x: hidden;
@@ -37,72 +37,72 @@
     display: flex; align-items: center; justify-content: center; z-index: 200;
   }
   .login-box {
-    width: 400px; background: var(--surface);
+    width: 420px; background: var(--surface);
     border: 1px solid var(--border); border-top: 3px solid var(--orange);
-    padding: 48px 40px 40px;
+    padding: 52px 44px 44px;
     box-shadow: 0 24px 60px rgba(0,0,0,0.6), 0 0 40px rgba(247,147,26,0.06);
   }
   .login-logo-wrap {
-    display: flex; align-items: center; justify-content: center; gap: 14px; margin-bottom: 6px;
+    display: flex; align-items: center; justify-content: center; gap: 16px; margin-bottom: 8px;
   }
-  .site-logo-svg { width: 46px; height: 46px; flex-shrink: 0; }
-  .login-sitename { font-family: 'Orbitron', sans-serif; font-size: 20px; font-weight: 900; line-height: 1.2; }
+  .site-logo-svg { width: 52px; height: 52px; flex-shrink: 0; }
+  .login-sitename { font-family: 'Orbitron', sans-serif; font-size: 22px; font-weight: 900; line-height: 1.2; }
   .login-sitename .ten   { color: var(--orange); }
   .login-sitename .min   { color: var(--text); }
   .login-sitename .lotto { color: var(--green); }
   .login-tagline {
-    text-align: center; font-size: 11px; color: var(--text-dim);
-    letter-spacing: 2px; text-transform: uppercase; margin-bottom: 36px; margin-top: 6px;
+    text-align: center; font-size: 13px; color: var(--text-dim);
+    letter-spacing: 2px; text-transform: uppercase; margin-bottom: 38px; margin-top: 8px;
   }
   .field-label {
-    display: block; font-size: 12px; font-weight: 600; color: var(--text-dim);
-    letter-spacing: 1px; text-transform: uppercase; margin-bottom: 6px;
+    display: block; font-size: 13px; font-weight: 600; color: var(--text-dim);
+    letter-spacing: 1px; text-transform: uppercase; margin-bottom: 7px;
   }
-  .field-wrap { margin-bottom: 18px; }
+  .field-wrap { margin-bottom: 20px; }
   input[type="text"], input[type="password"] {
     width: 100%; background: var(--bg); border: 1px solid var(--border);
-    color: var(--text); font-family: 'JetBrains Mono', monospace; font-size: 14px;
-    padding: 10px 14px; outline: none; border-radius: 4px;
+    color: var(--text); font-family: 'JetBrains Mono', monospace; font-size: 16px;
+    padding: 12px 16px; outline: none; border-radius: 4px;
     transition: border-color 0.2s, box-shadow 0.2s;
   }
   input:focus { border-color: var(--orange); box-shadow: 0 0 0 3px rgba(247,147,26,0.12); }
   .btn-login {
     width: 100%; background: var(--orange); color: #000;
     border: none; border-radius: 4px; font-family: 'Inter', sans-serif;
-    font-weight: 700; font-size: 14px; padding: 12px; cursor: pointer;
+    font-weight: 700; font-size: 16px; padding: 14px; cursor: pointer;
     transition: background 0.2s, box-shadow 0.2s; margin-top: 6px;
   }
   .btn-login:hover { background: #ffa733; box-shadow: 0 0 20px var(--orange-glow); }
-  .demo-hint { text-align: center; color: var(--text-muted); font-size: 12px; margin-top: 14px; }
+  .demo-hint { text-align: center; color: var(--text-muted); font-size: 13px; margin-top: 16px; }
 
   /* ── TOPBAR ── */
   #dashboard { display: none; flex-direction: column; min-height: 100vh; }
   .topbar {
     background: var(--surface); border-bottom: 1px solid var(--border);
-    padding: 0 28px; height: 58px;
+    padding: 0 28px; height: 62px;
     display: flex; align-items: center; justify-content: space-between;
     position: sticky; top: 0; z-index: 50;
   }
-  .logo-wrap { display: flex; align-items: center; gap: 12px; }
-  .topbar-logo-svg { width: 34px; height: 34px; }
+  .logo-wrap { display: flex; align-items: center; gap: 13px; }
+  .topbar-logo-svg { width: 36px; height: 36px; }
   .topbar-sitename {
-    font-family: 'Orbitron', sans-serif; font-size: 15px; font-weight: 900; line-height: 1;
+    font-family: 'Orbitron', sans-serif; font-size: 17px; font-weight: 900; line-height: 1;
   }
   .topbar-sitename .ten   { color: var(--orange); }
   .topbar-sitename .min   { color: var(--text); }
   .topbar-sitename .lotto { color: var(--green); }
   .topbar-right { display: flex; align-items: center; gap: 20px; }
   #clock {
-    font-family: 'JetBrains Mono', monospace; font-size: 19px;
+    font-family: 'JetBrains Mono', monospace; font-size: 20px;
     font-weight: 600; color: var(--green); letter-spacing: 1px;
   }
   .user-badge {
     background: var(--orange-dim); border: 1px solid var(--orange);
-    padding: 4px 14px; border-radius: 3px; font-size: 13px; font-weight: 600; color: var(--orange);
+    padding: 5px 16px; border-radius: 3px; font-size: 14px; font-weight: 600; color: var(--orange);
   }
   .btn-logout {
     background: transparent; border: 1px solid var(--border); color: var(--text-dim);
-    font-size: 13px; font-weight: 500; padding: 5px 14px; border-radius: 4px;
+    font-size: 14px; font-weight: 500; padding: 6px 16px; border-radius: 4px;
     cursor: pointer; transition: all 0.2s; font-family: 'Inter', sans-serif;
   }
   .btn-logout:hover { border-color: var(--red); color: var(--red); }
@@ -113,9 +113,9 @@
     padding: 0 28px; display: flex;
   }
   .nav-tab {
-    padding: 10px 20px; cursor: pointer; font-size: 14px; font-weight: 500;
+    padding: 12px 22px; cursor: pointer; font-size: 15px; font-weight: 500;
     color: var(--text-dim); border-bottom: 2px solid transparent;
-    transition: color 0.2s, border-color 0.2s; user-select: none; letter-spacing: 0.3px;
+    transition: color 0.2s, border-color 0.2s; user-select: none;
   }
   .nav-tab:hover { color: var(--text); }
   .nav-tab.active { color: var(--orange); border-bottom-color: var(--orange); }
@@ -125,15 +125,15 @@
   .page.active { display: block; }
 
   /* ── MAIN CONTENT ── */
-  .main-content { padding: 24px 28px; max-width: 1400px; margin: 0 auto; }
-  .grid-top { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-bottom: 16px; }
-  .grid-mid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
-  .grid-bottom { margin-bottom: 16px; }
+  .main-content { padding: 26px 28px; max-width: 1400px; margin: 0 auto; }
+  .grid-top { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 18px; margin-bottom: 18px; }
+  .grid-mid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-bottom: 18px; }
+  .grid-bottom { margin-bottom: 18px; }
 
   /* Cards */
   .card {
     background: var(--surface); border: 1px solid var(--border);
-    border-radius: 6px; padding: 20px 22px; position: relative;
+    border-radius: 6px; padding: 22px 24px; position: relative;
   }
   .card::before {
     content: ''; position: absolute; top: 0; left: 20px; right: 20px; height: 2px;
@@ -141,20 +141,20 @@
     border-radius: 0 0 2px 2px; opacity: 0.5;
   }
   .card-label {
-    font-size: 12px; font-weight: 600; letter-spacing: 1.5px; color: var(--text-dim);
-    margin-bottom: 10px; text-transform: uppercase;
+    font-size: 13px; font-weight: 600; letter-spacing: 1.5px; color: var(--text-dim);
+    margin-bottom: 12px; text-transform: uppercase;
   }
   .card-value {
-    font-family: 'Orbitron', sans-serif; font-size: 30px; font-weight: 700;
+    font-family: 'Orbitron', sans-serif; font-size: 32px; font-weight: 700;
     color: var(--orange); text-shadow: 0 0 12px var(--orange-glow); line-height: 1.1;
   }
   .card-value.green { color: var(--green); text-shadow: 0 0 12px rgba(34,216,122,0.4); }
-  .card-value.sm { font-size: 15px; margin-bottom: 4px; }
-  .card-sub { font-size: 14px; color: var(--text-dim); margin-top: 7px; }
+  .card-value.sm { font-size: 17px; margin-bottom: 4px; font-family: 'JetBrains Mono', monospace; }
+  .card-sub { font-size: 15px; color: var(--text-dim); margin-top: 9px; }
 
   #btc-change {
-    display: inline-block; font-size: 14px; font-weight: 600;
-    padding: 2px 9px; border-radius: 3px; margin-top: 8px;
+    display: inline-block; font-size: 15px; font-weight: 600;
+    padding: 3px 10px; border-radius: 3px; margin-top: 9px;
   }
   .positive { color: var(--green); background: rgba(34,216,122,0.1); border: 1px solid rgba(34,216,122,0.3); }
   .negative { color: var(--red); background: rgba(240,82,82,0.1); border: 1px solid rgba(240,82,82,0.3); }
@@ -162,7 +162,7 @@
   /* Pool card */
   .pool-card {
     background: var(--surface); border: 1px solid var(--border);
-    border-radius: 6px; padding: 20px 22px; position: relative;
+    border-radius: 6px; padding: 22px 24px; position: relative;
   }
   .pool-card::before {
     content: ''; position: absolute; top: 0; left: 20px; right: 20px; height: 2px;
@@ -171,33 +171,33 @@
   }
   .pool-row {
     display: flex; justify-content: space-between; align-items: center;
-    padding: 11px 0; border-bottom: 1px solid var(--border);
+    padding: 13px 0; border-bottom: 1px solid var(--border);
   }
   .pool-row:last-child { border-bottom: none; }
-  .pool-key { font-size: 13px; font-weight: 500; color: var(--text-dim); }
-  .pool-val { font-size: 16px; font-weight: 600; color: var(--text); font-family: 'JetBrains Mono', monospace; }
+  .pool-key { font-size: 14px; font-weight: 500; color: var(--text-dim); }
+  .pool-val { font-size: 17px; font-weight: 600; color: var(--text); font-family: 'JetBrains Mono', monospace; }
   .pool-val.highlight {
-    color: var(--green); font-size: 20px;
+    color: var(--green); font-size: 22px;
     font-family: 'Orbitron', sans-serif; font-weight: 700;
   }
-  .pool-val.addr { font-size: 11px; color: var(--text-muted); word-break: break-all; max-width: 220px; text-align: right; }
+  .pool-val.addr { font-size: 11px; color: var(--text-muted); word-break: break-all; max-width: 230px; text-align: right; }
 
   .status-dot {
-    display: inline-block; width: 8px; height: 8px; border-radius: 50%;
-    background: var(--green); margin-right: 6px; box-shadow: 0 0 6px var(--green);
+    display: inline-block; width: 9px; height: 9px; border-radius: 50%;
+    background: var(--green); margin-right: 7px; box-shadow: 0 0 6px var(--green);
     animation: pulse-dot 2s infinite;
   }
   @keyframes pulse-dot { 0%,100%{opacity:1} 50%{opacity:0.25} }
 
-  .miner-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 14px; }
-  .miner-unit { background: var(--surface2); border: 1px solid var(--border); border-radius: 4px; padding: 14px; }
-  .miner-name { font-size: 12px; font-weight: 700; color: var(--orange); letter-spacing: 1px; margin-bottom: 10px; }
-  .miner-stat { font-size: 14px; color: var(--text-dim); margin-bottom: 5px; }
+  .miner-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 16px; }
+  .miner-unit { background: var(--surface2); border: 1px solid var(--border); border-radius: 4px; padding: 16px; }
+  .miner-name { font-size: 13px; font-weight: 700; color: var(--orange); letter-spacing: 1px; margin-bottom: 12px; }
+  .miner-stat { font-size: 15px; color: var(--text-dim); margin-bottom: 6px; }
   .miner-stat span { color: var(--text); font-weight: 500; }
 
   .chart-container {
     background: var(--surface); border: 1px solid var(--border);
-    border-radius: 6px; padding: 20px 22px; position: relative;
+    border-radius: 6px; padding: 22px 24px; position: relative;
   }
   .chart-container::before {
     content: ''; position: absolute; top: 0; left: 20px; right: 20px; height: 2px;
@@ -206,36 +206,36 @@
   }
   canvas { width: 100% !important; display: block; }
 
-  .loading { color: var(--text-muted); font-size: 15px; animation: blink 1.2s infinite; }
+  .loading { color: var(--text-muted); font-size: 16px; animation: blink 1.2s infinite; }
   @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
 
   /* ── IMPRESSUM ── */
-  .impressum-content { max-width: 720px; margin: 0 auto; padding: 32px 28px; }
+  .impressum-content { max-width: 720px; margin: 0 auto; padding: 36px 28px; }
   .impressum-content h1 {
-    font-family: 'Orbitron', sans-serif; font-size: 22px; color: var(--orange);
-    margin-bottom: 28px; padding-bottom: 14px; border-bottom: 1px solid var(--border);
+    font-family: 'Orbitron', sans-serif; font-size: 24px; color: var(--orange);
+    margin-bottom: 30px; padding-bottom: 16px; border-bottom: 1px solid var(--border);
   }
   .impressum-content h2 {
-    font-size: 16px; font-weight: 700; color: var(--text); margin: 22px 0 8px; letter-spacing: 0.3px;
+    font-size: 17px; font-weight: 700; color: var(--text); margin: 24px 0 10px;
   }
   .impressum-content p, .impressum-content address {
-    font-size: 15px; color: var(--text-dim); line-height: 1.8; font-style: normal;
+    font-size: 16px; color: var(--text-dim); line-height: 1.9; font-style: normal;
   }
   .impressum-content a { color: var(--orange); text-decoration: none; }
   .impressum-content a:hover { text-decoration: underline; }
   .impressum-box {
     background: var(--surface); border: 1px solid var(--border);
-    border-radius: 6px; padding: 24px 28px; margin-bottom: 16px;
+    border-radius: 6px; padding: 26px 30px; margin-bottom: 18px;
   }
   .impressum-notice {
     background: rgba(247,147,26,0.07); border: 1px solid rgba(247,147,26,0.25);
-    border-radius: 4px; padding: 14px 18px; margin-top: 4px;
-    font-size: 12px; color: var(--text-dim); line-height: 1.7;
+    border-radius: 4px; padding: 16px 20px;
+    font-size: 14px; color: var(--text-dim); line-height: 1.8;
   }
 
   /* ── FOOTER ── */
   .footer {
-    text-align: center; padding: 20px 28px; color: var(--text-muted);
+    text-align: center; padding: 22px 28px; color: var(--text-muted);
     font-size: 13px; border-top: 1px solid var(--border); margin-top: 8px;
   }
 
@@ -257,11 +257,8 @@
   <div class="login-box">
     <div class="login-logo-wrap">
       <svg class="site-logo-svg" viewBox="0 0 46 46" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <!-- outer ring -->
         <circle cx="23" cy="23" r="21.5" fill="#0e1318" stroke="#f7931a" stroke-width="1.8"/>
-        <!-- Bitcoin symbol -->
         <text x="8" y="33" font-family="Arial Black, sans-serif" font-size="24" font-weight="900" fill="#f7931a">₿</text>
-        <!-- lightning bolt (green accent) -->
         <polygon points="29,7 24.5,20.5 30,20.5 25.5,39 35,21 29.5,21" fill="#22d87a"/>
       </svg>
       <div class="login-sitename">
@@ -270,14 +267,13 @@
       </div>
     </div>
     <div class="login-tagline">Bitcoin Solo Mining Dashboard</div>
-
     <div class="field-wrap">
       <label class="field-label">Benutzername</label>
-      <input type="text" id="username" placeholder="admin" value="admin">
+      <input type="text" id="username" placeholder="admin">
     </div>
     <div class="field-wrap">
       <label class="field-label">Passwort</label>
-      <input type="password" id="password" placeholder="••••••••" value="admin">
+      <input type="password" id="password" placeholder="••••••••">
     </div>
     <button class="btn-login" id="btn-login">Anmelden</button>
     <div class="demo-hint">Demo-Login: admin / admin</div>
@@ -286,7 +282,6 @@
 
 <!-- ── DASHBOARD ── -->
 <div id="dashboard">
-
   <div class="topbar">
     <div class="logo-wrap">
       <svg class="topbar-logo-svg" viewBox="0 0 46 46" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -313,7 +308,6 @@
   <!-- Dashboard Page -->
   <div id="dashboard-page" class="page active">
     <div class="main-content">
-
       <div class="grid-top">
         <div class="card">
           <div class="card-label">₿ Bitcoin Kurs</div>
@@ -329,7 +323,7 @@
         <div class="card">
           <div class="card-label">⏱ Systemzeit</div>
           <div class="card-value sm green" id="date-display">--.--.----</div>
-          <div class="card-value" id="time-large" style="font-size:30px">--:--:--</div>
+          <div class="card-value" id="time-large" style="font-size:32px">--:--:--</div>
         </div>
       </div>
 
@@ -376,9 +370,9 @@
               <div class="miner-stat">Verbrauch: <span>~1.3 kW</span></div>
             </div>
           </div>
-          <div style="margin-top:16px; padding-top:16px; border-top:1px solid var(--border);">
-            <div style="font-size:11px; font-weight:600; color:var(--text-dim); margin-bottom:4px; text-transform:uppercase; letter-spacing:1px">Gesamt Hashrate</div>
-            <div style="font-family:Orbitron; font-size:22px; color:var(--orange); text-shadow:0 0 12px var(--orange-glow)">~10 TH/s</div>
+          <div style="margin-top:18px; padding-top:18px; border-top:1px solid var(--border);">
+            <div style="font-size:13px; font-weight:600; color:var(--text-dim); margin-bottom:6px; text-transform:uppercase; letter-spacing:1px">Gesamt Hashrate</div>
+            <div style="font-family:Orbitron,sans-serif; font-size:26px; color:var(--orange); text-shadow:0 0 12px var(--orange-glow)">~10 TH/s</div>
           </div>
         </div>
       </div>
@@ -389,7 +383,6 @@
           <canvas id="hashrateChart" height="200"></canvas>
         </div>
       </div>
-
     </div>
   </div>
 
@@ -397,7 +390,6 @@
   <div id="impressum-page" class="page">
     <div class="impressum-content">
       <h1>Impressum</h1>
-
       <div class="impressum-box">
         <h2>Angaben gemäß § 5 TMG</h2>
         <address>
@@ -406,39 +398,22 @@
           12345 Musterstadt<br>
           Deutschland
         </address>
-
         <h2>Kontakt</h2>
         <p>
-          E-Mail: <a href="/cdn-cgi/l/email-protection#a8c3c7c6dcc9c3dce89998c5c1c6c5c1c6c1c6cfc4c7dcdcc786cccd"><span class="__cf_email__" data-cfemail="eb8084859f8a809fabdadb86828586828582858c87849f9f84c58f8e">[email&#160;protected]</span></a><br>
+          E-Mail: <a href="mailto:kontakt@10minmininglotto.de">kontakt@10minmininglotto.de</a><br>
           Webseite: <a href="#">10minMiningLotto.de</a>
         </p>
       </div>
-
       <div class="impressum-box">
         <h2>Hinweis zum Service</h2>
-        <p>
-          Dieses Dashboard dient der Übersicht des privaten Bitcoin Solo-Minings über den Pool <strong style="color:var(--text)">solo.ckpool.org</strong>.
-          Es handelt sich um ein privates, nicht-kommerzielles Informationsangebot.<br><br>
-          Die angezeigten Hashrate-Daten werden über die öffentliche Pool-API abgerufen.
-          Für die Richtigkeit der Bitcoin-Kursdaten wird keine Gewähr übernommen.
-        </p>
-
+        <p>Dieses Dashboard dient der Übersicht des privaten Bitcoin Solo-Minings über den Pool <strong style="color:var(--text)">solo.ckpool.org</strong>. Es handelt sich um ein privates, nicht-kommerzielles Informationsangebot.<br><br>Die angezeigten Hashrate-Daten werden über die öffentliche Pool-API abgerufen. Für die Richtigkeit der Bitcoin-Kursdaten wird keine Gewähr übernommen.</p>
         <h2>Haftungsausschluss</h2>
-        <p>
-          Trotz sorgfältiger inhaltlicher Kontrolle übernehmen wir keine Haftung für die Inhalte externer Links.
-          Für den Inhalt der verlinkten Seiten sind ausschließlich deren Betreiber verantwortlich.
-        </p>
-
+        <p>Trotz sorgfältiger inhaltlicher Kontrolle übernehmen wir keine Haftung für die Inhalte externer Links. Für den Inhalt der verlinkten Seiten sind ausschließlich deren Betreiber verantwortlich.</p>
         <h2>Urheberrecht</h2>
-        <p>
-          Die durch den Seitenbetreiber erstellten Inhalte und Werke auf diesen Seiten unterliegen dem deutschen Urheberrecht.
-        </p>
+        <p>Die durch den Seitenbetreiber erstellten Inhalte und Werke auf diesen Seiten unterliegen dem deutschen Urheberrecht.</p>
       </div>
-
       <div class="impressum-notice">
-        ⚠️ <strong>Platzhalter:</strong> Bitte ersetze die oben stehenden Angaben durch deine echten Kontaktdaten,
-        bevor du diese Seite öffentlich erreichbar machst. Ein Impressum ist in Deutschland gesetzlich
-        vorgeschrieben (§ 5 TMG).
+        ⚠️ <strong>Platzhalter:</strong> Bitte ersetze die oben stehenden Angaben durch deine echten Kontaktdaten, bevor du diese Seite öffentlich erreichbar machst. Ein Impressum ist in Deutschland gesetzlich vorgeschrieben (§ 5 TMG).
       </div>
     </div>
   </div>
@@ -448,26 +423,32 @@
   </div>
 </div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-// ── AUTH ──
-const USERS = {
+<!--
+  WICHTIG: Das Script steht am Ende des Body – NACH allen HTML-Elementen.
+  Dadurch sind alle Elemente bereits im DOM vorhanden, wenn das Script läuft.
+  Kein DOMContentLoaded nötig. Das funktioniert zuverlässig auf GitHub Pages.
+-->
+<script>
+// ── BENUTZER ──
+var USERS = {
   admin: { pass: 'admin', label: 'Admin' },
   user1: { pass: 'pass1', label: 'Nutzer 1' },
-  user2: { pass: 'pass2', label: 'Nutzer 2' },
+  user2: { pass: 'pass2', label: 'Nutzer 2' }
 };
 
+// ── LOGIN / LOGOUT ──
 function login() {
-  const u = document.getElementById('username').value.trim();
-  const p = document.getElementById('password').value;
+  var u = document.getElementById('username').value.trim();
+  var p = document.getElementById('password').value;
   if (USERS[u] && USERS[u].pass === p) {
     document.getElementById('login-screen').style.display = 'none';
-    const dash = document.getElementById('dashboard');
+    var dash = document.getElementById('dashboard');
     dash.style.display = 'flex';
     dash.style.flexDirection = 'column';
     document.getElementById('user-label').textContent = USERS[u].label;
     startDashboard();
   } else {
-    alert('❌ Ungültige Anmeldedaten!');
+    alert('Ungültige Anmeldedaten!');
   }
 }
 
@@ -478,57 +459,56 @@ function logout() {
 
 // ── TABS ──
 function showTab(pageId, tabEl) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.page').forEach(function(p) { p.classList.remove('active'); });
+  document.querySelectorAll('.nav-tab').forEach(function(t) { t.classList.remove('active'); });
   document.getElementById(pageId).classList.add('active');
   tabEl.classList.add('active');
 }
 
-// ── WIRE UP EVENTS ──
-document.addEventListener('DOMContentLoaded', function() {
-  document.getElementById('btn-login').addEventListener('click', login);
-  document.getElementById('btn-logout').addEventListener('click', logout);
-  document.getElementById('password').addEventListener('keydown', e => {
-    if (e.key === 'Enter') login();
-  });
-  document.querySelectorAll('.nav-tab').forEach(tab => {
-    tab.addEventListener('click', function() {
-      showTab(this.dataset.tab, this);
-    });
+// ── EVENTS direkt verdrahten (kein DOMContentLoaded nötig, Script ist am Ende) ──
+document.getElementById('btn-login').addEventListener('click', login);
+document.getElementById('btn-logout').addEventListener('click', logout);
+document.getElementById('password').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') login();
+});
+document.querySelectorAll('.nav-tab').forEach(function(tab) {
+  tab.addEventListener('click', function() {
+    showTab(this.dataset.tab, this);
   });
 });
 
-// ── CLOCK ──
+// ── UHR ──
 function updateClock() {
-  const now = new Date();
-  const pad = n => String(n).padStart(2,'0');
-  const t = `${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
-  const d = `${pad(now.getDate())}.${pad(now.getMonth()+1)}.${now.getFullYear()}`;
+  var now = new Date();
+  var pad = function(n) { return String(n).padStart(2, '0'); };
+  var t = pad(now.getHours()) + ':' + pad(now.getMinutes()) + ':' + pad(now.getSeconds());
+  var d = pad(now.getDate()) + '.' + pad(now.getMonth() + 1) + '.' + now.getFullYear();
   document.getElementById('clock').textContent = t;
   document.getElementById('time-large').textContent = t;
   document.getElementById('date-display').textContent = d;
 }
 
-// ── BITCOIN PRICE ──
-async function fetchBTCPrice() {
-  try {
-    const res = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=eur&include_24hr_change=true');
-    const data = await res.json();
-    const price = data.bitcoin.eur;
-    const change = data.bitcoin.eur_24h_change;
-    document.getElementById('btc-price').textContent = '€\u202f' + price.toLocaleString('de-DE');
-    const el = document.getElementById('btc-change');
-    el.textContent = (change >= 0 ? '+' : '') + change.toFixed(2) + '% (24 h)';
-    el.className = change >= 0 ? 'positive' : 'negative';
-  } catch(e) {
-    document.getElementById('btc-price').textContent = 'API-Fehler';
-  }
+// ── BITCOIN PREIS ──
+function fetchBTCPrice() {
+  fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=eur&include_24hr_change=true')
+    .then(function(res) { return res.json(); })
+    .then(function(data) {
+      var price = data.bitcoin.eur;
+      var change = data.bitcoin.eur_24h_change;
+      document.getElementById('btc-price').textContent = '€ ' + price.toLocaleString('de-DE');
+      var el = document.getElementById('btc-change');
+      el.textContent = (change >= 0 ? '+' : '') + change.toFixed(2) + '% (24 h)';
+      el.className = change >= 0 ? 'positive' : 'negative';
+    })
+    .catch(function() {
+      document.getElementById('btc-price').textContent = 'API nicht erreichbar';
+    });
 }
 
-// ── POOL DATA (simuliert) ──
+// ── POOL-DATEN (simuliert) ──
 function simulatePoolData() {
-  const hrs = ['9.8 TH/s','10.1 TH/s','9.6 TH/s','10.3 TH/s','9.9 TH/s'];
-  const hr = hrs[Math.floor(Math.random() * hrs.length)];
+  var hrs = ['9.8 TH/s', '10.1 TH/s', '9.6 TH/s', '10.3 TH/s', '9.9 TH/s'];
+  var hr = hrs[Math.floor(Math.random() * hrs.length)];
   document.getElementById('hashrate').textContent = hr;
   document.getElementById('pool-hashrate').textContent = hr;
   document.getElementById('pool-lastblock').textContent = 'Block #881 234';
@@ -538,64 +518,88 @@ function simulatePoolData() {
 
 // ── CHART ──
 function initChart() {
-  const canvas = document.getElementById('hashrateChart');
-  const ctx = canvas.getContext('2d');
-  const W = canvas.offsetWidth || 900;
-  const H = 200;
-  canvas.width = W; canvas.height = H;
+  var canvas = document.getElementById('hashrateChart');
+  var ctx = canvas.getContext('2d');
+  var W = canvas.offsetWidth || 900;
+  var H = 220;
+  canvas.width = W;
+  canvas.height = H;
 
-  const data = [], labels = [], now = new Date();
-  for (let i = 23; i >= 0; i--) {
-    const h = new Date(now - i * 3600000);
-    labels.push(`${String(h.getHours()).padStart(2,'0')}:00`);
-    data.push(+(9 + Math.random() * 2).toFixed(2));
+  var data = [], labels = [];
+  var now = new Date();
+  for (var i = 23; i >= 0; i--) {
+    var h = new Date(now - i * 3600000);
+    labels.push(String(h.getHours()).padStart(2, '0') + ':00');
+    data.push(parseFloat((9 + Math.random() * 2).toFixed(2)));
   }
 
-  const pad = { top: 20, right: 20, bottom: 32, left: 52 };
-  const cw = W - pad.left - pad.right;
-  const ch = H - pad.top - pad.bottom;
-  const maxVal = 12, minVal = 8;
+  var pad = { top: 24, right: 20, bottom: 36, left: 56 };
+  var cw = W - pad.left - pad.right;
+  var ch = H - pad.top - pad.bottom;
+  var maxVal = 12, minVal = 8;
 
   ctx.clearRect(0, 0, W, H);
 
-  for (let g = 0; g <= 4; g++) {
-    const y = pad.top + (g / 4) * ch;
+  // Gridlinien + Y-Labels
+  for (var g = 0; g <= 4; g++) {
+    var y = pad.top + (g / 4) * ch;
     ctx.strokeStyle = '#1d2c3a'; ctx.lineWidth = 1;
     ctx.beginPath(); ctx.moveTo(pad.left, y); ctx.lineTo(W - pad.right, y); ctx.stroke();
-    ctx.fillStyle = '#5a7a96'; ctx.font = '11px Inter, sans-serif';
-    ctx.fillText((maxVal - g * (maxVal - minVal) / 4).toFixed(0) + ' TH', 2, y + 4);
+    ctx.fillStyle = '#5a7a96'; ctx.font = '13px Inter, sans-serif';
+    ctx.fillText((maxVal - g * (maxVal - minVal) / 4).toFixed(0) + ' TH', 2, y + 5);
   }
 
-  ctx.fillStyle = '#5a7a96'; ctx.font = '10px Inter, sans-serif';
-  for (let i = 0; i < labels.length; i += 4) {
-    const x = pad.left + (i / (data.length - 1)) * cw;
-    ctx.fillText(labels[i], x - 16, H - 8);
+  // X-Labels
+  ctx.fillStyle = '#5a7a96'; ctx.font = '12px Inter, sans-serif';
+  for (var j = 0; j < labels.length; j += 4) {
+    var x = pad.left + (j / (data.length - 1)) * cw;
+    ctx.fillText(labels[j], x - 18, H - 10);
   }
 
-  const pts = data.map((v, i) => ({
-    x: pad.left + (i / (data.length - 1)) * cw,
-    y: pad.top + (1 - (v - minVal) / (maxVal - minVal)) * ch
-  }));
+  // Punkte berechnen
+  var pts = data.map(function(v, idx) {
+    return {
+      x: pad.left + (idx / (data.length - 1)) * cw,
+      y: pad.top + (1 - (v - minVal) / (maxVal - minVal)) * ch
+    };
+  });
 
-  const grad = ctx.createLinearGradient(0, 0, 0, H);
+  // Füllung
+  var grad = ctx.createLinearGradient(0, 0, 0, H);
   grad.addColorStop(0, 'rgba(247,147,26,0.35)');
   grad.addColorStop(1, 'rgba(247,147,26,0.01)');
 
   ctx.beginPath();
-  ctx.moveTo(pts[0].x, H - pad.bottom); ctx.lineTo(pts[0].x, pts[0].y);
-  for (let i = 1; i < pts.length; i++) ctx.lineTo(pts[i].x, pts[i].y);
-  ctx.lineTo(pts[pts.length-1].x, H - pad.bottom);
-  ctx.closePath(); ctx.fillStyle = grad; ctx.fill();
+  ctx.moveTo(pts[0].x, H - pad.bottom);
+  ctx.lineTo(pts[0].x, pts[0].y);
+  for (var k = 1; k < pts.length; k++) ctx.lineTo(pts[k].x, pts[k].y);
+  ctx.lineTo(pts[pts.length - 1].x, H - pad.bottom);
+  ctx.closePath();
+  ctx.fillStyle = grad; ctx.fill();
 
+  // Linie
   ctx.beginPath(); ctx.moveTo(pts[0].x, pts[0].y);
-  for (let i = 1; i < pts.length; i++) ctx.lineTo(pts[i].x, pts[i].y);
+  for (var m = 1; m < pts.length; m++) ctx.lineTo(pts[m].x, pts[m].y);
   ctx.strokeStyle = '#f7931a'; ctx.lineWidth = 2.5; ctx.stroke();
 
-  const last = pts[pts.length - 1];
-  ctx.beginPath(); ctx.arc(last.x, last.y, 5, 0, Math.PI * 2);
+  // Leuchtpunkt am Ende
+  var last = pts[pts.length - 1];
+  ctx.beginPath(); ctx.arc(last.x, last.y, 6, 0, Math.PI * 2);
   ctx.fillStyle = '#f7931a';
-  ctx.shadowColor = '#f7931a'; ctx.shadowBlur = 14;
+  ctx.shadowColor = '#f7931a'; ctx.shadowBlur = 16;
   ctx.fill(); ctx.shadowBlur = 0;
 }
 
-// ── ST
+// ── START ──
+function startDashboard() {
+  updateClock();
+  setInterval(updateClock, 1000);
+  fetchBTCPrice();
+  setInterval(fetchBTCPrice, 60000);
+  simulatePoolData();
+  setInterval(simulatePoolData, 30000);
+  setTimeout(initChart, 80);
+}
+</script>
+</body>
+</html>
