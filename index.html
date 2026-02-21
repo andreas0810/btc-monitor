@@ -3,773 +3,526 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>10minMiningLotto – Bitcoin Solo Mining Dashboard</title>
+<title>10minMiningLotto</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Orbitron:wght@700;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg: #080b0f;
-    --surface: #0e1318;
-    --surface2: #141a22;
-    --border: #1d2c3a;
-    --orange: #f7931a;
-    --orange-dim: rgba(247,147,26,0.12);
-    --orange-glow: rgba(247,147,26,0.35);
-    --green: #22d87a;
-    --text: #d4e4f4;
-    --text-dim: #5a7a96;
-    --text-muted: #38526a;
-    --red: #f05252;
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'Inter', sans-serif;
-    font-size: 22px;
-    line-height: 1.6;
-    min-height: 100vh;
-    overflow-x: hidden;
-  }
+:root {
+  --bg: #080b0f;
+  --surface: #0e1318;
+  --surface2: #141a22;
+  --border: #1d2c3a;
+  --orange: #f7931a;
+  --orange-dim: rgba(247,147,26,0.12);
+  --orange-glow: rgba(247,147,26,0.35);
+  --green: #22d87a;
+  --text: #d4e4f4;
+  --text-dim: #5a7a96;
+  --text-muted: #38526a;
+  --red: #f05252;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+  font-size: 22px;
+  line-height: 1.6;
+  min-height: 100vh;
+}
 
-  /* ── LOGIN ── */
-  #login-screen {
-    display: none !important;
-  }
-  .login-box {
-    width: 420px; background: var(--surface);
-    border: 1px solid var(--border); border-top: 3px solid var(--orange);
-    padding: 52px 44px 44px;
-    box-shadow: 0 24px 60px rgba(0,0,0,0.6), 0 0 40px rgba(247,147,26,0.06);
-  }
-  .login-logo-wrap {
-    display: flex; align-items: center; justify-content: center; gap: 16px; margin-bottom: 8px;
-  }
-  .site-logo-svg { width: 52px; height: 52px; flex-shrink: 0; }
-  .login-sitename { font-family: 'Orbitron', sans-serif; font-size: 22px; font-weight: 900; line-height: 1.2; }
-  .login-sitename .ten   { color: var(--orange); }
-  .login-sitename .min   { color: var(--text); }
-  .login-sitename .lotto { color: var(--green); }
-  .login-tagline {
-    text-align: center; font-size: 13px; color: var(--text-dim);
-    letter-spacing: 2px; text-transform: uppercase; margin-bottom: 38px; margin-top: 8px;
-  }
-  .field-label {
-    display: block; font-size: 13px; font-weight: 600; color: var(--text-dim);
-    letter-spacing: 1px; text-transform: uppercase; margin-bottom: 7px;
-  }
-  .field-wrap { margin-bottom: 20px; }
-  input[type="text"], input[type="password"] {
-    width: 100%; background: var(--bg); border: 1px solid var(--border);
-    color: var(--text); font-family: 'JetBrains Mono', monospace; font-size: 16px;
-    padding: 12px 16px; outline: none; border-radius: 4px;
-    transition: border-color 0.2s, box-shadow 0.2s;
-  }
-  input:focus { border-color: var(--orange); box-shadow: 0 0 0 3px rgba(247,147,26,0.12); }
-  .btn-login {
-    width: 100%; background: var(--orange); color: #000;
-    border: none; border-radius: 4px; font-family: 'Inter', sans-serif;
-    font-weight: 700; font-size: 16px; padding: 14px; cursor: pointer;
-    transition: background 0.2s, box-shadow 0.2s; margin-top: 6px;
-  }
-  .btn-login:hover { background: #ffa733; box-shadow: 0 0 20px var(--orange-glow); }
-  .demo-hint { text-align: center; color: var(--text-muted); font-size: 13px; margin-top: 16px; }
+/* TOPBAR */
+.topbar {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 0 28px;
+  height: 68px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+.logo-wrap { display: flex; align-items: center; gap: 12px; }
+.topbar-logo-svg { width: 38px; height: 38px; }
+.topbar-sitename { font-family: 'Orbitron', sans-serif; font-size: 20px; font-weight: 900; }
+.topbar-sitename .ten   { color: var(--orange); }
+.topbar-sitename .min   { color: var(--text); }
+.topbar-sitename .lotto { color: var(--green); }
+.topbar-right { display: flex; align-items: center; gap: 20px; }
+#clock { font-family: 'JetBrains Mono', monospace; font-size: 24px; font-weight: 600; color: var(--green); }
 
-  /* ── TOPBAR ── */
-  #dashboard { display: flex; flex-direction: column; min-height: 100vh; }
-  .topbar {
-    background: var(--surface); border-bottom: 1px solid var(--border);
-    padding: 0 28px; height: 62px;
-    display: flex; align-items: center; justify-content: space-between;
-    position: sticky; top: 0; z-index: 50;
-  }
-  .logo-wrap { display: flex; align-items: center; gap: 13px; }
-  .topbar-logo-svg { width: 36px; height: 36px; }
-  .topbar-sitename {
-    font-family: 'Orbitron', sans-serif; font-size: 22px; font-weight: 900; line-height: 1;
-  }
-  .topbar-sitename .ten   { color: var(--orange); }
-  .topbar-sitename .min   { color: var(--text); }
-  .topbar-sitename .lotto { color: var(--green); }
-  .topbar-right { display: flex; align-items: center; gap: 20px; }
-  #clock {
-    font-family: 'JetBrains Mono', monospace; font-size: 26px;
-    font-weight: 600; color: var(--green); letter-spacing: 1px;
-  }
-  .user-badge {
-    background: var(--orange-dim); border: 1px solid var(--orange);
-    padding: 5px 16px; border-radius: 3px; font-size: 18px; font-weight: 600; color: var(--orange);
-  }
-  .btn-logout {
-    background: transparent; border: 1px solid var(--border); color: var(--text-dim);
-    font-size: 18px; font-weight: 500; padding: 6px 16px; border-radius: 4px;
-    cursor: pointer; transition: all 0.2s; font-family: 'Inter', sans-serif;
-  }
-  .btn-logout:hover { border-color: var(--red); color: var(--red); }
+/* NAV TABS */
+.nav-tabs {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 0 28px;
+  display: flex;
+  flex-wrap: wrap;
+}
+.nav-tab {
+  padding: 14px 24px;
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--text-dim);
+  border-bottom: 3px solid transparent;
+  transition: color 0.2s, border-color 0.2s;
+  user-select: none;
+}
+.nav-tab:hover { color: var(--text); }
+.nav-tab.active { color: var(--orange); border-bottom-color: var(--orange); }
 
-  /* ── NAV TABS ── */
-  .nav-tabs {
-    background: var(--surface); border-bottom: 1px solid var(--border);
-    padding: 0 28px; display: flex;
-  }
-  .nav-tab {
-    padding: 14px 26px; cursor: pointer; font-size: 20px; font-weight: 500;
-    color: var(--text-dim); border-bottom: 2px solid transparent;
-    transition: color 0.2s, border-color 0.2s; user-select: none;
-  }
-  .nav-tab:hover { color: var(--text); }
-  .nav-tab.active { color: var(--orange); border-bottom-color: var(--orange); }
+/* PAGES */
+.page { display: none; }
+.page.active { display: block; }
 
-  /* ── PAGES ── */
-  .page { display: none; }
-  .page.active { display: block; }
+/* MAIN CONTENT */
+.main-content { padding: 28px; max-width: 1400px; margin: 0 auto; }
+.grid-top { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; margin-bottom: 20px; }
+.grid-mid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
 
-  /* ── MAIN CONTENT ── */
-  .main-content { padding: 26px 28px; max-width: 1400px; margin: 0 auto; }
-  .grid-top { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 18px; margin-bottom: 18px; }
-  .grid-mid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-bottom: 18px; }
-  .grid-bottom { margin-bottom: 18px; }
+/* CARDS */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 24px 26px;
+  position: relative;
+}
+.card::before {
+  content: '';
+  position: absolute; top: 0; left: 20px; right: 20px; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--orange), transparent);
+  opacity: 0.5;
+}
+.card-label {
+  font-size: 14px; font-weight: 600; letter-spacing: 1.5px;
+  color: var(--text-dim); margin-bottom: 12px; text-transform: uppercase;
+}
+.card-value {
+  font-family: 'Orbitron', sans-serif; font-size: 36px; font-weight: 700;
+  color: var(--orange); text-shadow: 0 0 12px var(--orange-glow); line-height: 1.1;
+}
+.card-value.green { color: var(--green); text-shadow: 0 0 12px rgba(34,216,122,0.4); }
+.card-value.sm { font-size: 22px; font-family: 'JetBrains Mono', monospace; margin-bottom: 4px; }
+.card-sub { font-size: 18px; color: var(--text-dim); margin-top: 10px; }
 
-  /* Cards */
-  .card {
-    background: var(--surface); border: 1px solid var(--border);
-    border-radius: 6px; padding: 22px 24px; position: relative;
-  }
-  .card::before {
-    content: ''; position: absolute; top: 0; left: 20px; right: 20px; height: 2px;
-    background: linear-gradient(90deg, transparent, var(--orange), transparent);
-    border-radius: 0 0 2px 2px; opacity: 0.5;
-  }
-  .card-label {
-    font-size: 16px; font-weight: 600; letter-spacing: 1.5px; color: var(--text-dim);
-    margin-bottom: 12px; text-transform: uppercase;
-  }
-  .card-value {
-    font-family: 'Orbitron', sans-serif; font-size: 38px; font-weight: 700;
-    color: var(--orange); text-shadow: 0 0 12px var(--orange-glow); line-height: 1.1;
-  }
-  .card-value.green { color: var(--green); text-shadow: 0 0 12px rgba(34,216,122,0.4); }
-  .card-value.sm { font-size: 22px; margin-bottom: 4px; font-family: 'JetBrains Mono', monospace; }
-  .card-sub { font-size: 19px; color: var(--text-dim); margin-top: 9px; }
+#btc-change {
+  display: inline-block; font-size: 18px; font-weight: 600;
+  padding: 3px 12px; border-radius: 3px; margin-top: 10px;
+}
+.positive { color: var(--green); background: rgba(34,216,122,0.1); border: 1px solid rgba(34,216,122,0.3); }
+.negative { color: var(--red); background: rgba(240,82,82,0.1); border: 1px solid rgba(240,82,82,0.3); }
 
-  #btc-change {
-    display: inline-block; font-size: 19px; font-weight: 600;
-    padding: 3px 10px; border-radius: 3px; margin-top: 9px;
-  }
-  .positive { color: var(--green); background: rgba(34,216,122,0.1); border: 1px solid rgba(34,216,122,0.3); }
-  .negative { color: var(--red); background: rgba(240,82,82,0.1); border: 1px solid rgba(240,82,82,0.3); }
+/* POOL CARD */
+.pool-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 24px 26px;
+  position: relative;
+}
+.pool-card::before {
+  content: '';
+  position: absolute; top: 0; left: 20px; right: 20px; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--green), transparent);
+  opacity: 0.5;
+}
+.pool-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 14px 0; border-bottom: 1px solid var(--border);
+}
+.pool-row:last-child { border-bottom: none; }
+.pool-key { font-size: 16px; font-weight: 500; color: var(--text-dim); }
+.pool-val { font-size: 20px; font-weight: 600; color: var(--text); font-family: 'JetBrains Mono', monospace; }
+.pool-val.highlight { color: var(--green); font-size: 28px; font-family: 'Orbitron', sans-serif; font-weight: 700; }
+.pool-val.addr { font-size: 12px; color: var(--text-muted); word-break: break-all; max-width: 240px; text-align: right; }
 
-  /* Pool card */
-  .pool-card {
-    background: var(--surface); border: 1px solid var(--border);
-    border-radius: 6px; padding: 22px 24px; position: relative;
-  }
-  .pool-card::before {
-    content: ''; position: absolute; top: 0; left: 20px; right: 20px; height: 2px;
-    background: linear-gradient(90deg, transparent, var(--green), transparent);
-    border-radius: 0 0 2px 2px; opacity: 0.5;
-  }
-  .pool-row {
-    display: flex; justify-content: space-between; align-items: center;
-    padding: 13px 0; border-bottom: 1px solid var(--border);
-  }
-  .pool-row:last-child { border-bottom: none; }
-  .pool-key { font-size: 18px; font-weight: 500; color: var(--text-dim); }
-  .pool-val { font-size: 22px; font-weight: 600; color: var(--text); font-family: 'JetBrains Mono', monospace; }
-  .pool-val.highlight {
-    color: var(--green); font-size: 28px;
-    font-family: 'Orbitron', sans-serif; font-weight: 700;
-  }
-  .pool-val.addr { font-size: 13px; color: var(--text-muted); word-break: break-all; max-width: 230px; text-align: right; }
+.status-dot {
+  display: inline-block; width: 10px; height: 10px; border-radius: 50%;
+  background: var(--green); margin-right: 8px; box-shadow: 0 0 6px var(--green);
+  animation: pulse-dot 2s infinite;
+}
+@keyframes pulse-dot { 0%,100%{opacity:1} 50%{opacity:0.2} }
 
-  .status-dot {
-    display: inline-block; width: 9px; height: 9px; border-radius: 50%;
-    background: var(--green); margin-right: 7px; box-shadow: 0 0 6px var(--green);
-    animation: pulse-dot 2s infinite;
-  }
-  @keyframes pulse-dot { 0%,100%{opacity:1} 50%{opacity:0.25} }
+/* MINER HARDWARE */
+.miner-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 16px; }
+.miner-unit { background: var(--surface2); border: 1px solid var(--border); border-radius: 4px; padding: 18px; }
+.miner-name { font-size: 15px; font-weight: 700; color: var(--orange); letter-spacing: 1px; margin-bottom: 12px; }
+.miner-stat { font-size: 18px; color: var(--text-dim); margin-bottom: 7px; }
+.miner-stat span { color: var(--text); font-weight: 500; }
 
-  .miner-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 16px; }
-  .miner-unit { background: var(--surface2); border: 1px solid var(--border); border-radius: 4px; padding: 16px; }
-  .miner-name { font-size: 17px; font-weight: 700; color: var(--orange); letter-spacing: 1px; margin-bottom: 12px; }
-  .miner-stat { font-size: 19px; color: var(--text-dim); margin-bottom: 6px; }
-  .miner-stat span { color: var(--text); font-weight: 500; }
+/* CHART */
+.chart-container {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 6px; padding: 24px 26px; position: relative; margin-bottom: 20px;
+}
+.chart-container::before {
+  content: ''; position: absolute; top: 0; left: 20px; right: 20px; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--orange), transparent); opacity: 0.5;
+}
+canvas { width: 100% !important; display: block; }
 
-  .chart-container {
-    background: var(--surface); border: 1px solid var(--border);
-    border-radius: 6px; padding: 22px 24px; position: relative;
-  }
-  .chart-container::before {
-    content: ''; position: absolute; top: 0; left: 20px; right: 20px; height: 2px;
-    background: linear-gradient(90deg, transparent, var(--orange), transparent);
-    border-radius: 0 0 2px 2px; opacity: 0.5;
-  }
-  canvas { width: 100% !important; display: block; }
+.loading { color: var(--text-muted); font-size: 20px; animation: blink 1.2s infinite; }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
 
-  .loading { color: var(--text-muted); font-size: 20px; animation: blink 1.2s infinite; }
-  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
+/* ── LOTTERIE SEITE ── */
+.lotterie-content { max-width: 960px; margin: 0 auto; padding: 36px 28px 60px; }
+.lotterie-hero { text-align: center; padding: 40px 20px 36px; border-bottom: 1px solid var(--border); margin-bottom: 48px; }
+.lotterie-hero-icon { font-size: 60px; margin-bottom: 16px; }
+.lotterie-hero h1 { font-family: 'Orbitron', sans-serif; font-size: 32px; font-weight: 900; color: var(--orange); text-shadow: 0 0 20px var(--orange-glow); margin-bottom: 10px; }
+.lotterie-hero-sub { font-size: 20px; color: var(--text-dim); }
 
-  /* ── LOTTERIE / SPIELGEMEINSCHAFT ── */
-  .lotterie-content { max-width: 960px; margin: 0 auto; padding: 36px 28px 48px; }
+.lotterie-section { margin-bottom: 52px; }
+.lotterie-section-header { display: flex; align-items: center; gap: 18px; margin-bottom: 28px; padding-bottom: 16px; border-bottom: 1px solid var(--border); }
+.section-num { font-family: 'Orbitron', sans-serif; font-size: 40px; font-weight: 900; color: var(--orange); opacity: 0.35; line-height: 1; flex-shrink: 0; }
+.lotterie-section-header h2 { font-family: 'Orbitron', sans-serif; font-size: 22px; font-weight: 700; color: var(--text); }
+.section-sub { font-family: 'Inter', sans-serif; font-size: 17px; font-weight: 400; color: var(--text-dim); }
 
-  .lotterie-hero {
-    text-align: center; padding: 48px 20px 40px;
-    border-bottom: 1px solid var(--border); margin-bottom: 48px;
-  }
-  .lotterie-hero-icon { font-size: 56px; margin-bottom: 16px; }
-  .lotterie-hero h1 {
-    font-family: 'Orbitron', sans-serif; font-size: 34px; font-weight: 900;
-    color: var(--orange); text-shadow: 0 0 20px var(--orange-glow);
-    margin-bottom: 10px;
-  }
-  .lotterie-hero-sub { font-size: 20px; color: var(--text-dim); letter-spacing: 1px; }
+.lotterie-body p { font-size: 20px; color: var(--text-dim); line-height: 1.85; margin-bottom: 22px; }
+.lotterie-body strong { color: var(--text); }
 
-  .lotterie-section { margin-bottom: 48px; }
+.info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 24px 0; }
+.info-item { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 18px 20px; display: flex; align-items: flex-start; gap: 14px; font-size: 19px; color: var(--text-dim); line-height: 1.65; }
+.info-icon { font-size: 24px; flex-shrink: 0; margin-top: 2px; }
 
-  .lotterie-section-header {
-    display: flex; align-items: center; gap: 18px;
-    margin-bottom: 28px; padding-bottom: 16px; border-bottom: 1px solid var(--border);
-  }
-  .section-num {
-    font-family: 'Orbitron', sans-serif; font-size: 36px; font-weight: 900;
-    color: var(--orange); opacity: 0.4; line-height: 1; flex-shrink: 0;
-  }
-  .lotterie-section-header h2 {
-    font-family: 'Orbitron', sans-serif; font-size: 22px; font-weight: 700; color: var(--text);
-  }
-  .section-sub { font-family: 'Inter', sans-serif; font-size: 16px; font-weight: 400; color: var(--text-dim); }
+.lotterie-notice { border-radius: 6px; padding: 18px 24px; font-size: 19px; line-height: 1.8; margin: 22px 0; }
+.lotterie-notice.warning { background: rgba(240,82,82,0.07); border: 1px solid rgba(240,82,82,0.25); color: var(--text-dim); }
+.lotterie-notice ul { margin: 10px 0 0 24px; }
+.lotterie-notice li { margin-bottom: 7px; }
 
-  .lotterie-body p { font-size: 20px; color: var(--text-dim); line-height: 1.8; margin-bottom: 20px; }
-  .lotterie-body strong { color: var(--text); }
+.lotterie-hl { background: rgba(34,216,122,0.07); border: 1px solid rgba(34,216,122,0.25); border-radius: 6px; padding: 20px 24px; margin: 22px 0; display: flex; gap: 16px; align-items: flex-start; font-size: 19px; color: var(--text-dim); line-height: 1.8; }
+.lotterie-hl.orange { background: var(--orange-dim); border-color: rgba(247,147,26,0.3); }
+.hl-icon { font-size: 28px; flex-shrink: 0; }
 
-  .info-grid {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 24px 0;
-  }
-  .info-item {
-    background: var(--surface); border: 1px solid var(--border); border-radius: 6px;
-    padding: 16px 20px; display: flex; align-items: flex-start; gap: 14px;
-    font-size: 18px; color: var(--text-dim); line-height: 1.6;
-  }
-  .info-icon { font-size: 22px; flex-shrink: 0; margin-top: 2px; }
+.transp-list { background: var(--surface2); border: 1px solid var(--border); border-radius: 6px; padding: 20px 26px; margin-top: 22px; }
+.transp-title { font-size: 19px; font-weight: 600; color: var(--text); margin-bottom: 14px; }
+.transp-item { display: flex; align-items: center; gap: 14px; font-size: 19px; color: var(--text-dim); padding: 9px 0; border-bottom: 1px solid var(--border); }
+.transp-item:last-child { border-bottom: none; }
+.t-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--green); box-shadow: 0 0 6px var(--green); flex-shrink: 0; }
 
-  .lotterie-notice {
-    border-radius: 6px; padding: 18px 22px; font-size: 18px;
-    line-height: 1.8; margin: 20px 0;
-  }
-  .lotterie-notice.warning {
-    background: rgba(240,82,82,0.07); border: 1px solid rgba(240,82,82,0.25); color: var(--text-dim);
-  }
-  .lotterie-notice ul { margin: 10px 0 0 20px; }
-  .lotterie-notice li { margin-bottom: 6px; }
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 24px; }
+.col-box { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 22px 26px; }
+.col-box-title { font-size: 20px; font-weight: 700; color: var(--text); margin-bottom: 16px; }
+.col-item { display: flex; align-items: flex-start; gap: 12px; font-size: 19px; color: var(--text-dim); padding: 8px 0; border-bottom: 1px solid var(--border); line-height: 1.6; }
+.col-item:last-child { border-bottom: none; }
+.ci-green { color: var(--green); font-weight: 700; flex-shrink: 0; }
+.ci-orange { color: var(--orange); font-weight: 700; flex-shrink: 0; }
 
-  .lotterie-highlight-box {
-    background: var(--green-dim, rgba(34,216,122,0.07)); border: 1px solid rgba(34,216,122,0.25);
-    border-radius: 6px; padding: 20px 24px; margin: 20px 0;
-    display: flex; gap: 16px; align-items: flex-start;
-    font-size: 19px; color: var(--text-dim); line-height: 1.8;
-  }
-  .lotterie-highlight-box.orange {
-    background: var(--orange-dim); border-color: rgba(247,147,26,0.3);
-  }
-  .highlight-icon { font-size: 26px; flex-shrink: 0; }
+.scale-box { background: var(--surface2); border: 1px solid var(--border); border-left: 3px solid var(--orange); border-radius: 6px; padding: 22px 26px; margin-top: 22px; }
+.scale-title { font-size: 20px; font-weight: 700; color: var(--text); margin-bottom: 14px; }
+.scale-row { display: flex; gap: 14px; font-size: 19px; color: var(--text-dim); padding: 8px 0; border-bottom: 1px solid var(--border); }
+.scale-row:last-child { border-bottom: none; }
+.scale-arr { color: var(--orange); font-weight: 700; flex-shrink: 0; }
 
-  .transparent-list {
-    background: var(--surface2); border: 1px solid var(--border);
-    border-radius: 6px; padding: 20px 24px; margin-top: 20px;
-  }
-  .transparent-title { font-size: 18px; font-weight: 600; color: var(--text); margin-bottom: 14px; }
-  .transparent-item {
-    display: flex; align-items: center; gap: 12px;
-    font-size: 19px; color: var(--text-dim); padding: 7px 0;
-    border-bottom: 1px solid var(--border);
-  }
-  .transparent-item:last-child { border-bottom: none; }
-  .t-dot {
-    width: 8px; height: 8px; border-radius: 50%; background: var(--green);
-    box-shadow: 0 0 6px var(--green); flex-shrink: 0;
-  }
+.summary-box { background: var(--surface); border: 1px solid var(--border); border-top: 3px solid var(--orange); border-radius: 6px; padding: 28px; margin-top: 22px; }
+.summary-title { font-size: 20px; font-weight: 700; color: var(--orange); margin-bottom: 20px; }
+.summary-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 24px; }
+.summary-item { display: flex; align-items: center; gap: 14px; background: var(--surface2); border: 1px solid var(--border); border-radius: 4px; padding: 14px 18px; font-size: 19px; color: var(--text-dim); }
+.summary-item span:first-child { font-size: 24px; }
 
-  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 24px 0 0; }
-  .col-box {
-    background: var(--surface); border: 1px solid var(--border);
-    border-radius: 6px; padding: 20px 24px;
-  }
-  .col-box-title { font-size: 19px; font-weight: 700; color: var(--text); margin-bottom: 16px; }
-  .col-item {
-    display: flex; align-items: flex-start; gap: 12px;
-    font-size: 18px; color: var(--text-dim); padding: 7px 0;
-    border-bottom: 1px solid var(--border); line-height: 1.6;
-  }
-  .col-item:last-child { border-bottom: none; }
-  .col-icon { font-size: 16px; font-weight: 700; flex-shrink: 0; margin-top: 3px; }
-  .col-icon.green { color: var(--green); }
-  .col-icon.orange-c { color: var(--orange); }
+/* ── IMPRESSUM ── */
+.impressum-content { max-width: 760px; margin: 0 auto; padding: 36px 28px 60px; }
+.impressum-content h1 { font-family: 'Orbitron', sans-serif; font-size: 28px; color: var(--orange); margin-bottom: 30px; padding-bottom: 16px; border-bottom: 1px solid var(--border); }
+.impressum-content h2 { font-size: 22px; font-weight: 700; color: var(--text); margin: 24px 0 10px; }
+.impressum-content p, .impressum-content address { font-size: 20px; color: var(--text-dim); line-height: 1.9; font-style: normal; }
+.impressum-content a { color: var(--orange); text-decoration: none; }
+.impressum-content a:hover { text-decoration: underline; }
+.impressum-box { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 26px 30px; margin-bottom: 18px; }
+.impressum-notice { background: var(--orange-dim); border: 1px solid rgba(247,147,26,0.3); border-radius: 4px; padding: 18px 22px; font-size: 18px; color: var(--text-dim); line-height: 1.8; }
 
-  .scale-box {
-    background: var(--surface2); border: 1px solid var(--border);
-    border-left: 3px solid var(--orange); border-radius: 6px;
-    padding: 20px 24px; margin-top: 20px;
-  }
-  .scale-title { font-size: 19px; font-weight: 700; color: var(--text); margin-bottom: 14px; }
-  .scale-row {
-    display: flex; gap: 12px; font-size: 19px; color: var(--text-dim);
-    padding: 7px 0; border-bottom: 1px solid var(--border);
-  }
-  .scale-row:last-child { border-bottom: none; }
-  .scale-arrow { color: var(--orange); font-weight: 700; flex-shrink: 0; }
+/* FOOTER */
+.footer { text-align: center; padding: 24px 28px; color: var(--text-muted); font-size: 16px; border-top: 1px solid var(--border); }
 
-  .summary-box {
-    background: var(--surface); border: 1px solid var(--border);
-    border-top: 3px solid var(--orange); border-radius: 6px;
-    padding: 28px 28px; margin-top: 20px;
-  }
-  .summary-title { font-size: 20px; font-weight: 700; color: var(--orange); margin-bottom: 20px; }
-  .summary-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-  .summary-item {
-    display: flex; align-items: center; gap: 14px;
-    background: var(--surface2); border: 1px solid var(--border);
-    border-radius: 4px; padding: 14px 18px;
-    font-size: 18px; color: var(--text-dim);
-  }
-  .summary-item span:first-child { font-size: 22px; }
-
-  @media (max-width: 700px) {
-    .info-grid { grid-template-columns: 1fr; }
-    .two-col { grid-template-columns: 1fr; }
-    .summary-grid { grid-template-columns: 1fr; }
-  }
-
-  /* ── IMPRESSUM ── */
-  .impressum-content { max-width: 720px; margin: 0 auto; padding: 36px 28px; }
-  .impressum-content h1 {
-    font-family: 'Orbitron', sans-serif; font-size: 30px; color: var(--orange);
-    margin-bottom: 30px; padding-bottom: 16px; border-bottom: 1px solid var(--border);
-  }
-  .impressum-content h2 {
-    font-size: 22px; font-weight: 700; color: var(--text); margin: 24px 0 10px;
-  }
-  .impressum-content p, .impressum-content address {
-    font-size: 20px; color: var(--text-dim); line-height: 1.9; font-style: normal;
-  }
-  .impressum-content a { color: var(--orange); text-decoration: none; }
-  .impressum-content a:hover { text-decoration: underline; }
-  .impressum-box {
-    background: var(--surface); border: 1px solid var(--border);
-    border-radius: 6px; padding: 26px 30px; margin-bottom: 18px;
-  }
-  .impressum-notice {
-    background: rgba(247,147,26,0.07); border: 1px solid rgba(247,147,26,0.25);
-    border-radius: 4px; padding: 16px 20px;
-    font-size: 18px; color: var(--text-dim); line-height: 1.8;
-  }
-
-  /* ── FOOTER ── */
-  .footer {
-    text-align: center; padding: 22px 28px; color: var(--text-muted);
-    font-size: 17px; border-top: 1px solid var(--border); margin-top: 8px;
-  }
-
-  @media (max-width: 900px) {
-    .grid-top { grid-template-columns: 1fr 1fr; }
-    .grid-mid { grid-template-columns: 1fr; }
-    .miner-grid { grid-template-columns: 1fr; }
-  }
-  @media (max-width: 600px) {
-    .grid-top { grid-template-columns: 1fr; }
-    .topbar { padding: 0 16px; }
-  }
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  .grid-top { grid-template-columns: 1fr 1fr; }
+  .grid-mid { grid-template-columns: 1fr; }
+  .miner-grid { grid-template-columns: 1fr; }
+  .info-grid { grid-template-columns: 1fr; }
+  .two-col { grid-template-columns: 1fr; }
+  .summary-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 600px) {
+  .grid-top { grid-template-columns: 1fr; }
+  .topbar { padding: 0 16px; }
+}
 </style>
 </head>
 <body>
 
-<!-- ── LOGIN ── -->
-<div id="login-screen">
-  <div class="login-box">
-    <div class="login-logo-wrap">
-      <svg class="site-logo-svg" viewBox="0 0 46 46" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="23" cy="23" r="21.5" fill="#0e1318" stroke="#f7931a" stroke-width="1.8"/>
-        <text x="8" y="33" font-family="Arial Black, sans-serif" font-size="24" font-weight="900" fill="#f7931a">₿</text>
-        <polygon points="29,7 24.5,20.5 30,20.5 25.5,39 35,21 29.5,21" fill="#22d87a"/>
-      </svg>
-      <div class="login-sitename">
-        <div><span class="ten">10min</span></div>
-        <div><span class="min">Mining</span><span class="lotto">Lotto</span></div>
-      </div>
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="logo-wrap">
+    <svg class="topbar-logo-svg" viewBox="0 0 46 46" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="23" cy="23" r="21.5" fill="#0e1318" stroke="#f7931a" stroke-width="1.8"/>
+      <text x="8" y="33" font-family="Arial Black,sans-serif" font-size="24" font-weight="900" fill="#f7931a">&#8383;</text>
+      <polygon points="29,7 24.5,20.5 30,20.5 25.5,39 35,21 29.5,21" fill="#22d87a"/>
+    </svg>
+    <div class="topbar-sitename">
+      <span class="ten">10min</span><span class="min">Mining</span><span class="lotto">Lotto</span>
     </div>
-    <div class="login-tagline">Bitcoin Solo Mining Dashboard</div>
-    <div class="field-wrap">
-      <label class="field-label">Benutzername</label>
-      <input type="text" id="username" placeholder="admin" value="admin">
-    </div>
-    <div class="field-wrap">
-      <label class="field-label">Passwort</label>
-      <input type="password" id="password" placeholder="••••••••" value="admin">
-    </div>
-    <button class="btn-login" id="btn-login">Anmelden</button>
-    <div class="demo-hint">Demo-Login: admin / admin</div>
+  </div>
+  <div class="topbar-right">
+    <div id="clock">--:--:--</div>
   </div>
 </div>
 
-<!-- ── DASHBOARD ── -->
-<div id="dashboard">
-  <div class="topbar">
-    <div class="logo-wrap">
-      <svg class="topbar-logo-svg" viewBox="0 0 46 46" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="23" cy="23" r="21.5" fill="#0e1318" stroke="#f7931a" stroke-width="1.8"/>
-        <text x="8" y="33" font-family="Arial Black, sans-serif" font-size="24" font-weight="900" fill="#f7931a">₿</text>
-        <polygon points="29,7 24.5,20.5 30,20.5 25.5,39 35,21 29.5,21" fill="#22d87a"/>
-      </svg>
-      <div class="topbar-sitename">
-        <span class="ten">10min</span><span class="min">Mining</span><span class="lotto">Lotto</span>
+<!-- NAV TABS -->
+<div class="nav-tabs">
+  <div class="nav-tab active" data-page="page-dashboard">&#9889; Dashboard</div>
+  <div class="nav-tab" data-page="page-lotterie">&#127920; Bitcoin Lotterie Mining &ndash; Spielgemeinschaft</div>
+  <div class="nav-tab" data-page="page-impressum">&#128203; Impressum</div>
+</div>
+
+<!-- ═══ DASHBOARD ═══ -->
+<div id="page-dashboard" class="page active">
+  <div class="main-content">
+
+    <div class="grid-top">
+      <div class="card">
+        <div class="card-label">&#8383; Bitcoin Kurs</div>
+        <div class="card-value" id="btc-price"><span class="loading">Laden&#8230;</span></div>
+        <div id="btc-change" class="positive">&#8211; %</div>
+        <div class="card-sub">Aktueller BTC / EUR Preis</div>
+      </div>
+      <div class="card">
+        <div class="card-label">&#9889; Aktuelle Hashrate</div>
+        <div class="card-value green" id="hashrate"><span class="loading">Laden&#8230;</span></div>
+        <div class="card-sub"><span class="status-dot"></span>Pool: solo.ckpool.org</div>
+      </div>
+      <div class="card">
+        <div class="card-label">&#9201; Systemzeit</div>
+        <div class="card-value sm green" id="date-display">--.--.----</div>
+        <div class="card-value" id="time-large" style="font-size:34px">--:--:--</div>
       </div>
     </div>
-    <div class="topbar-right">
-      <div id="clock">--:--:--</div>
-      <div class="user-badge" id="user-label">Admin</div>
-      <button class="btn-logout" id="btn-logout">Abmelden</button>
-    </div>
-  </div>
 
-  <div class="nav-tabs">
-    <div class="nav-tab active" data-tab="dashboard-page">⚡ Dashboard</div>
-    <div class="nav-tab" data-tab="lotterie-page">🎰 Bitcoin Lotterie Mining – Spielgemeinschaft</div>
-    <div class="nav-tab" data-tab="impressum-page">📋 Impressum</div>
-  </div>
-
-  <!-- Dashboard Page -->
-  <div id="dashboard-page" class="page active">
-    <div class="main-content">
-      <div class="grid-top">
-        <div class="card">
-          <div class="card-label">₿ Bitcoin Kurs</div>
-          <div class="card-value" id="btc-price"><span class="loading">Laden…</span></div>
-          <div id="btc-change" class="positive">– %</div>
-          <div class="card-sub">Aktueller BTC / EUR Preis</div>
+    <div class="grid-mid">
+      <div class="pool-card">
+        <div class="card-label">&#127919; CK Pool Statistiken</div>
+        <div class="pool-row">
+          <div class="pool-key">Hashrate (Live)</div>
+          <div class="pool-val highlight" id="pool-hashrate"><span class="loading">Laden&#8230;</span></div>
         </div>
-        <div class="card">
-          <div class="card-label">⚡ Aktuelle Hashrate</div>
-          <div class="card-value green" id="hashrate"><span class="loading">Laden…</span></div>
-          <div class="card-sub"><span class="status-dot"></span>Pool: solo.ckpool.org</div>
+        <div class="pool-row">
+          <div class="pool-key">Block gefunden am</div>
+          <div class="pool-val" id="pool-lastblock-time">&#8211;</div>
         </div>
-        <div class="card">
-          <div class="card-label">⏱ Systemzeit</div>
-          <div class="card-value sm green" id="date-display">--.--.----</div>
-          <div class="card-value" id="time-large" style="font-size:32px">--:--:--</div>
+        <div class="pool-row">
+          <div class="pool-key">Best Share</div>
+          <div class="pool-val" id="pool-bestshare">&#8211;</div>
+        </div>
+        <div class="pool-row">
+          <div class="pool-key">Wallet-Adresse</div>
+          <div class="pool-val addr">bc1qpmvg0xqvqy38hfkr0c7pmxtxzxz9vlvp27f7rw</div>
         </div>
       </div>
 
-      <div class="grid-mid">
-        <div class="pool-card">
-          <div class="card-label">🎯 CK Pool Statistiken</div>
-          <div class="pool-row">
-            <div class="pool-key">Hashrate (Live)</div>
-            <div class="pool-val highlight" id="pool-hashrate"><span class="loading">Laden…</span></div>
+      <div class="card">
+        <div class="card-label">&#128187; Miner Hardware</div>
+        <div class="miner-grid">
+          <div class="miner-unit">
+            <div class="miner-name">MINER #1</div>
+            <div class="miner-stat">Modell: <span>Antminer S9</span></div>
+            <div class="miner-stat">Hashrate: <span style="color:var(--green)">~5 TH/s</span></div>
+            <div class="miner-stat">Status: <span><span class="status-dot"></span>Online</span></div>
+            <div class="miner-stat">Verbrauch: <span>~1.3 kW</span></div>
           </div>
-          <div class="pool-row">
-            <div class="pool-key">Letzter Block</div>
-            <div class="pool-val" id="pool-lastblock">–</div>
-          </div>
-          <div class="pool-row">
-            <div class="pool-key">Block gefunden am</div>
-            <div class="pool-val" id="pool-lastblock-time">–</div>
-          </div>
-          <div class="pool-row">
-            <div class="pool-key">Best Share</div>
-            <div class="pool-val" id="pool-bestshare">–</div>
-          </div>
-          <div class="pool-row">
-            <div class="pool-key">Wallet-Adresse</div>
-            <div class="pool-val addr">bc1qpmvg0xqvqy38hfkr0c7pmxtxzxz9vlvp27f7rw</div>
+          <div class="miner-unit">
+            <div class="miner-name">MINER #2</div>
+            <div class="miner-stat">Modell: <span>Antminer S9</span></div>
+            <div class="miner-stat">Hashrate: <span style="color:var(--green)">~5 TH/s</span></div>
+            <div class="miner-stat">Status: <span><span class="status-dot"></span>Online</span></div>
+            <div class="miner-stat">Verbrauch: <span>~1.3 kW</span></div>
           </div>
         </div>
-
-        <div class="card">
-          <div class="card-label">🖥 Miner Hardware</div>
-          <div class="miner-grid">
-            <div class="miner-unit">
-              <div class="miner-name">MINER #1</div>
-              <div class="miner-stat">Modell: <span>Antminer S9</span></div>
-              <div class="miner-stat">Hashrate: <span style="color:var(--green)">~5 TH/s</span></div>
-              <div class="miner-stat">Status: <span><span class="status-dot"></span>Online</span></div>
-              <div class="miner-stat">Verbrauch: <span>~1.3 kW</span></div>
-            </div>
-            <div class="miner-unit">
-              <div class="miner-name">MINER #2</div>
-              <div class="miner-stat">Modell: <span>Antminer S9</span></div>
-              <div class="miner-stat">Hashrate: <span style="color:var(--green)">~5 TH/s</span></div>
-              <div class="miner-stat">Status: <span><span class="status-dot"></span>Online</span></div>
-              <div class="miner-stat">Verbrauch: <span>~1.3 kW</span></div>
-            </div>
-          </div>
-          <div style="margin-top:18px; padding-top:18px; border-top:1px solid var(--border);">
-            <div style="font-size:13px; font-weight:600; color:var(--text-dim); margin-bottom:6px; text-transform:uppercase; letter-spacing:1px">Gesamt Hashrate</div>
-            <div style="font-family:Orbitron,sans-serif; font-size:26px; color:var(--orange); text-shadow:0 0 12px var(--orange-glow)">~10 TH/s</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="grid-bottom">
-        <div class="chart-container">
-          <div class="card-label">📊 Hashrate Verlauf – 24 Stunden</div>
-          <canvas id="hashrateChart" height="200"></canvas>
+        <div style="margin-top:18px;padding-top:18px;border-top:1px solid var(--border)">
+          <div style="font-size:14px;font-weight:600;color:var(--text-dim);margin-bottom:6px;text-transform:uppercase;letter-spacing:1px">Gesamt Hashrate</div>
+          <div style="font-family:Orbitron,sans-serif;font-size:28px;color:var(--orange);text-shadow:0 0 12px var(--orange-glow)">~10 TH/s</div>
         </div>
       </div>
     </div>
-  </div>
 
-  <!-- Impressum Page -->
-  <div id="impressum-page" class="page">
-    <div class="impressum-content">
-      <h1>Impressum</h1>
-      <div class="impressum-box">
-        <h2>Angaben gemäß § 5 TMG</h2>
-        <address>
-          Max Mustermann<br>
-          Musterstraße 1<br>
-          12345 Musterstadt<br>
-          Deutschland
-        </address>
-        <h2>Kontakt</h2>
-        <p>
-          E-Mail: <a href="/cdn-cgi/l/email-protection#e58e8a8b91848e91a5d4d5888c8b888c8b8c8b82898a91918acb8180"><span class="__cf_email__" data-cfemail="a8c3c7c6dcc9c3dce89998c5c1c6c5c1c6c1c6cfc4c7dcdcc786cccd">[email&#160;protected]</span></a><br>
-          Webseite: <a href="#">10minMiningLotto.de</a>
-        </p>
-      </div>
-      <div class="impressum-box">
-        <h2>Hinweis zum Service</h2>
-        <p>Dieses Dashboard dient der Übersicht des privaten Bitcoin Solo-Minings über den Pool <strong style="color:var(--text)">solo.ckpool.org</strong>. Es handelt sich um ein privates, nicht-kommerzielles Informationsangebot.<br><br>Die angezeigten Hashrate-Daten werden über die öffentliche Pool-API abgerufen. Für die Richtigkeit der Bitcoin-Kursdaten wird keine Gewähr übernommen.</p>
-        <h2>Haftungsausschluss</h2>
-        <p>Trotz sorgfältiger inhaltlicher Kontrolle übernehmen wir keine Haftung für die Inhalte externer Links. Für den Inhalt der verlinkten Seiten sind ausschließlich deren Betreiber verantwortlich.</p>
-        <h2>Urheberrecht</h2>
-        <p>Die durch den Seitenbetreiber erstellten Inhalte und Werke auf diesen Seiten unterliegen dem deutschen Urheberrecht.</p>
-      </div>
-      <div class="impressum-notice">
-        ⚠️ <strong>Platzhalter:</strong> Bitte ersetze die oben stehenden Angaben durch deine echten Kontaktdaten, bevor du diese Seite öffentlich erreichbar machst. Ein Impressum ist in Deutschland gesetzlich vorgeschrieben (§ 5 TMG).
-      </div>
+    <div class="chart-container">
+      <div class="card-label">&#128202; Hashrate Verlauf &ndash; 24 Stunden</div>
+      <canvas id="hashrateChart" height="220"></canvas>
     </div>
-  </div>
 
-  <!-- Lotterie / Spielgemeinschaft Page -->
-  <div id="lotterie-page" class="page">
-    <div class="lotterie-content">
-
-      <div class="lotterie-hero">
-        <div class="lotterie-hero-icon">🎰</div>
-        <h1>Bitcoin Lotterie Mining</h1>
-        <p class="lotterie-hero-sub">Spielgemeinschaft – Gemeinsam mehr Chancen</p>
-      </div>
-
-      <!-- Abschnitt 1 -->
-      <div class="lotterie-section">
-        <div class="lotterie-section-header">
-          <span class="section-num">01</span>
-          <h2>Was ist Bitcoin Mining? <span class="section-sub">einfach erklärt</span></h2>
-        </div>
-        <div class="lotterie-body">
-          <p>Bitcoin ist ein digitales, dezentrales Zahlungssystem. Alle Transaktionen werden in sogenannten „Blöcken" gespeichert. Etwa alle 10 Minuten wird ein neuer Block zur Blockchain hinzugefügt.</p>
-          <p>Damit ein neuer Block entsteht, lösen Computer weltweit ein kryptografisches Rechenrätsel. Dieser Prozess heißt <strong>Mining</strong>.</p>
-
-          <div class="info-grid">
-            <div class="info-item">
-              <span class="info-icon">🖥</span>
-              <span>Tausende Geräte rechnen gleichzeitig</span>
-            </div>
-            <div class="info-item">
-              <span class="info-icon">🏆</span>
-              <span>Wer das Rätsel zuerst korrekt löst, darf den nächsten Block schreiben</span>
-            </div>
-            <div class="info-item">
-              <span class="info-icon">₿</span>
-              <span>Als Belohnung erhält dieser Miner aktuell rund <strong>3,125 Bitcoin</strong> plus Transaktionsgebühren</span>
-            </div>
-            <div class="info-item">
-              <span class="info-icon">💰</span>
-              <span>Der Gesamtwert eines Blocks liegt – je nach Kurs – häufig im Bereich von <strong>mehreren hunderttausend Euro</strong></span>
-            </div>
-          </div>
-
-          <div class="lotterie-notice warning">
-            <strong>⚠️ Wichtig:</strong>
-            <ul>
-              <li>Die Wahrscheinlichkeit zu gewinnen ist extrem gering</li>
-              <li>Es gibt keine Garantie auf Erfolg</li>
-              <li>Es ist ein reines Wahrscheinlichkeitsprinzip</li>
-            </ul>
-          </div>
-
-          <div class="lotterie-highlight-box">
-            <span class="highlight-icon">🎯</span>
-            <p>Das Prinzip ist vergleichbar mit <strong>Lotto oder Eurojackpot</strong>: Viele nehmen teil – nur einer gewinnt. Der Unterschied: Beim Bitcoin Mining gibt es <strong>alle 10 Minuten</strong> eine neue „Ziehung".</p>
-          </div>
-        </div>
-      </div>
-
-      <!-- Abschnitt 2 -->
-      <div class="lotterie-section">
-        <div class="lotterie-section-header">
-          <span class="section-num">02</span>
-          <h2>Unsere Miner &amp; die Gewinnchance</h2>
-        </div>
-        <div class="lotterie-body">
-          <p>Für das Projekt werden aktuell <strong>zwei eigene Miner</strong> mit insgesamt <strong>10 TH/s Hashrate</strong> betrieben.</p>
-          <p>Hashrate bedeutet: Wie viele Rechenversuche pro Sekunde durchgeführt werden. Das weltweite Bitcoin-Netzwerk arbeitet mit einer extrem hohen Gesamt-Hashrate. Unsere 10 TH/s stellen davon nur einen sehr kleinen Anteil dar.</p>
-
-          <div class="info-grid">
-            <div class="info-item">
-              <span class="info-icon">🎲</span>
-              <span>Die Gewinnchance ist ähnlich gering wie bei einer Lottoziehung</span>
-            </div>
-            <div class="info-item">
-              <span class="info-icon">⏱</span>
-              <span>Alle 10 Minuten besteht theoretisch die Möglichkeit, einen vollständigen Block zu finden</span>
-            </div>
-            <div class="info-item">
-              <span class="info-icon">🚫</span>
-              <span>Es gibt keine Zwischengewinne</span>
-            </div>
-            <div class="info-item">
-              <span class="info-icon">👑</span>
-              <span><strong>The winner takes it all</strong></span>
-            </div>
-          </div>
-
-          <div class="lotterie-highlight-box orange">
-            <span class="highlight-icon">⛏</span>
-            <p>Das Projekt versteht sich daher als: <strong>Bitcoin Mining nach dem Lotterie-Prinzip</strong><br><br>
-            Mit steigender Teilnehmerzahl werden weitere Miner zugeschaltet – dadurch erhöht sich die gesamte Hashrate und somit die Gewinnwahrscheinlichkeit.</p>
-          </div>
-
-          <div class="transparent-list">
-            <div class="transparent-title">📊 Auf der Webseite jederzeit transparent einsehbar:</div>
-            <div class="transparent-item"><span class="t-dot"></span>Aktuelle Gesamt-Hashrate</div>
-            <div class="transparent-item"><span class="t-dot"></span>Anzahl aktiver Teilnehmer</div>
-            <div class="transparent-item"><span class="t-dot"></span>Theoretische Gewinnwahrscheinlichkeit</div>
-            <div class="transparent-item"><span class="t-dot"></span>Live-Status alle 10 Minuten</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Abschnitt 3 -->
-      <div class="lotterie-section">
-        <div class="lotterie-section-header">
-          <span class="section-num">03</span>
-          <h2>Teilnahme &amp; Gewinnausschüttung</h2>
-        </div>
-        <div class="lotterie-body">
-          <p>Das Modell basiert auf einer <strong>Spielgemeinschaft</strong>.</p>
-
-          <div class="two-col">
-            <div class="col-box">
-              <div class="col-box-title">🎟 Teilnahme</div>
-              <div class="col-item"><span class="col-icon green">✓</span><strong>10 € pro Monat</strong></div>
-              <div class="col-item"><span class="col-icon green">✓</span>Monatlich kündbar</div>
-              <div class="col-item"><span class="col-icon green">✓</span>Keine Mindestlaufzeit</div>
-              <div class="col-item"><span class="col-icon orange-c">ℹ</span>Gewinnspiel-Service ohne garantierten Gewinn</div>
-            </div>
-            <div class="col-box">
-              <div class="col-box-title">👤 Dein persönlicher Zugang</div>
-              <div class="col-item"><span class="col-icon green">✓</span>Live-Übersicht der Blockversuche</div>
-              <div class="col-item"><span class="col-icon green">✓</span>Verteilung im Gewinnfall</div>
-              <div class="col-item"><span class="col-icon green">✓</span>Teilnehmeranzahl</div>
-              <div class="col-item"><span class="col-icon green">✓</span>Hashrate-Entwicklung</div>
-            </div>
-          </div>
-
-          <div class="col-box" style="margin-top:20px">
-            <div class="col-box-title">💎 Gewinnausschüttung – falls ein Block gefunden wird</div>
-            <div class="col-item"><span class="col-icon green">✓</span>Der komplette Block-Reward wird auf alle aktiven Teilnehmer aufgeteilt</div>
-            <div class="col-item"><span class="col-icon green">✓</span>Verteilung nach klar definiertem Schlüssel</div>
-            <div class="col-item"><span class="col-icon green">✓</span>Auszahlung dokumentiert und nachvollziehbar</div>
-            <div class="col-item"><span class="col-icon orange-c">ℹ</span>Keine kleinen Zwischengewinne – ein einmaliges Ereignis pro Fund</div>
-          </div>
-
-          <div class="scale-box">
-            <div class="scale-title">📈 Skalierungsprinzip</div>
-            <div class="scale-row"><span class="scale-arrow">→</span>Je mehr Teilnehmer, desto mehr Miner werden aktiviert</div>
-            <div class="scale-row"><span class="scale-arrow">→</span>Ziel: faire Verteilung von Investitions- und Betriebskosten</div>
-            <div class="scale-row"><span class="scale-arrow">→</span>Transparente Darstellung aller Kennzahlen auf der Homepage</div>
-          </div>
-
-          <div class="summary-box">
-            <div class="summary-title">✨ Zusammenfassung – Dieses Projekt verbindet:</div>
-            <div class="summary-grid">
-              <div class="summary-item"><span>⛏</span><span>Bitcoin Mining</span></div>
-              <div class="summary-item"><span>👥</span><span>Ein Spielgemeinschafts-Modell</span></div>
-              <div class="summary-item"><span>⏱</span><span>Eine alle 10 Minuten wiederkehrende Gewinnchance</span></div>
-              <div class="summary-item"><span>📊</span><span>Transparenz über Hashrate und Teilnehmer</span></div>
-              <div class="summary-item"><span>💶</span><span>Flexible Teilnahme für 10 € monatlich</span></div>
-            </div>
-            <div class="lotterie-notice warning" style="margin-top:24px">
-              Es handelt sich <strong>nicht</strong> um eine Geldanlage und <strong>nicht</strong> um eine garantierte Einnahmequelle, sondern um einen gemeinschaftlich organisierten Mining-Service mit <strong>Lotterie-Charakter</strong>.
-            </div>
-          </div>
-
-        </div>
-      </div>
-
-    </div>
-  </div>
-
-  <div class="footer">
-    © 2025 10minMiningLotto &nbsp;·&nbsp; bc1qpmvg0xqvqy38hfkr0c7pmxtxzxz9vlvp27f7rw &nbsp;·&nbsp; solo.ckpool.org
   </div>
 </div>
 
-<!--
-  WICHTIG: Das Script steht am Ende des Body – NACH allen HTML-Elementen.
-  Dadurch sind alle Elemente bereits im DOM vorhanden, wenn das Script läuft.
-  Kein DOMContentLoaded nötig. Das funktioniert zuverlässig auf GitHub Pages.
--->
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-// ── BENUTZER ──
-var USERS = {
-  admin: { pass: 'admin', label: 'Admin' },
-  user1: { pass: 'pass1', label: 'Nutzer 1' },
-  user2: { pass: 'pass2', label: 'Nutzer 2' }
-};
+<!-- ═══ LOTTERIE / SPIELGEMEINSCHAFT ═══ -->
+<div id="page-lotterie" class="page">
+  <div class="lotterie-content">
 
-// ── LOGIN / LOGOUT ──
-function login() {
-  var u = document.getElementById('username').value.trim();
-  var p = document.getElementById('password').value;
-  // Debug: zeigt was wirklich eingegeben wurde
-  console.log('Login-Versuch: Benutzer="' + u + '", Passwort="' + p + '"');
-  if (USERS[u] && USERS[u].pass === p) {
-    document.getElementById('login-screen').style.display = 'none';
-    var dash = document.getElementById('dashboard');
-    dash.style.display = 'flex';
-    dash.style.flexDirection = 'column';
-    document.getElementById('user-label').textContent = USERS[u].label;
-    startDashboard();
-  } else {
-    alert('Ungültige Anmeldedaten!\n\nEingabe:\nBenutzer: "' + u + '"\nPasswort: "' + p + '"\n\nErwartet: admin / admin');
-  }
-}
+    <div class="lotterie-hero">
+      <div class="lotterie-hero-icon">&#127920;</div>
+      <h1>Bitcoin Lotterie Mining</h1>
+      <p class="lotterie-hero-sub">Spielgemeinschaft &ndash; Gemeinsam mehr Chancen</p>
+    </div>
 
-function logout() {
-  document.getElementById('login-screen').style.display = 'flex';
-  document.getElementById('dashboard').style.display = 'none';
-}
+    <!-- 01 -->
+    <div class="lotterie-section">
+      <div class="lotterie-section-header">
+        <span class="section-num">01</span>
+        <h2>Was ist Bitcoin Mining? <span class="section-sub">einfach erkl&auml;rt</span></h2>
+      </div>
+      <div class="lotterie-body">
+        <p>Bitcoin ist ein digitales, dezentrales Zahlungssystem. Alle Transaktionen werden in sogenannten &bdquo;Bl&ouml;cken&ldquo; gespeichert. Etwa alle 10 Minuten wird ein neuer Block zur Blockchain hinzugef&uuml;gt.</p>
+        <p>Damit ein neuer Block entsteht, l&ouml;sen Computer weltweit ein kryptografisches Rechenr&auml;tsel. Dieser Prozess hei&szlig;t <strong>Mining</strong>.</p>
+        <div class="info-grid">
+          <div class="info-item"><span class="info-icon">&#128187;</span><span>Tausende Ger&auml;te rechnen gleichzeitig</span></div>
+          <div class="info-item"><span class="info-icon">&#127942;</span><span>Wer das R&auml;tsel zuerst korrekt l&ouml;st, darf den n&auml;chsten Block schreiben</span></div>
+          <div class="info-item"><span class="info-icon">&#8383;</span><span>Als Belohnung erh&auml;lt dieser Miner aktuell rund <strong>3,125 Bitcoin</strong> plus Transaktionsgeb&uuml;hren</span></div>
+          <div class="info-item"><span class="info-icon">&#128176;</span><span>Der Gesamtwert eines Blocks liegt h&auml;ufig im Bereich von <strong>mehreren hunderttausend Euro</strong></span></div>
+        </div>
+        <div class="lotterie-notice warning">
+          <strong>&#9888; Wichtig:</strong>
+          <ul>
+            <li>Die Wahrscheinlichkeit zu gewinnen ist extrem gering</li>
+            <li>Es gibt keine Garantie auf Erfolg</li>
+            <li>Es ist ein reines Wahrscheinlichkeitsprinzip</li>
+          </ul>
+        </div>
+        <div class="lotterie-hl">
+          <span class="hl-icon">&#127919;</span>
+          <p style="margin:0">Das Prinzip ist vergleichbar mit <strong>Lotto oder Eurojackpot</strong>: Viele nehmen teil &ndash; nur einer gewinnt. Der Unterschied: Beim Bitcoin Mining gibt es <strong>alle 10 Minuten</strong> eine neue &bdquo;Ziehung&ldquo;.</p>
+        </div>
+      </div>
+    </div>
 
+    <!-- 02 -->
+    <div class="lotterie-section">
+      <div class="lotterie-section-header">
+        <span class="section-num">02</span>
+        <h2>Unsere Miner &amp; die Gewinnchance</h2>
+      </div>
+      <div class="lotterie-body">
+        <p>F&uuml;r das Projekt werden aktuell <strong>zwei eigene Miner</strong> mit insgesamt <strong>10 TH/s Hashrate</strong> betrieben.</p>
+        <p>Hashrate bedeutet: Wie viele Rechenversuche pro Sekunde durchgef&uuml;hrt werden. Das weltweite Bitcoin-Netzwerk arbeitet mit einer extrem hohen Gesamt-Hashrate.</p>
+        <div class="info-grid">
+          <div class="info-item"><span class="info-icon">&#127922;</span><span>Die Gewinnchance ist &auml;hnlich gering wie bei einer Lottoziehung</span></div>
+          <div class="info-item"><span class="info-icon">&#9201;</span><span>Alle 10 Minuten besteht theoretisch die M&ouml;glichkeit, einen vollst&auml;ndigen Block zu finden</span></div>
+          <div class="info-item"><span class="info-icon">&#128683;</span><span>Es gibt keine Zwischengewinne</span></div>
+          <div class="info-item"><span class="info-icon">&#128081;</span><span><strong>The winner takes it all</strong></span></div>
+        </div>
+        <div class="lotterie-hl orange">
+          <span class="hl-icon">&#9935;</span>
+          <p style="margin:0">Das Projekt versteht sich als <strong>Bitcoin Mining nach dem Lotterie-Prinzip</strong>. Mit steigender Teilnehmerzahl werden weitere Miner zugeschaltet &ndash; dadurch erh&ouml;ht sich die Gewinnwahrscheinlichkeit.</p>
+        </div>
+        <div class="transp-list">
+          <div class="transp-title">&#128202; Auf der Webseite jederzeit transparent einsehbar:</div>
+          <div class="transp-item"><span class="t-dot"></span>Aktuelle Gesamt-Hashrate</div>
+          <div class="transp-item"><span class="t-dot"></span>Anzahl aktiver Teilnehmer</div>
+          <div class="transp-item"><span class="t-dot"></span>Theoretische Gewinnwahrscheinlichkeit</div>
+          <div class="transp-item"><span class="t-dot"></span>Live-Status alle 10 Minuten</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 03 -->
+    <div class="lotterie-section">
+      <div class="lotterie-section-header">
+        <span class="section-num">03</span>
+        <h2>Teilnahme &amp; Gewinnaussch&uuml;ttung</h2>
+      </div>
+      <div class="lotterie-body">
+        <p>Das Modell basiert auf einer <strong>Spielgemeinschaft</strong>.</p>
+        <div class="two-col">
+          <div class="col-box">
+            <div class="col-box-title">&#127915; Teilnahme</div>
+            <div class="col-item"><span class="ci-green">&#10003;</span><strong>10 &euro; pro Monat</strong></div>
+            <div class="col-item"><span class="ci-green">&#10003;</span>Monatlich k&uuml;ndbar</div>
+            <div class="col-item"><span class="ci-green">&#10003;</span>Keine Mindestlaufzeit</div>
+            <div class="col-item"><span class="ci-orange">&#9432;</span>Gewinnspiel-Service ohne garantierten Gewinn</div>
+          </div>
+          <div class="col-box">
+            <div class="col-box-title">&#128100; Dein pers&ouml;nlicher Zugang</div>
+            <div class="col-item"><span class="ci-green">&#10003;</span>Live-&Uuml;bersicht der Blockversuche</div>
+            <div class="col-item"><span class="ci-green">&#10003;</span>Aktuelle Verteilung im Gewinnfall</div>
+            <div class="col-item"><span class="ci-green">&#10003;</span>Teilnehmeranzahl</div>
+            <div class="col-item"><span class="ci-green">&#10003;</span>Hashrate-Entwicklung</div>
+          </div>
+        </div>
+        <div class="col-box" style="margin-top:18px">
+          <div class="col-box-title">&#128142; Gewinnaussch&uuml;ttung</div>
+          <div class="col-item"><span class="ci-green">&#10003;</span>Der komplette Block-Reward wird auf alle aktiven Teilnehmer aufgeteilt</div>
+          <div class="col-item"><span class="ci-green">&#10003;</span>Verteilung nach klar definiertem Schl&uuml;ssel, dokumentiert und nachvollziehbar</div>
+          <div class="col-item"><span class="ci-orange">&#9432;</span>Keine kleinen Zwischengewinne &ndash; ein einmaliges Ereignis pro Fund</div>
+        </div>
+        <div class="scale-box">
+          <div class="scale-title">&#128200; Skalierungsprinzip</div>
+          <div class="scale-row"><span class="scale-arr">&rarr;</span>Je mehr Teilnehmer, desto mehr Miner werden aktiviert</div>
+          <div class="scale-row"><span class="scale-arr">&rarr;</span>Ziel: faire Verteilung von Investitions- und Betriebskosten</div>
+          <div class="scale-row"><span class="scale-arr">&rarr;</span>Transparente Darstellung aller Kennzahlen auf der Homepage</div>
+        </div>
+        <div class="summary-box">
+          <div class="summary-title">&#10024; Zusammenfassung &ndash; Dieses Projekt verbindet:</div>
+          <div class="summary-grid">
+            <div class="summary-item"><span>&#9935;</span><span>Bitcoin Mining</span></div>
+            <div class="summary-item"><span>&#128101;</span><span>Ein Spielgemeinschafts-Modell</span></div>
+            <div class="summary-item"><span>&#9201;</span><span>Eine alle 10 Minuten wiederkehrende Gewinnchance</span></div>
+            <div class="summary-item"><span>&#128202;</span><span>Transparenz &uuml;ber Hashrate und Teilnehmer</span></div>
+            <div class="summary-item"><span>&#128182;</span><span>Flexible Teilnahme f&uuml;r 10 &euro; monatlich</span></div>
+          </div>
+          <div class="lotterie-notice warning" style="margin-top:22px;margin-bottom:0">
+            Es handelt sich <strong>nicht</strong> um eine Geldanlage und <strong>nicht</strong> um eine garantierte Einnahmequelle, sondern um einen gemeinschaftlich organisierten Mining-Service mit <strong>Lotterie-Charakter</strong>.
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══ IMPRESSUM ═══ -->
+<div id="page-impressum" class="page">
+  <div class="impressum-content">
+    <h1>Impressum</h1>
+    <div class="impressum-box">
+      <h2>Angaben gem&auml;&szlig; &sect; 5 TMG</h2>
+      <address>
+        Max Mustermann<br>
+        Musterstra&szlig;e 1<br>
+        12345 Musterstadt<br>
+        Deutschland
+      </address>
+      <h2>Kontakt</h2>
+      <p>E-Mail: kontakt [at] 10minmininglotto.de<br>Webseite: 10minMiningLotto.de</p>
+    </div>
+    <div class="impressum-box">
+      <h2>Hinweis zum Service</h2>
+      <p>Dieses Dashboard dient der &Uuml;bersicht des privaten Bitcoin Solo-Minings &uuml;ber den Pool <strong style="color:var(--text)">solo.ckpool.org</strong>. Es handelt sich um ein privates, nicht-kommerzielles Informationsangebot.</p>
+      <h2>Haftungsausschluss</h2>
+      <p>Trotz sorgf&auml;ltiger inhaltlicher Kontrolle &uuml;bernehmen wir keine Haftung f&uuml;r die Inhalte externer Links.</p>
+      <h2>Urheberrecht</h2>
+      <p>Die durch den Seitenbetreiber erstellten Inhalte unterliegen dem deutschen Urheberrecht.</p>
+    </div>
+    <div class="impressum-notice">
+      &#9888; <strong>Platzhalter:</strong> Bitte ersetze die oben stehenden Angaben durch deine echten Kontaktdaten. Ein Impressum ist in Deutschland gesetzlich vorgeschrieben (&sect; 5 TMG).
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  &copy; 2025 10minMiningLotto &nbsp;&middot;&nbsp; bc1qpmvg0xqvqy38hfkr0c7pmxtxzxz9vlvp27f7rw &nbsp;&middot;&nbsp; solo.ckpool.org
+</div>
+
+<script>
 // ── TABS ──
-function showTab(pageId, tabEl) {
-  document.querySelectorAll('.page').forEach(function(p) { p.classList.remove('active'); });
-  document.querySelectorAll('.nav-tab').forEach(function(t) { t.classList.remove('active'); });
-  document.getElementById(pageId).classList.add('active');
-  tabEl.classList.add('active');
-}
+var tabs = document.querySelectorAll('.nav-tab');
+var pages = document.querySelectorAll('.page');
 
-// Auto-start ohne Login
-startDashboard();
-
-// ── EVENTS direkt verdrahten ──
-document.getElementById('btn-login').addEventListener('click', login);
-document.getElementById('btn-logout').addEventListener('click', logout);
-document.getElementById('password').addEventListener('keydown', function(e) {
-  if (e.key === 'Enter') login();
-});
-document.querySelectorAll('.nav-tab').forEach(function(tab) {
+tabs.forEach(function(tab) {
   tab.addEventListener('click', function() {
-    showTab(this.dataset.tab, this);
+    var target = this.getAttribute('data-page');
+    tabs.forEach(function(t) { t.classList.remove('active'); });
+    pages.forEach(function(p) { p.classList.remove('active'); });
+    this.classList.add('active');
+    document.getElementById(target).classList.add('active');
   });
 });
 
@@ -783,107 +536,155 @@ function updateClock() {
   document.getElementById('time-large').textContent = t;
   document.getElementById('date-display').textContent = d;
 }
+updateClock();
+setInterval(updateClock, 1000);
 
 // ── BITCOIN PREIS ──
-function fetchBTCPrice() {
-  fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=eur&include_24hr_change=true')
-    .then(function(res) { return res.json(); })
+// Versucht mehrere APIs nacheinander
+function fetchBTC() {
+  // API 1: Kraken (sehr zuverlässig, kein API-Key nötig)
+  fetch('https://api.kraken.com/0/public/Ticker?pair=XBTEUR')
+    .then(function(r) { return r.json(); })
     .then(function(data) {
-      var price = data.bitcoin.eur;
-      var change = data.bitcoin.eur_24h_change;
-      document.getElementById('btc-price').textContent = '€ ' + price.toLocaleString('de-DE');
+      var price = parseFloat(data.result.XXBTZEUR.c[0]);
+      var open  = parseFloat(data.result.XXBTZEUR.o);
+      var change = ((price - open) / open) * 100;
+      document.getElementById('btc-price').textContent = '€ ' + Math.round(price).toLocaleString('de-DE');
       var el = document.getElementById('btc-change');
-      el.textContent = (change >= 0 ? '+' : '') + change.toFixed(2) + '% (24 h)';
+      el.textContent = (change >= 0 ? '+' : '') + change.toFixed(2) + '% (24h)';
       el.className = change >= 0 ? 'positive' : 'negative';
     })
     .catch(function() {
-      document.getElementById('btc-price').textContent = 'API nicht erreichbar';
+      // API 2: Fallback CoinGecko
+      fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=eur&include_24hr_change=true')
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+          var price = data.bitcoin.eur;
+          var change = data.bitcoin.eur_24h_change;
+          document.getElementById('btc-price').textContent = '€ ' + Math.round(price).toLocaleString('de-DE');
+          var el = document.getElementById('btc-change');
+          el.textContent = (change >= 0 ? '+' : '') + change.toFixed(2) + '% (24h)';
+          el.className = change >= 0 ? 'positive' : 'negative';
+        })
+        .catch(function() {
+          document.getElementById('btc-price').textContent = '– –';
+          document.getElementById('btc-change').textContent = '';
+        });
+    });
+}
+fetchBTC();
+setInterval(fetchBTC, 60000);
+
+// ── CK POOL HASHRATE ──
+// Die API solo.ckpool.org liefert JSON direkt, hat aber kein CORS-Header.
+// Daher: Versuch mit no-cors, bei Fehler Hinweis anzeigen.
+var WALLET = 'bc1qpmvg0xqvqy38hfkr0c7pmxtxzxz9vlvp27f7rw';
+
+function fetchPoolData() {
+  fetch('https://solo.ckpool.org/users/' + WALLET)
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      // CK Pool Felder: hashrate5m, hashrate1hr, hashrate1d, bestshare, lastshare
+      var hr = data.hashrate5m || data.hashrate1hr || 0;
+      // Umrechnen in lesbare Einheit
+      var hrStr = formatHashrate(hr);
+      document.getElementById('hashrate').textContent = hrStr;
+      document.getElementById('pool-hashrate').textContent = hrStr;
+
+      if (data.bestshare) {
+        document.getElementById('pool-bestshare').textContent = formatHashrate(data.bestshare);
+      }
+      if (data.lastshare) {
+        var d = new Date(data.lastshare * 1000);
+        document.getElementById('pool-lastblock-time').textContent = d.toLocaleString('de-DE');
+      }
+    })
+    .catch(function() {
+      // CORS blockiert – typisch für Browser direkt
+      document.getElementById('hashrate').textContent = 'CORS-blockiert';
+      document.getElementById('pool-hashrate').textContent = '–';
+      document.getElementById('pool-lastblock').textContent = '–';
+      document.getElementById('pool-lastblock-time').textContent = 'Backend-Proxy nötig';
+      document.getElementById('pool-bestshare').textContent = '–';
     });
 }
 
-// ── POOL-DATEN (simuliert) ──
-function simulatePoolData() {
-  var hrs = ['9.8 TH/s', '10.1 TH/s', '9.6 TH/s', '10.3 TH/s', '9.9 TH/s'];
-  var hr = hrs[Math.floor(Math.random() * hrs.length)];
-  document.getElementById('hashrate').textContent = hr;
-  document.getElementById('pool-hashrate').textContent = hr;
-  document.getElementById('pool-lastblock').textContent = 'Block #881 234';
-  document.getElementById('pool-lastblock-time').textContent = 'Noch nicht gefunden';
-  document.getElementById('pool-bestshare').textContent = '1.2 T';
+function formatHashrate(h) {
+  if (!h || h === 0) return '0 H/s';
+  if (h >= 1e12) return (h / 1e12).toFixed(2) + ' TH/s';
+  if (h >= 1e9)  return (h / 1e9).toFixed(2)  + ' GH/s';
+  if (h >= 1e6)  return (h / 1e6).toFixed(2)  + ' MH/s';
+  return h + ' H/s';
 }
 
+fetchPoolData();
+setInterval(fetchPoolData, 30000);
+
 // ── CHART ──
-function initChart() {
+function drawChart() {
   var canvas = document.getElementById('hashrateChart');
   var ctx = canvas.getContext('2d');
-  var W = canvas.offsetWidth || 900;
+  var W = canvas.parentElement.clientWidth - 52 || 800;
   var H = 220;
   canvas.width = W;
   canvas.height = H;
 
-  var data = [], labels = [];
-  var now = new Date();
+  var data = [], labels = [], now = new Date();
   for (var i = 23; i >= 0; i--) {
-    var h = new Date(now - i * 3600000);
-    labels.push(String(h.getHours()).padStart(2, '0') + ':00');
+    var h = new Date(now.getTime() - i * 3600000);
+    labels.push(String(h.getHours()).padStart(2,'0') + ':00');
     data.push(parseFloat((9 + Math.random() * 2).toFixed(2)));
   }
 
-  var pad = { top: 24, right: 20, bottom: 36, left: 56 };
-  var cw = W - pad.left - pad.right;
-  var ch = H - pad.top - pad.bottom;
-  var maxVal = 12, minVal = 8;
+  var p = { top: 24, right: 20, bottom: 38, left: 58 };
+  var cw = W - p.left - p.right;
+  var ch = H - p.top - p.bottom;
+  var maxV = 12, minV = 8;
 
   ctx.clearRect(0, 0, W, H);
 
-  // Gridlinien + Y-Labels
   for (var g = 0; g <= 4; g++) {
-    var y = pad.top + (g / 4) * ch;
+    var y = p.top + (g / 4) * ch;
     ctx.strokeStyle = '#1d2c3a'; ctx.lineWidth = 1;
-    ctx.beginPath(); ctx.moveTo(pad.left, y); ctx.lineTo(W - pad.right, y); ctx.stroke();
-    ctx.fillStyle = '#5a7a96'; ctx.font = '13px Inter, sans-serif';
-    ctx.fillText((maxVal - g * (maxVal - minVal) / 4).toFixed(0) + ' TH', 2, y + 5);
+    ctx.beginPath(); ctx.moveTo(p.left, y); ctx.lineTo(W - p.right, y); ctx.stroke();
+    ctx.fillStyle = '#5a7a96'; ctx.font = '13px Inter,sans-serif';
+    ctx.fillText((maxV - g * (maxV - minV) / 4).toFixed(0) + ' TH', 2, y + 5);
   }
 
-  // X-Labels
-  ctx.fillStyle = '#5a7a96'; ctx.font = '12px Inter, sans-serif';
+  ctx.fillStyle = '#5a7a96'; ctx.font = '12px Inter,sans-serif';
   for (var j = 0; j < labels.length; j += 4) {
-    var x = pad.left + (j / (data.length - 1)) * cw;
+    var x = p.left + (j / (data.length - 1)) * cw;
     ctx.fillText(labels[j], x - 18, H - 10);
   }
 
-  // Punkte berechnen
   var pts = data.map(function(v, idx) {
     return {
-      x: pad.left + (idx / (data.length - 1)) * cw,
-      y: pad.top + (1 - (v - minVal) / (maxVal - minVal)) * ch
+      x: p.left + (idx / (data.length - 1)) * cw,
+      y: p.top + (1 - (v - minV) / (maxV - minV)) * ch
     };
   });
 
-  // Füllung
   var grad = ctx.createLinearGradient(0, 0, 0, H);
   grad.addColorStop(0, 'rgba(247,147,26,0.35)');
   grad.addColorStop(1, 'rgba(247,147,26,0.01)');
 
   ctx.beginPath();
-  ctx.moveTo(pts[0].x, H - pad.bottom);
+  ctx.moveTo(pts[0].x, H - p.bottom);
   ctx.lineTo(pts[0].x, pts[0].y);
   for (var k = 1; k < pts.length; k++) ctx.lineTo(pts[k].x, pts[k].y);
-  ctx.lineTo(pts[pts.length - 1].x, H - pad.bottom);
-  ctx.closePath();
-  ctx.fillStyle = grad; ctx.fill();
+  ctx.lineTo(pts[pts.length-1].x, H - p.bottom);
+  ctx.closePath(); ctx.fillStyle = grad; ctx.fill();
 
-  // Linie
   ctx.beginPath(); ctx.moveTo(pts[0].x, pts[0].y);
   for (var m = 1; m < pts.length; m++) ctx.lineTo(pts[m].x, pts[m].y);
   ctx.strokeStyle = '#f7931a'; ctx.lineWidth = 2.5; ctx.stroke();
 
-  // Leuchtpunkt am Ende
   var last = pts[pts.length - 1];
   ctx.beginPath(); ctx.arc(last.x, last.y, 6, 0, Math.PI * 2);
-  ctx.fillStyle = '#f7931a';
-  ctx.shadowColor = '#f7931a'; ctx.shadowBlur = 16;
+  ctx.fillStyle = '#f7931a'; ctx.shadowColor = '#f7931a'; ctx.shadowBlur = 16;
   ctx.fill(); ctx.shadowBlur = 0;
 }
-
-// ── START 
+drawChart();
+</script>
+</body>
+</html>
